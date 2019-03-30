@@ -12,7 +12,7 @@ namespace Blocks
         float mass, gravity, restitution;
         List<Collider> colliders;
 
-        Vector2 pos, vel;
+        Vector2 pos, vel;//TODO get and set the position from the game object once you start using game objects.
 
         public bool HasInfiniteMass
         {
@@ -76,6 +76,32 @@ namespace Blocks
             set
             {
                 colliders = value;
+            }
+        }
+
+        public Vector2 Pos
+        {
+            get
+            {
+                return pos;
+            }
+
+            set
+            {
+                pos = value;
+            }
+        }
+
+        public Vector2 Vel
+        {
+            get
+            {
+                return vel;
+            }
+
+            set
+            {
+                vel = value;
             }
         }
 

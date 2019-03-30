@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Body.cs" />
     <Compile Include="Collider.cs" />
+    <Compile Include="CollisionData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
