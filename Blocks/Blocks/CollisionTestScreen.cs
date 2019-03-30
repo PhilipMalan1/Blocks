@@ -9,25 +9,25 @@ namespace Blocks
 {
     class CollisionTestScreen : Screen
     {
-        Texture2D player;
+        Texture2D block;
         List<Body> bodies;
 
-        public CollisionTestScreen(GraphicsDevice graphicsDevice, Game1 game1, Texture2D player) : base(graphicsDevice, game1)
+        public CollisionTestScreen(GraphicsDevice graphicsDevice, Game1 game1, Texture2D block) : base(graphicsDevice, game1)
         {
-            this.player = player;
+            this.block = block;
 
             bodies = new List<Body>();
 
-            Body newBody = new Body(true, 1, 0, 1);
-            newBody.AddCollider(new CircleCollider(newBody, new Vector2(), 108/2, collisionData => { }));
-            newBody.Pos = new Vector2(graphicsDevice.Viewport.Width/2, graphicsDevice.Viewport.Height / 2);
-            newBody.Vel = new Vector2(0, 0);
+            Body newBody = new Body(false, 1, 0, 0);
+            newBody.AddCollider(new RectangleCollider(newBody, new Vector2(), new Vector2(108, 108), collisionData => { }));
+            newBody.Pos = new Vector2(0, graphicsDevice.Viewport.Height / 2);
+            newBody.Vel = new Vector2(5, 0);
 
             bodies.Add(newBody);
 
-            newBody = new Body(true, 1, 0, 1);
-            newBody.AddCollider(new CircleCollider(newBody, new Vector2(), 108/2, collisionData => { }));
-            newBody.Pos = new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height / 2 - 50);
+            newBody = new Body(false, 1, 0, 0);
+            newBody.AddCollider(new RectangleCollider(newBody, new Vector2(), new Vector2(108, 108), collisionData => { }));
+            newBody.Pos = new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height / 2-100);
             newBody.Vel = new Vector2(-5, 0);
 
             bodies.Add(newBody);
@@ -38,7 +38,7 @@ namespace Blocks
             spriteBatch.Begin();
             foreach(Body body in bodies)
             {
-                spriteBatch.Draw(player, new Rectangle((int)body.Pos.X-108/2, (int)body.Pos.Y-108/2, 108, 108), new Rectangle(0, 108, 108, 108), Color.White);
+                spriteBatch.Draw(block, new Rectangle((int)body.Pos.X, (int)body.Pos.Y, 108, 108), Color.White);
             }
             spriteBatch.End();
         }
