@@ -9,13 +9,13 @@ namespace Blocks
     class CollisionData
     {
         bool didCollide;
-        Vector2 obj1Push, obj2Push, collisionAngle;
+        float collisionDepth;
+        Vector2 collisionAngle;
 
-        public CollisionData(bool didCollide, Vector2 obj1Push, Vector2 obj2Push, Vector2 collisionAngle)
+        public CollisionData(bool didCollide, float collisionDepth, Vector2 collisionAngle)
         {
             this.didCollide = didCollide;
-            this.obj1Push = obj1Push;
-            this.obj2Push = obj2Push;
+            this.collisionDepth = collisionDepth;
             this.collisionAngle = collisionAngle;
         }
 
@@ -45,29 +45,16 @@ namespace Blocks
             }
         }
 
-        public Vector2 Obj1Push
+        public float CollisionDepth
         {
             get
             {
-                return obj1Push;
+                return collisionDepth;
             }
 
             set
             {
-                obj1Push = value;
-            }
-        }
-
-        public Vector2 Obj2Push
-        {
-            get
-            {
-                return obj2Push;
-            }
-
-            set
-            {
-                obj2Push = value;
+                collisionDepth = value;
             }
         }
     }

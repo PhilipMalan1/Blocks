@@ -39,11 +39,6 @@ namespace Blocks
         /// <param name="collisionData"></param>
         public void ResolveCollision(Collider collider, CollisionData collisionData)
         {
-            //push objects
-            body.Pos = body.Pos + collisionData.Obj1Push;
-            collider.body.Pos = collider.body.Pos + collisionData.Obj2Push;
-
-            //update velocities
             float v1xf, v2xf;
             //calculate restitution
             float restitution = Math.Min(body.Restitution, collider.body.Restitution);
@@ -51,6 +46,17 @@ namespace Blocks
             //find the velocity of both objects in the direction of the collision
             float v1xi = Vector2.Dot(body.Vel, collisionData.CollisionAngle);
             float v2xi = Vector2.Dot(collider.Body.Vel, collisionData.CollisionAngle);
+
+            //find time since collision
+            float timeSinceCollision;
+            if (v1xi + v2xi == 0)
+                timeSinceCollision = 0;
+            else
+                timeSinceCollision = collisionData.CollisionDepth / (v1xi + v2xi);
+
+            //It's rewind time! (update positions)
+            Body.Pos -= Body.Vel * timeSinceCollision;
+            collider.Body.Pos -= collider.Body.Vel * timeSinceCollision;
 
             //find the velocity of both objects perpendicular to the collision
             Vector2 v1y = body.Vel - v1xi * collisionData.CollisionAngle;
