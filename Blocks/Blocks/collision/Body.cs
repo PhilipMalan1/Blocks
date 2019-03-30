@@ -92,16 +92,30 @@ namespace Blocks
             }
         }
 
-        public Body(bool hasInfiniteMass, float mass, float gravity, float restitution, List<Collider> colliders)
+        internal List<Collider> Colliders
+        {
+            get
+            {
+                return colliders;
+            }
+
+            set
+            {
+                colliders = value;
+            }
+        }
+
+        public Body(bool hasInfiniteMass, float mass, float gravity, float restitution)
         {
             this.hasInfiniteMass = hasInfiniteMass;
             this.mass = mass;
             this.gravity = gravity;
             this.restitution = restitution;
-            this.colliders = colliders;
+
+            colliders = new List<Collider>();
         }
 
-        public void addCollider(Collider collider)
+        public void AddCollider(Collider collider)
         {
             collider.Body = this;
             colliders.Add(collider);

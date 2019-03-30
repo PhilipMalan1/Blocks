@@ -9,9 +9,9 @@ namespace Blocks
     abstract class Collider
     {
         Body body;
-        Action OnCollision;
+        Action<CollisionData> OnCollision;
 
-        public Collider(Body body, Action OnCollision)
+        public Collider(Body body, Action<CollisionData> OnCollision)
         {
             this.body = body;
             this.OnCollision = OnCollision;
@@ -37,38 +37,44 @@ namespace Blocks
         /// </summary>
         /// <param name="collider"></param>
         /// <param name="collisionData"></param>
-        public void ResolveCollision(Collider collider, CollisionData collisionData)
+        public static void ResolveCollision(CollisionData collisionData)
         {
+            //return if there wan't a collision
+            if (!collisionData.DidCollide) return;
+
+            Collider myCollider = collisionData.MyCollider;
+            Collider otherCollider = collisionData.OtherCollider;
+
             float v1xf, v2xf;
             //calculate restitution
-            float restitution = Math.Min(body.Restitution, collider.body.Restitution);
+            float restitution = Math.Min(myCollider.Body.Restitution, otherCollider.body.Restitution);
 
             //find the velocity of both objects in the direction of the collision
-            float v1xi = Vector2.Dot(body.Vel, collisionData.CollisionAngle);
-            float v2xi = Vector2.Dot(collider.Body.Vel, collisionData.CollisionAngle);
+            float v1xi = Vector2.Dot(myCollider.Body.Vel, collisionData.CollisionAngle);
+            float v2xi = Vector2.Dot(otherCollider.Body.Vel, collisionData.CollisionAngle);
 
             //find time since collision
             float timeSinceCollision;
-            if (v1xi + v2xi == 0)
+            if (v1xi - v2xi == 0)
                 timeSinceCollision = 0;
             else
-                timeSinceCollision = collisionData.CollisionDepth / (v1xi + v2xi);
+                timeSinceCollision = collisionData.CollisionDepth / (v1xi - v2xi);
 
             //It's rewind time! (update positions)
-            Body.Pos -= Body.Vel * timeSinceCollision;
-            collider.Body.Pos -= collider.Body.Vel * timeSinceCollision;
+            myCollider.Body.Pos -= myCollider.Body.Vel * timeSinceCollision;
+            otherCollider.Body.Pos -= otherCollider.Body.Vel * timeSinceCollision;
 
             //find the velocity of both objects perpendicular to the collision
-            Vector2 v1y = body.Vel - v1xi * collisionData.CollisionAngle;
-            Vector2 v2y = collider.Body.Vel - v2xi * collisionData.CollisionAngle;
+            Vector2 v1y = myCollider.body.Vel - v1xi * collisionData.CollisionAngle;
+            Vector2 v2y = otherCollider.Body.Vel - v2xi * collisionData.CollisionAngle;
 
             //calculate the difference of the final velocities (I think?)
             float gamma = restitution * (v1xi - v2xi);
 
-            if (body.HasInfiniteMass)
+            if (myCollider.body.HasInfiniteMass)
             {
                 //if both objects have infinite mass
-                if (collider.body.HasInfiniteMass)
+                if (otherCollider.body.HasInfiniteMass)
                 {
                     v1xf = v1xi;
                     v2xf = v2xi;
@@ -81,7 +87,7 @@ namespace Blocks
                 }
             }
             //if the other object has infinite mass
-            else if (collider.body.HasInfiniteMass)
+            else if (otherCollider.body.HasInfiniteMass)
             {
                 v1xf = v2xi - gamma;
                 v2xf = v2xi;
@@ -90,13 +96,13 @@ namespace Blocks
             else
             {
                 //the big boy equation
-                v1xf = ((Body.Mass * v1xi + collider.Body.Mass * v2xi) / collider.Body.Mass - gamma) / (1 + Body.Mass / collider.Body.Mass);
+                v1xf = ((myCollider.Body.Mass * v1xi + otherCollider.Body.Mass * v2xi) / otherCollider.Body.Mass - gamma) / (1 + myCollider.Body.Mass / otherCollider.Body.Mass);
                 v2xf = gamma + v1xf;
             }
 
             //calculate and apply final velocities
-            Body.Vel = v1xf * collisionData.CollisionAngle + v1y;
-            collider.Body.Vel = v2xf * collisionData.CollisionAngle + v1y;
+            myCollider.Body.Vel = v1xf * collisionData.CollisionAngle + v1y;
+            otherCollider.Body.Vel = v2xf * collisionData.CollisionAngle + v2y;
         }
     }
 }
