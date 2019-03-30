@@ -66,19 +66,6 @@ namespace Blocks
             }
         }
 
-        internal List<Collider> Colliders
-        {
-            get
-            {
-                return colliders;
-            }
-
-            set
-            {
-                colliders = value;
-            }
-        }
-
         public Vector2 Pos
         {
             get
@@ -112,6 +99,12 @@ namespace Blocks
             this.gravity = gravity;
             this.restitution = restitution;
             this.colliders = colliders;
+        }
+
+        public void addCollider(Collider collider)
+        {
+            collider.Body = this;
+            colliders.Add(collider);
         }
 
         public void Update()
