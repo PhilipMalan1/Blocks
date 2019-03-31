@@ -35,7 +35,7 @@ namespace Blocks
         /// </summary>
         protected override void Initialize()
         {
-            //Initialize screen
+            //Instantiate screen
 
             base.Initialize();
         }
