@@ -93,6 +93,14 @@ namespace Blocks
                     }
                 }
             }
+            else if(collider is CircleCollider)
+            {
+                CollisionData collisionData=collider.CheckCollision(this);
+                didCollide = collisionData.DidCollide;
+                collisionDepth = collisionData.CollisionDepth;
+                collisionAngle = -collisionData.CollisionAngle;
+            }
+
             return new CollisionData(didCollide, collisionDepth, collisionAngle, this, collider);
         }
     }
