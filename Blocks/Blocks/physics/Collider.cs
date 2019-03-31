@@ -141,6 +141,10 @@ namespace Blocks
             //calculate and apply final velocities
             myCollider.Body.Vel = v1xf * collisionData.CollisionAngle + v1y;
             otherCollider.Body.Vel = v2xf * collisionData.CollisionAngle + v2y;
+
+            //move the objects after the collision
+            myCollider.Body.Pos += myCollider.Body.Vel * timeSinceCollision;
+            otherCollider.Body.Pos += otherCollider.Body.Vel * timeSinceCollision;
         }
     }
 }

@@ -140,7 +140,7 @@ namespace Blocks
         {
             Vector2 netForce = new Vector2(0, gravity);
             vel += netForce * dt;
-            pos += vel * dt + .5f * netForce * (float)Math.Pow(dt, 2);
+            pos += vel * dt;
         }
 
         /// <summary>
