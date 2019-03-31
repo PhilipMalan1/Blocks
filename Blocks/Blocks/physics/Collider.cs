@@ -9,12 +9,20 @@ namespace Blocks
     abstract class Collider
     {
         Body body;
-        Action<CollisionData> OnCollision;
+        Func<CollisionData, bool> onCollision;
+        CollisionGroup collisionGroup;
 
-        public Collider(Body body, Action<CollisionData> OnCollision)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="collisionGroup"></param>
+        /// <param name="onCollision">If you return true, the collision will be resolved.</param>
+        public Collider(Body body, CollisionGroup collisionGroup, Func<CollisionData, bool> onCollision)
         {
             this.body = body;
-            this.OnCollision = OnCollision;
+            this.collisionGroup = collisionGroup;
+            this.onCollision = onCollision;
         }
 
         internal Body Body
@@ -27,6 +35,32 @@ namespace Blocks
             set
             {
                 body = value;
+            }
+        }
+
+        internal CollisionGroup CollisionGroup
+        {
+            get
+            {
+                return collisionGroup;
+            }
+
+            set
+            {
+                collisionGroup = value;
+            }
+        }
+
+        internal Func<CollisionData, bool> OnCollision
+        {
+            get
+            {
+                return onCollision;
+            }
+
+            set
+            {
+                onCollision = value;
             }
         }
 

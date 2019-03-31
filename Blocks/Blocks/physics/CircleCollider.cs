@@ -18,7 +18,7 @@ namespace Blocks
         /// <param name="pos">Position relitive to body Pos.</param>
         /// <param name="radius"></param>
         /// <param name="OnCollision"></param>
-        public CircleCollider(Body body, Vector2 pos, float radius, Action<CollisionData> OnCollision) : base(body, OnCollision)
+        public CircleCollider(Body body, CollisionGroup collisionGroup, Vector2 pos, float radius, Func<CollisionData, bool> onCollision) : base(body, collisionGroup, onCollision)
         {
             this.pos = pos;
             this.radius = radius;

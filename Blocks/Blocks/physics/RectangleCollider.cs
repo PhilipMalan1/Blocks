@@ -10,7 +10,7 @@ namespace Blocks
     {
         Vector2 pos, dimensions;
 
-        public RectangleCollider(Body body, Vector2 pos, Vector2 dimensions, Action<CollisionData> OnCollision) : base(body, OnCollision)
+        public RectangleCollider(Body body, CollisionGroup collisionGroup, Vector2 pos, Vector2 dimensions, Func<CollisionData, bool> OnCollision) : base(body, collisionGroup, OnCollision)
         {
             this.dimensions = dimensions;
             this.pos = pos;

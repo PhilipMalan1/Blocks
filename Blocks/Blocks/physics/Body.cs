@@ -11,6 +11,7 @@ namespace Blocks
         bool hasInfiniteMass;
         float mass, gravity, restitution;
         List<Collider> colliders;
+        PhysicsManager physicsManager;
 
         Vector2 pos, vel;//TODO get and set the position from the game object once you start using game objects.
 
@@ -105,13 +106,27 @@ namespace Blocks
             }
         }
 
-        public Body(bool hasInfiniteMass, float mass, float gravity, float restitution)
+        internal PhysicsManager PhysicsManager
+        {
+            get
+            {
+                return physicsManager;
+            }
+
+            set
+            {
+                physicsManager = value;
+            }
+        }
+
+        public Body(PhysicsManager physicsManager, bool hasInfiniteMass, float mass, float gravity, float restitution)
         {
             this.hasInfiniteMass = hasInfiniteMass;
             this.mass = mass;
             this.gravity = gravity;
             this.restitution = restitution;
 
+            physicsManager.Bodies.Add(this);
             colliders = new List<Collider>();
         }
 
@@ -121,10 +136,19 @@ namespace Blocks
             colliders.Add(collider);
         }
 
-        public void Update()
+        public void Update(float dt)
         {
-            vel += new Vector2(0, gravity);
-            pos += vel;
+            Vector2 netForce = new Vector2(0, gravity);
+            vel += netForce * dt;
+            pos += vel * dt + .5f * netForce * (float)Math.Pow(dt, 2);
+        }
+
+        /// <summary>
+        /// Removes Body from Physics manager.
+        /// </summary>
+        public void Unload()
+        {
+            physicsManager.Bodies.Remove(this);
         }
     }
 }
