@@ -93,7 +93,10 @@ namespace Blocks
                 timeSinceCollision = 0;
             else
                 timeSinceCollision = collisionData.CollisionDepth / (v1xi - v2xi);
-            if (Math.Abs(timeSinceCollision) > 1f / 60) timeSinceCollision *= 1f / 60 / Math.Abs(timeSinceCollision);
+            //Don't push objects if they are moving away from each other
+            if (timeSinceCollision < 0) timeSinceCollision = 0;
+            //limit how far objects can be pushed
+            if (timeSinceCollision > 1f / 60) timeSinceCollision = 1f / 60;
 
             //It's rewind time! (update positions)
             myCollider.Body.Pos -= myCollider.Body.Vel * timeSinceCollision;
