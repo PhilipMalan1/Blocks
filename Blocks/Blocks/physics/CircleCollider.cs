@@ -50,7 +50,7 @@ namespace Blocks
             }
         }
 
-        public override CollisionData CheckCollision(Collider collider)//TODO allow circles to collide with rectangles
+        public override CollisionData CheckCollision(Collider collider)
         {
             //these values will be returned if there isn't a collision
             bool didCollide=false;
