@@ -16,7 +16,8 @@ namespace Blocks
         }
 
         /// <summary>
-        /// Checks if two colliders can collide based on collision groups.
+        /// Checks if two colliders can collide based on collision groups. Add it to a screen by making a new Physics manager and running it's update method every frame.
+        /// Every time you add a body object, it will automatically add itself to the physics manager that you give to it. Bodies won't collide unless you add a collider.
         /// </summary>
         /// <param name="collider1"></param>
         /// <param name="collider2"></param>

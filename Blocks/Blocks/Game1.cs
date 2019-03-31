@@ -35,7 +35,7 @@ namespace Blocks
         /// </summary>
         protected override void Initialize()
         {
-            screen = new CollisionTestScreen(GraphicsDevice, this, Content.Load<Texture2D>("Block"), Content.Load<Texture2D>("Player"));
+            //Initialize screen
 
             base.Initialize();
         }

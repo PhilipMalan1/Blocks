@@ -61,7 +61,6 @@
     <Compile Include="physics\CircleCollider.cs" />
     <Compile Include="physics\Collider.cs" />
     <Compile Include="physics\CollisionData.cs" />
-    <Compile Include="CollisionTestScreen.cs" />
     <Compile Include="physics\PhysicsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
