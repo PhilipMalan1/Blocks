@@ -25,8 +25,8 @@ namespace Blocks
 
             newBody = new Body(physicsManager, false, 1, 0, 0);
             newBody.AddCollider(new RectangleCollider(newBody, CollisionGroup.Group2, new Vector2(), new Vector2(108, 108), collisionData => true));
-            newBody.Pos = new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height / 2-108);
-            newBody.Vel = new Vector2(-300, 1);
+            newBody.Pos = new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height / 2-100);
+            newBody.Vel = new Vector2(-300, -1);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
