@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blocks", "Blocks\Blocks\Blocks.csproj", "{26D6A8B6-7A4A-4726-9B8B-4A4E37F03831}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "BlocksContent", "Blocks\BlocksContent\BlocksContent.contentproj", "{920A98FB-4C96-4948-9D05-29B6A54B5B08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlocksContent", "Blocks\BlocksContent\BlocksContent.contentproj", "{920A98FB-4C96-4948-9D05-29B6A54B5B08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
