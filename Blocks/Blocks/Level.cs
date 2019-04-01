@@ -43,7 +43,11 @@ namespace Blocks
             while (x >= levelObjects.Count())
                 levelObjects.Add(new List<List<GameObject>>());
             //add rows
-            while (y >= levelObjects.Count()) levelObjects[x].Add(new List<GameObject>());
+            while (y >= levelObjects[x].Count())
+            {
+                levelObjects[x].Add(new List<GameObject>());
+                if (levelObjects.Count() > rowNum) rowNum = levelObjects.Count();
+            }
             //add object
             levelObjects[x][y].Add(gameObject);
         }

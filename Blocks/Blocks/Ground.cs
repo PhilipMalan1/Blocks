@@ -40,12 +40,12 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)
         {
-            spritebach.Draw(ground,floor,Color.White);
+            spritebach.Draw(ground, floor, new Rectangle(0, 0, 108, 108), Color.White);
         }
         
     }
