@@ -38,7 +38,7 @@ namespace Blocks
         public abstract void DataValueName();
         public abstract void Initialize();
 
-        abstract public override void Draw(GameTime gameTime);
+        abstract public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera);
 
         abstract public override void Update(GameTime gameTime);
     }
