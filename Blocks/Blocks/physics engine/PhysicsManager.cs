@@ -24,13 +24,7 @@ namespace Blocks
         /// <returns></returns>
         public bool CanCollide(Collider collider1, Collider collider2)
         {
-            CollisionGroup bothGroups = collider1.CollisionGroup | collider2.CollisionGroup;
-            if ((bothGroups & CollisionGroup.Group1)>0)
-            {
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         public void Update(GameTime gameTime)
@@ -98,7 +92,6 @@ namespace Blocks
     enum CollisionGroup
     {
         None = 0,
-        Group1 = 1,
-        Group2 = 2
+        Ground = 1
     }
 }

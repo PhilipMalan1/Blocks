@@ -57,17 +57,23 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="physics\Body.cs" />
-    <Compile Include="physics\CircleCollider.cs" />
-    <Compile Include="physics\Collider.cs" />
-    <Compile Include="physics\CollisionData.cs" />
-    <Compile Include="physics\PhysicsManager.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="Ground.cs" />
+    <Compile Include="LevelEditorScreen.cs" />
+    <Compile Include="LoadedContent.cs" />
+    <Compile Include="physics engine\Body.cs" />
+    <Compile Include="physics engine\CircleCollider.cs" />
+    <Compile Include="physics engine\Collider.cs" />
+    <Compile Include="physics engine\CollisionData.cs" />
+    <Compile Include="physics engine\PhysicsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="physics\RectangleCollider.cs" />
+    <Compile Include="physics engine\RectangleCollider.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="Start Menu.cs" />
+    <Compile Include="Sprite.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

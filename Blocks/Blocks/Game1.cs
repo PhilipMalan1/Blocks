@@ -37,7 +37,15 @@ namespace Blocks
         /// </summary>
         protected override void Initialize()
         {
-            //Instantiate screen
+            IsMouseVisible = true;
+            Window.Title = "Blocks";
+            graphics.PreferredBackBufferWidth = 1728;
+            graphics.PreferredBackBufferHeight = 972;
+            graphics.IsFullScreen = false;
+            graphics.ApplyChanges();
+
+            LoadedContent.LoadContent(Content);
+            screen = new LevelEditorScreen(GraphicsDevice, this);
 
             base.Initialize();
         }
@@ -71,7 +79,7 @@ namespace Blocks
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
             screen.Update(gameTime);
