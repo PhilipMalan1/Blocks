@@ -11,16 +11,21 @@ namespace Blocks
     class LevelEditorScreen : Screen
     {
         private Level level;
-        float blockWidth = 108;
+        Vector2 camera;
+        float blockWidth;
             
         public LevelEditorScreen(GraphicsDevice graphicsDevice, Game1 game1) : base(graphicsDevice, game1)
         {
+            blockWidth = graphicsDevice.Viewport.Height / 10;
+
             List<List<List<GameObject>>> levelGrid = new List<List<List<GameObject>>>();
 
             level = new Level(levelGrid, 0);
 
+            camera = new Vector2(0, -graphicsDevice.Viewport.Height);
+
             //TODO test
-            level.AddGameObject(new Ground(LoadedContent.ground, new Rectangle(0, 0, 108, 108)), 0, 0);
+            level.AddGameObject(new Ground(new Vector2(0, -blockWidth), blockWidth), 0, 0);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -34,7 +39,7 @@ namespace Blocks
                 {
                     foreach(GameObject gameObject in tile)
                     {
-                        gameObject.Draw(gameTime, spriteBatch, new Vector2());
+                        gameObject.Draw(gameTime, spriteBatch, camera);
                     }
                 }
             }

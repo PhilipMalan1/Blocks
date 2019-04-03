@@ -9,13 +9,29 @@ namespace Blocks
 {
     class Ground : GameObject
     {
-        Texture2D ground;
-        Rectangle floor;
+        Vector2 Pos;
+        Texture2D image;
+        float blockWidth;
 
-        public Ground(Texture2D g,Rectangle r)
+        public Vector2 Pos1
         {
-            ground = g;
-            floor = r;
+            get
+            {
+                return Pos;
+            }
+
+            set
+            {
+                Pos = value;
+            }
+        }
+
+        public Ground(Vector2 pos, float blockWidth)
+        {
+            Pos = pos;
+            this.blockWidth = blockWidth;
+
+            Initialize();
         }
 
         public override void DataValueName()
@@ -25,7 +41,7 @@ namespace Blocks
 
         public override void Initialize()
         {
-            throw new NotImplementedException();
+            image = LoadedContent.ground;
         }
 
         public override void NextDataValue()
@@ -45,7 +61,7 @@ namespace Blocks
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)
         {
-            spritebach.Draw(ground, floor, new Rectangle(0, 0, 108, 108), Color.White);
+            spritebach.Draw(image, new Rectangle((int)Pos.X-(int)camera.X, (int)Pos.Y-(int)camera.Y, (int)blockWidth, (int)blockWidth), new Rectangle(0, 0, 108, 108), Color.White);
         }
         
     }

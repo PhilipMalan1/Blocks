@@ -35,13 +35,15 @@ namespace Blocks
         /// </summary>
         protected override void Initialize()
         {
+            IsMouseVisible = true;
+            Window.Title = "Blocks";
+            graphics.PreferredBackBufferWidth = 1728;
+            graphics.PreferredBackBufferHeight = 972;
+            graphics.IsFullScreen = false;
+            graphics.ApplyChanges();
+
             LoadedContent.LoadContent(Content);
             screen = new LevelEditorScreen(GraphicsDevice, this);
-
-            IsMouseVisible = false;
-            Window.Title = "Blocks";
-            graphics.IsFullScreen = true;
-            graphics.ApplyChanges();
 
             base.Initialize();
         }
