@@ -5,15 +5,19 @@ using System.Text;
 
 namespace Blocks
 {
+    [Serializable]
     class Level
     {
         private List<List<List<GameObject>>> levelObjects;
         private int rowNum;
+        [NonSerialized]
+        private PhysicsManager physicsMangager;
 
-        public Level(List<List<List<GameObject>>> levelObjects, int rowNum)
+        public Level(List<List<List<GameObject>>> levelObjects, int rowNum, PhysicsManager physicsMangager)
         {
             this.levelObjects = levelObjects;
             this.rowNum = rowNum;
+            this.physicsMangager = physicsMangager;
         }
 
         public int RowNum
@@ -24,7 +28,7 @@ namespace Blocks
             }
         }
 
-        internal List<List<List<GameObject>>> LevelObjects
+        public List<List<List<GameObject>>> LevelObjects
         {
             get
             {
@@ -34,6 +38,19 @@ namespace Blocks
             set
             {
                 levelObjects = value;
+            }
+        }
+
+        public PhysicsManager PhysicsMangager
+        {
+            get
+            {
+                return physicsMangager;
+            }
+
+            set
+            {
+                physicsMangager = value;
             }
         }
 

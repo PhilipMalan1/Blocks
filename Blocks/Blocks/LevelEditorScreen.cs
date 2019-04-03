@@ -11,7 +11,6 @@ namespace Blocks
     class LevelEditorScreen : Screen
     {
         private Level level;
-        PhysicsManager physicsManager;
         Vector2 camera;
         float blockWidth;
             
@@ -19,16 +18,14 @@ namespace Blocks
         {
             blockWidth = graphicsDevice.Viewport.Height / 10;
 
-            physicsManager = new PhysicsManager();
-
             List<List<List<GameObject>>> levelGrid = new List<List<List<GameObject>>>();
 
-            level = new Level(levelGrid, 0);
+            level = new Level(levelGrid, 0, new PhysicsManager());
 
             camera = new Vector2(0, -graphicsDevice.Viewport.Height);
 
             //TODO test
-            level.AddGameObject(new Ground(physicsManager, blockWidth, new Vector2(0, -blockWidth)), 0, 0);
+            level.AddGameObject(new Ground(level, blockWidth, new Vector2(0, -blockWidth)), 0, 0);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

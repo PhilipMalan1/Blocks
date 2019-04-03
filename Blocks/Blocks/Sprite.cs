@@ -9,20 +9,13 @@ namespace Blocks
 {
     abstract class Sprite
     {
-        Vector2 coordinates;
         Boolean isLoaded;
 
-        public Vector2 Coordinates
+        public abstract Vector2 Pos
         {
-            get
-            {
-                return coordinates;
-            }
+            get;
 
-            set
-            {
-                coordinates = value;
-            }
+            set;
         }
 
         public bool IsLoaded
