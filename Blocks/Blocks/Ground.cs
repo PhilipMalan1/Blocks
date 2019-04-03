@@ -9,54 +9,66 @@ namespace Blocks
 {
     class Ground : GameObject
     {
-        Vector2 Pos;
-        Texture2D image;
+        PhysicsManager physicsManager;
         float blockWidth;
 
-        public Vector2 Pos1
+        Body body;
+        Texture2D image;
+        Vector2 spawnPos;
+
+        public Vector2 Pos
         {
             get
             {
-                return Pos;
+                return body.Pos;
             }
 
             set
             {
-                Pos = value;
+                body.Pos = value;
             }
         }
 
-        public Ground(Vector2 pos, float blockWidth)
+        public Ground(PhysicsManager physicsManager, float blockWidth, Vector2 pos)
         {
-            Pos = pos;
+            this.physicsManager = physicsManager;
             this.blockWidth = blockWidth;
+            spawnPos = pos;
 
             Initialize();
         }
 
         public override void DataValueName()
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void Initialize()
         {
             image = LoadedContent.ground;
+            body = new Body(physicsManager, true, 1, 0, 0);
+            body.Pos = spawnPos;
+            body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(), new Vector2(blockWidth, blockWidth), collisionData => true));
         }
 
         public override void NextDataValue()
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void PreviousDataValue()
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void Update(GameTime gameTime)
         {
             
+        }
+
+        public override void DrawIcon(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect)
+        {
+            spriteBatch.Draw(image, rect, new Rectangle(0, 0, 108, 108), Color.White);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)

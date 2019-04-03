@@ -9,34 +9,13 @@ namespace Blocks
 {
     abstract class GameObject : Sprite
     {
-        private Texture2D current;
-        private int dataValue;
-        public Texture2D Current
-        {
-            get
-            {
-                return current;
-            }
-            
-        }
-
-        public int DataValue
-        {
-            get
-            {
-                return dataValue;
-            }
-
-            set
-            {
-                dataValue = value;
-            }
-        }
+        protected int dataValue;
 
         public abstract void NextDataValue();
         public abstract void PreviousDataValue();
         public abstract void DataValueName();
         public abstract void Initialize();
+        abstract public void DrawIcon(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect);
 
         abstract public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera);
 
