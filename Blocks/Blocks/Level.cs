@@ -13,11 +13,17 @@ namespace Blocks
         [NonSerialized]
         private PhysicsManager physicsMangager;
 
-        public Level(List<List<List<GameObject>>> levelObjects, int rowNum, PhysicsManager physicsMangager)
+        public Level(List<List<List<GameObject>>> levelObjects, int rowNum)
         {
             this.levelObjects = levelObjects;
             this.rowNum = rowNum;
-            this.physicsMangager = physicsMangager;
+
+            Initialize();
+        }
+
+        public void Initialize()
+        {
+            physicsMangager = new PhysicsManager();
         }
 
         public int RowNum
@@ -54,6 +60,15 @@ namespace Blocks
             }
         }
 
+        public bool CheckForObject(int x, int y)
+        {
+            if(x<levelObjects.Count() && y<levelObjects[x].Count())
+            {
+                return levelObjects[x][y].Count() > 0;
+            }
+            return false;
+        }
+
         public void AddGameObject(GameObject gameObject, int x, int y)
         {
             //add columns
@@ -77,10 +92,10 @@ namespace Blocks
                 //remove object
                 levelObjects[x][y].RemoveAt(levelObjects[x][y].Count() - 1);
                 //remove rows
-                while (levelObjects[x][levelObjects[x].Count() - 1].Count() <= 0)
+                while (levelObjects[x].Count()>0 && levelObjects[x][levelObjects[x].Count() - 1].Count() <= 0)
                     levelObjects[x].Remove(levelObjects[x][levelObjects[x].Count() - 1]);
                 //remove columns
-                while (levelObjects[levelObjects.Count() - 1].Count() <= 0)
+                while (levelObjects.Count()>0 && levelObjects[levelObjects.Count() - 1].Count() <= 0)
                     levelObjects.Remove(levelObjects[levelObjects.Count() - 1]);
             }
         }

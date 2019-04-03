@@ -66,7 +66,6 @@ namespace Blocks
         public abstract void PreviousDataValue();
         public abstract void DataValueName();
         public abstract void Initialize(Level level, float blockWidth);
-        abstract public void DrawIcon(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect);
 
         abstract public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera);
 
