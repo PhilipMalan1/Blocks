@@ -57,10 +57,6 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Body.cs" />
-    <Compile Include="CircleCollider.cs" />
-    <Compile Include="Collider.cs" />
-    <Compile Include="CollisionData.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Ground.cs" />
@@ -71,11 +67,10 @@
     <Compile Include="physics engine\Collider.cs" />
     <Compile Include="physics engine\CollisionData.cs" />
     <Compile Include="physics engine\PhysicsManager.cs" />
-    <Compile Include="PhysicsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="RectangleCollider.cs" />
+    <Compile Include="physics engine\RectangleCollider.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="Sprite.cs" />
   </ItemGroup>
