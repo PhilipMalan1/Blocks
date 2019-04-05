@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Blocks
 {
@@ -16,6 +19,7 @@ namespace Blocks
         float blockWidth;
         KeyboardState key, keyi;
         MouseState mouse, mousei;
+        string filePath = @"Content/Levels/Level 1.dat";
 
         GameObjects current;
         int objectRow, objectsPerRow;
@@ -29,13 +33,15 @@ namespace Blocks
 
             List<List<List<GameObject>>> levelGrid = new List<List<List<GameObject>>>();
 
-            level = new Level(levelGrid, 0);
+            level = new Level(levelGrid, 0, blockWidth);
 
             camera = new Vector2(0, -graphicsDevice.Viewport.Height);
 
             current = 0;
             objectRow = 0;
             objectsPerRow = graphicsDevice.Viewport.Width / (int)blockWidth;
+
+            Load();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -109,6 +115,10 @@ namespace Blocks
             if (key.IsKeyDown(Keys.S)) camera.Y += cameraSpeed;
             if (camera.X < 0) camera.X = 0;
             if (camera.Y > -graphicsDevice.Viewport.Height) camera.Y = -graphicsDevice.Viewport.Height;
+
+            //save
+            if (key.IsKeyDown(Keys.Escape) || (key.IsKeyDown(Keys.S) && keyi.IsKeyUp(Keys.S)))
+                Save();
         }
 
         public void AddTile(GameObjects gameObject, int x, int y)
@@ -135,6 +145,23 @@ namespace Blocks
                     Player.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
             }
+        }
+
+        public void Save()
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+            formatter.Serialize(stream, level);
+            Console.WriteLine("Saved.");
+        }
+
+        public void Load()
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            level = (Level)formatter.Deserialize(stream);
+            stream.Close();
+            level.Initialize(blockWidth);
         }
     }
 

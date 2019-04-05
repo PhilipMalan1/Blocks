@@ -7,9 +7,11 @@ using System.Text;
 
 namespace Blocks
 {
+    [Serializable]
     abstract class Sprite
     {
-        Boolean isLoaded;
+        [NonSerialized]
+        bool isLoaded;
 
         public abstract Vector2 Pos
         {

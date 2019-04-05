@@ -13,17 +13,28 @@ namespace Blocks
         [NonSerialized]
         private PhysicsManager physicsMangager;
 
-        public Level(List<List<List<GameObject>>> levelObjects, int rowNum)
+        public Level(List<List<List<GameObject>>> levelObjects, int rowNum, float blockWidth)
         {
             this.levelObjects = levelObjects;
             this.rowNum = rowNum;
 
-            Initialize();
+            Initialize(blockWidth);
         }
 
-        public void Initialize()
+        public void Initialize(float blockWidth)
         {
             physicsMangager = new PhysicsManager();
+
+            foreach (List<List<GameObject>> column in LevelObjects)
+            {
+                foreach (List<GameObject> tile in column)
+                {
+                    foreach (GameObject gameObject in tile)
+                    {
+                        gameObject.Initialize(this, blockWidth);
+                    }
+                }
+            }
         }
 
         public int RowNum
