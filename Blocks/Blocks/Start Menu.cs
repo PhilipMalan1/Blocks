@@ -11,9 +11,10 @@ namespace Blocks
     {
         Texture2D menuBackText;
         Rectangle menuBackRec;
-        public Start_Menu(GraphicsDevice graphicsDevice, Game1 game1) : base(graphicsDevice, game1)
-        {
 
+        public Start_Menu(Texture2D t, GraphicsDevice graphicsDevice, Game1 game1) : base(graphicsDevice, game1)
+        {
+            menuBackText = t;
             menuBackRec = new Rectangle(0, 0, graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
         }
 
@@ -25,6 +26,13 @@ namespace Blocks
         public override void Update(GameTime gameTime)
         {
             throw new NotImplementedException();
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin();
+            spriteBatch.Draw(menuBackText,menuBackRec, Color.White);
+            spriteBatch.End();
         }
     }
 }
