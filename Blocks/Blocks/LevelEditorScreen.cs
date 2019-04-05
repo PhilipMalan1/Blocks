@@ -19,13 +19,15 @@ namespace Blocks
         float blockWidth;
         KeyboardState key, keyi;
         MouseState mouse, mousei;
-        string filePath = @"Content/Levels/Level 1.dat";
+        string levelDir;
 
         GameObjects current;
         int objectRow, objectsPerRow;
             
-        public LevelEditorScreen(GraphicsDevice graphicsDevice, Game1 game1) : base(graphicsDevice, game1)
+        public LevelEditorScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir) : base(graphicsDevice, game1)
         {
+            this.levelDir = levelDir;
+
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
 
@@ -150,7 +152,7 @@ namespace Blocks
         public void Save()
         {
             IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+            Stream stream = new FileStream(levelDir, FileMode.Create, FileAccess.Write, FileShare.None);
             formatter.Serialize(stream, level);
             Console.WriteLine("Saved.");
         }
@@ -158,7 +160,7 @@ namespace Blocks
         public void Load()
         {
             IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            Stream stream = new FileStream(levelDir, FileMode.Open, FileAccess.Read, FileShare.Read);
             level = (Level)formatter.Deserialize(stream);
             stream.Close();
             level.Initialize(blockWidth);
