@@ -16,6 +16,9 @@ namespace Blocks
         float blockWidth;
         KeyboardState key, keyi;
         MouseState mouse, mousei;
+
+        GameObjects current;
+        int objectRow, objectsPerRow;
             
         public LevelEditorScreen(GraphicsDevice graphicsDevice, Game1 game1) : base(graphicsDevice, game1)
         {
@@ -29,6 +32,10 @@ namespace Blocks
             level = new Level(levelGrid, 0);
 
             camera = new Vector2(0, -graphicsDevice.Viewport.Height);
+
+            current = 0;
+            objectRow = 0;
+            objectsPerRow = graphicsDevice.Viewport.Width / (int)blockWidth;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -47,12 +54,12 @@ namespace Blocks
                 }
             }
 
-            //draw tiles
+            //draw GameObject selecter
             Array GameObjectList=Enum.GetValues(typeof(GameObjects));
             for(int x=0; x<graphicsDevice.Viewport.Width/(int)blockWidth; x++)
             {
                 if (x < GameObjectList.GetLength(0))
-                    DrawIcon((GameObjects)GameObjectList.GetValue(0), gameTime, spriteBatch, x * (int)blockWidth, 0);
+                    DrawIcon((GameObjects)GameObjectList.GetValue(x), gameTime, spriteBatch, x * (int)blockWidth, 0);
             }
 
             spriteBatch.End();
@@ -70,11 +77,22 @@ namespace Blocks
             int y = (int)-((int)(camera.Y + mouse.Y) / blockWidth) + 1;
             if (y < 0) y = 0;
 
-            //draw blocks
+            //left click
             if (mouse.LeftButton == ButtonState.Pressed)
             {
-                if (!level.CheckForObject(x, y))
-                    AddTile(GameObjects.Ground, x, y);
+                //pick block
+                int blockX = mouse.X / (int)blockWidth;
+                int selectedBlock = blockX + (objectRow * objectsPerRow);
+                if (mouse.Y < blockWidth && blockX < objectsPerRow && selectedBlock < Enum.GetNames(typeof(GameObjects)).Count())
+                {
+                    if (mousei.LeftButton == ButtonState.Released)
+                    {
+                        current = (GameObjects)selectedBlock;
+                    }
+                }
+                //draw blocks
+                else if (!level.CheckForObject(x, y))
+                    AddTile(current, x, y);
             }
 
             //delet blocks
@@ -85,10 +103,10 @@ namespace Blocks
 
             //move camera
             float cameraSpeed = blockWidth;
-            if (key.IsKeyDown(Keys.Right)) camera.X += cameraSpeed;
-            if (key.IsKeyDown(Keys.Left)) camera.X -= cameraSpeed;
-            if (key.IsKeyDown(Keys.Up)) camera.Y -= cameraSpeed;
-            if (key.IsKeyDown(Keys.Down)) camera.Y += cameraSpeed;
+            if (key.IsKeyDown(Keys.D)) camera.X += cameraSpeed;
+            if (key.IsKeyDown(Keys.A)) camera.X -= cameraSpeed;
+            if (key.IsKeyDown(Keys.W)) camera.Y -= cameraSpeed;
+            if (key.IsKeyDown(Keys.S)) camera.Y += cameraSpeed;
             if (camera.X < 0) camera.X = 0;
             if (camera.Y > -graphicsDevice.Viewport.Height) camera.Y = -graphicsDevice.Viewport.Height;
         }
@@ -100,6 +118,9 @@ namespace Blocks
                 case GameObjects.Ground:
                     level.AddGameObject(new Ground(level, blockWidth, new Vector2(blockWidth * x, -blockWidth * y)), x, y);
                     break;
+                case GameObjects.Player:
+                    level.AddGameObject(new Player(level, blockWidth, new Vector2(blockWidth * x, -blockWidth * y)), x, y);
+                    break;
             }
         }
 
@@ -110,12 +131,16 @@ namespace Blocks
                 case GameObjects.Ground:
                     Ground.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
+                case GameObjects.Player:
+                    Player.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
+                    break;
             }
         }
     }
 
     enum GameObjects
     {
-        Ground
+        Ground,
+        Player
     }
 }

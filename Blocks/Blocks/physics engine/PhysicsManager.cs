@@ -92,6 +92,7 @@ namespace Blocks
     enum CollisionGroup
     {
         None = 0,
-        Ground = 1
+        Ground = 1,
+        Player = 2
     }
 }
