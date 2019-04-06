@@ -27,9 +27,9 @@ namespace Blocks
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
             blockWidth = graphicsDevice.Viewport.Height / 10;
-            camera = new Vector2(0, -graphicsDevice.Viewport.Height);
 
             Load();
+            camera = level.CameraFocus.Pos + new Vector2(blockWidth / 2, blockWidth / 2) - new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 2);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

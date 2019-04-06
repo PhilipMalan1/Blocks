@@ -37,7 +37,7 @@ namespace Blocks
 
             level = new Level(levelGrid, 0, blockWidth);
 
-            camera = level.CameraFocus.Pos-new Vector2(graphicsDevice.Viewport.Width/2, graphicsDevice.Viewport.Height/2);
+            camera = new Vector2(0, -graphicsDevice.Viewport.Height);
 
             current = 0;
             objectRow = 0;
