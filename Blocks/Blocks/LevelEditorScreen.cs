@@ -128,10 +128,10 @@ namespace Blocks
             switch(gameObject)
             {
                 case GameObjects.Ground:
-                    level.AddGameObject(new Ground(level, blockWidth, new Vector2(blockWidth * x, -blockWidth * y)), x, y);
+                    level.AddGameObject(new Ground(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
                 case GameObjects.Player:
-                    level.AddGameObject(new Player(level, blockWidth, new Vector2(blockWidth * x, -blockWidth * y)), x, y);
+                    level.AddGameObject(new Player(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
             }
         }

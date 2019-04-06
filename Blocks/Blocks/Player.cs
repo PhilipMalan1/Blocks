@@ -59,7 +59,7 @@ namespace Blocks
             playerState = PlayerState.Standing;
 
             body = new Body(level.PhysicsMangager, false, 1, gravity, 1);
-            body.Pos = SpawnPos;
+            body.Pos = SpawnPos*blockWidth;
             body.AddCollider(new CircleCollider(body, CollisionGroup.Player, new Vector2(blockWidth / 2, blockWidth / 2), blockWidth/2, collisionData =>
             {
                 if (collisionData.CollisionAngle.Y > Math.Abs(collisionData.CollisionAngle.X))
