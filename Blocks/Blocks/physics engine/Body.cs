@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Blocks
 {
-    class Body
+    public class Body
     {
         bool hasInfiniteMass;
         float mass, gravity, restitution;

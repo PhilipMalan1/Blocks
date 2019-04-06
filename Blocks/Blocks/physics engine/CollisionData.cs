@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Blocks
 {
-    struct CollisionData
+    public struct CollisionData
     {
         Collider myCollider, otherCollider;
         bool didCollide;

@@ -43,7 +43,7 @@ namespace Blocks
             graphics.ApplyChanges();
 
             LoadedContent.LoadContent(Content);
-            screen = new LevelEditorScreen(GraphicsDevice, this, @"Content/Levels/Level 1.dat");
+            screen = new GameScreen(GraphicsDevice, this, @"Content/Levels/Level 1.dat");
 
             base.Initialize();
         }

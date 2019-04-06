@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="GameObject.cs" />
     <Compile Include="GameScreen.cs" />
+    <Compile Include="ICameraFocus.cs" />
+    <Compile Include="IInput.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Ground.cs" />
     <Compile Include="LevelEditorScreen.cs" />

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Blocks
 {
     [Serializable]
-    class Player : GameObject
+    public class Player : GameObject, IInput, ICameraFocus
     {
         [NonSerialized]
         Body body;
@@ -58,9 +59,9 @@ namespace Blocks
             Level = level;
             BlockWidth = blockWidth;
             image = LoadedContent.player;
-            body = new Body(level.PhysicsMangager, false, 1, 5, 1);
+            body = new Body(level.PhysicsMangager, false, 1, 1000, 1);
             body.Pos = SpawnPos;
-            body.AddCollider(new CircleCollider(body, CollisionGroup.Player, new Vector2(0), blockWidth, collisionData => true));
+            body.AddCollider(new CircleCollider(body, CollisionGroup.Player, new Vector2(blockWidth/2, blockWidth/2), blockWidth, collisionData => true));
             facingRight = true;
         }
 
@@ -75,6 +76,11 @@ namespace Blocks
         }
 
         public override void Update(GameTime gameTime)
+        {
+            
+        }
+
+        public void UpdateInput(GameTime gameTime, KeyboardState key, KeyboardState keyi, MouseState mouse, MouseState mousei)
         {
             
         }

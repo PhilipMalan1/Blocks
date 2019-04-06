@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Blocks
 {
-    class PhysicsManager
+    public class PhysicsManager
     {
         List<Body> bodies;
 
@@ -89,7 +89,7 @@ namespace Blocks
     }
 
     [Flags]
-    enum CollisionGroup
+    public enum CollisionGroup
     {
         None = 0,
         Ground = 1,

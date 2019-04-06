@@ -8,14 +8,14 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Blocks
 {
     [Serializable]
-    abstract class GameObject : Sprite
+    public abstract class GameObject : Sprite
     {
         [NonSerialized]
         private Level level;
         private float blockWidth;
         private Vector2 spawnPos;
 
-        protected GameObject(Level level, float blockWidth, Vector2 spawnPos)
+        public GameObject(Level level, float blockWidth, Vector2 spawnPos)
         {
             this.spawnPos = spawnPos;
             Initialize(level, blockWidth);

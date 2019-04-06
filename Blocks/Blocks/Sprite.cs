@@ -8,7 +8,7 @@ using System.Text;
 namespace Blocks
 {
     [Serializable]
-    abstract class Sprite
+    public abstract class Sprite
     {
         [NonSerialized]
         bool isLoaded;

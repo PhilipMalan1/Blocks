@@ -6,12 +6,16 @@ using System.Text;
 namespace Blocks
 {
     [Serializable]
-    class Level
+    public class Level
     {
         private List<List<List<GameObject>>> levelObjects;
         private int rowNum;
         [NonSerialized]
         private PhysicsManager physicsMangager;
+        [NonSerialized]
+        private List<IInput> inputObjects;
+        [NonSerialized]
+        private GameObject cameraFocus;
 
         public Level(List<List<List<GameObject>>> levelObjects, int rowNum, float blockWidth)
         {
@@ -25,6 +29,7 @@ namespace Blocks
         {
             physicsMangager = new PhysicsManager();
 
+            inputObjects = new List<IInput>();
             foreach (List<List<GameObject>> column in LevelObjects)
             {
                 foreach (List<GameObject> tile in column)
@@ -32,6 +37,10 @@ namespace Blocks
                     foreach (GameObject gameObject in tile)
                     {
                         gameObject.Initialize(this, blockWidth);
+                        if (gameObject is IInput)
+                            inputObjects.Add((IInput)gameObject);
+                        if (gameObject is ICameraFocus)
+                            cameraFocus = gameObject;
                     }
                 }
             }
@@ -68,6 +77,32 @@ namespace Blocks
             set
             {
                 physicsMangager = value;
+            }
+        }
+
+        internal List<IInput> InputObjects
+        {
+            get
+            {
+                return inputObjects;
+            }
+
+            set
+            {
+                inputObjects = value;
+            }
+        }
+
+        internal GameObject CameraFocus
+        {
+            get
+            {
+                return cameraFocus;
+            }
+
+            set
+            {
+                cameraFocus = value;
             }
         }
 

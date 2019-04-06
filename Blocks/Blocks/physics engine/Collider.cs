@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Blocks
 {
-    abstract class Collider
+    public abstract class Collider
     {
         Body body;
         Func<CollisionData, bool> onCollision;

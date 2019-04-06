@@ -154,6 +154,7 @@ namespace Blocks
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(levelDir, FileMode.Create, FileAccess.Write, FileShare.None);
             formatter.Serialize(stream, level);
+            stream.Close();
             Console.WriteLine("Saved.");
         }
 
