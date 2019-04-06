@@ -13,7 +13,7 @@ namespace Blocks
 
         public static void LoadContent(ContentManager content)
         {
-            ground = content.Load<Texture2D>("Ground");
+            ground = content.Load<Texture2D>("Ground2");
             player = content.Load<Texture2D>("Player");
         }
     }
