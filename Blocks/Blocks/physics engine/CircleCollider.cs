@@ -62,7 +62,7 @@ namespace Blocks
                 CircleCollider circleCollider = (CircleCollider)collider;
 
                 //check for collision
-                Vector2 r = circleCollider.Body.Pos+circleCollider.Pos-(Body.Pos+Pos);
+                Vector2 r = circleCollider.Body.Pos + circleCollider.Pos - (Body.Pos + Pos);
                 collisionDepth = (radius + circleCollider.Radius) - r.Length();
                 if (collisionDepth > 0)
                 {
@@ -73,7 +73,7 @@ namespace Blocks
                     collisionAngle = r;
                 }
             }
-            else if(collider is RectangleCollider)
+            else if (collider is RectangleCollider)
             {
                 RectangleCollider rectangleCollider = (RectangleCollider)collider;
 
@@ -85,7 +85,7 @@ namespace Blocks
                 {
                     Vector2 r = otherPos - myPos;
                     collisionDepth = radius - r.Length();
-                    if(collisionDepth>0)
+                    if (collisionDepth > 0)
                     {
                         didCollide = true;
                         r.Normalize();
@@ -95,7 +95,7 @@ namespace Blocks
                 //top right region
                 else if (myPos.X > otherPos.X + rectangleCollider.Dimensions.X && myPos.Y < otherPos.Y)
                 {
-                    Vector2 r = otherPos+new Vector2(rectangleCollider.Dimensions.X, 0) - myPos;
+                    Vector2 r = otherPos + new Vector2(rectangleCollider.Dimensions.X, 0) - myPos;
                     collisionDepth = radius - r.Length();
                     if (collisionDepth > 0)
                     {
@@ -107,7 +107,7 @@ namespace Blocks
                 //bottom right region
                 else if (myPos.X > otherPos.X + rectangleCollider.Dimensions.X && myPos.Y > otherPos.Y + rectangleCollider.Dimensions.Y)
                 {
-                    Vector2 r = otherPos+rectangleCollider.Dimensions - myPos;
+                    Vector2 r = otherPos + rectangleCollider.Dimensions - myPos;
                     collisionDepth = radius - r.Length();
                     if (collisionDepth > 0)
                     {
@@ -119,7 +119,7 @@ namespace Blocks
                 //bottom left region
                 else if (myPos.X < otherPos.X && myPos.Y > otherPos.Y + rectangleCollider.Dimensions.Y)
                 {
-                    Vector2 r = otherPos+new Vector2(0, rectangleCollider.Dimensions.Y) - myPos;
+                    Vector2 r = otherPos + new Vector2(0, rectangleCollider.Dimensions.Y) - myPos;
                     collisionDepth = radius - r.Length();
                     if (collisionDepth > 0)
                     {
@@ -131,7 +131,7 @@ namespace Blocks
                 //if it isn't in any of those regions, it's basically a square
                 else
                 {
-                    Collider rectangularHull = new RectangleCollider(Body, CollisionGroup, new Vector2(Pos.X - Radius, pos.X - Radius), new Vector2(radius * 2, radius * 2), OnCollision);
+                    Collider rectangularHull = new RectangleCollider(Body, CollisionGroup, new Vector2(Pos.X - Radius, pos.Y - Radius), new Vector2(radius*2, radius*2), OnCollision);
                     CollisionData collisionData = rectangularHull.CheckCollision(rectangleCollider);
                     didCollide = collisionData.DidCollide;
                     collisionDepth = collisionData.CollisionDepth;

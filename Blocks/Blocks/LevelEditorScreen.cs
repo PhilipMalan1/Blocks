@@ -119,7 +119,7 @@ namespace Blocks
             if (camera.Y > -graphicsDevice.Viewport.Height) camera.Y = -graphicsDevice.Viewport.Height;
 
             //save
-            if (key.IsKeyDown(Keys.Escape) || (key.IsKeyDown(Keys.S) && keyi.IsKeyUp(Keys.S)))
+            if (key.IsKeyDown(Keys.Escape) || (key.IsKeyDown(Keys.Q) && keyi.IsKeyUp(Keys.Q)))
                 Save();
         }
 
