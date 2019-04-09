@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameObject.cs" />
+    <Compile Include="GameObjects\Block.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="ICameraFocus.cs" />
     <Compile Include="IInput.cs" />
