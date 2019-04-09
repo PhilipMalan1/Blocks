@@ -12,7 +12,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Blocks
 {
-    class LevelEditorScreen : Screen
+    public class LevelEditorScreen : Screen
     {
         private Level level;
         Vector2 camera;
@@ -23,7 +23,20 @@ namespace Blocks
 
         GameObjects current;
         int objectRow, objectsPerRow;
-            
+
+        public float BlockWidth
+        {
+            get
+            {
+                return blockWidth;
+            }
+
+            set
+            {
+                blockWidth = value;
+            }
+        }
+
         public LevelEditorScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir) : base(graphicsDevice, game1)
         {
             this.levelDir = levelDir;
@@ -43,7 +56,7 @@ namespace Blocks
             objectRow = 0;
             objectsPerRow = graphicsDevice.Viewport.Width / (int)blockWidth;
 
-            Load();
+            //Load();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -121,6 +134,10 @@ namespace Blocks
             //save
             if (key.IsKeyDown(Keys.Escape) || (key.IsKeyDown(Keys.Q) && keyi.IsKeyUp(Keys.Q)))
                 Save();
+
+            //test level
+            if (key.IsKeyDown(Keys.T) && keyi.IsKeyUp(Keys.T))
+                game1.SetScreen(new Screens.LevelTestScreen(graphicsDevice, game1, this, level));
         }
 
         public void AddTile(GameObjects gameObject, int x, int y)
@@ -168,7 +185,7 @@ namespace Blocks
         }
     }
 
-    enum GameObjects
+    public enum GameObjects
     {
         Ground,
         Player

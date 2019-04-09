@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Blocks
 {
-    abstract class Screen
+    public abstract class Screen
     {
         protected GraphicsDevice graphicsDevice;
         protected Game1 game1;

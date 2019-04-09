@@ -32,6 +32,18 @@ namespace Blocks
             camera = level.CameraFocus.Pos + new Vector2(blockWidth / 2, blockWidth / 2) - new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 2);
         }
 
+        public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, Level level) : base(graphicsDevice, game1)
+        {
+            this.level = level;
+
+            key = Keyboard.GetState();
+            mouse = Mouse.GetState();
+            blockWidth = graphicsDevice.Viewport.Height / 10;
+
+            level.Initialize(blockWidth);
+            camera = level.CameraFocus.Pos + new Vector2(blockWidth / 2, blockWidth / 2) - new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 2);
+        }
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();

@@ -43,7 +43,7 @@ namespace Blocks
             graphics.ApplyChanges();
 
             LoadedContent.LoadContent(Content);
-            screen = new GameScreen(GraphicsDevice, this, @"Content/Levels/test.dat");
+            screen = new LevelEditorScreen(GraphicsDevice, this, @"Content/Levels/test.dat");
 
             base.Initialize();
         }
@@ -94,6 +94,11 @@ namespace Blocks
             screen.Draw(gameTime, spriteBatch);
 
             base.Draw(gameTime);
+        }
+
+        public void SetScreen(Screen screen)
+        {
+            this.screen = screen;
         }
     }
 }
