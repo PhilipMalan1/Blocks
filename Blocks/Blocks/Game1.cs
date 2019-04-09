@@ -20,7 +20,7 @@ namespace Blocks
         SpriteBatch spriteBatch;
 
         Screen screen;
-
+        Start_Menu ns;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -35,13 +35,14 @@ namespace Blocks
         /// </summary>
         protected override void Initialize()
         {
+            l = new LoadedContent();
             IsMouseVisible = true;
             Window.Title = "Blocks";
             graphics.PreferredBackBufferWidth = 1728;
             graphics.PreferredBackBufferHeight = 972;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
-
+            ns = new Start_Menu(GraphicsDevice,this);
             LoadedContent.LoadContent(Content);
             screen = new LevelEditorScreen(GraphicsDevice, this, @"Content/Levels/test.dat");
 
@@ -92,7 +93,7 @@ namespace Blocks
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             screen.Draw(gameTime, spriteBatch);
-
+            ns.Draw(gameTime,spriteBatch);
             base.Draw(gameTime);
         }
 
