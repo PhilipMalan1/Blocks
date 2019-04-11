@@ -13,7 +13,7 @@ namespace Blocks
         List<Collider> colliders;
         PhysicsManager physicsManager;
 
-        Vector2 pos, vel;//TODO get and set the position from the game object once you start using game objects.
+        Vector2 pos, vel;
 
         public bool HasInfiniteMass
         {

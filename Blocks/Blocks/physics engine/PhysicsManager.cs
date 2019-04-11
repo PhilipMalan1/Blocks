@@ -62,8 +62,47 @@ namespace Blocks
                                         shouldResolve = true;
 
                                     if (shouldResolve)
+                                    {
                                         Collider.ResolveCollision(collisionData);
+                                        CheckForMoreCollisions(i);
+                                        CheckForMoreCollisions(j);
+                                    }
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void CheckForMoreCollisions(int i)
+        {
+            for (int j = bodies.Count()-1; j >= 0; j--)
+            {
+                if (j == i) continue;
+                foreach (Collider collider1 in bodies[i].Colliders)
+                {
+                    foreach (Collider collider2 in bodies[j].Colliders)
+                    {
+                        if (CanCollide(collider1, collider2))
+                        {
+                            CollisionData collisionData = collider1.CheckCollision(collider2);
+                            if (collisionData.DidCollide)
+                            {
+                                bool shouldResolve = false;
+                                if (collider1.OnCollision.Invoke(collisionData))
+                                    shouldResolve = true;
+
+                                CollisionData collisionData2 = collisionData;
+                                collisionData2.CollisionAngle = -collisionData.CollisionAngle;
+                                collisionData2.MyCollider = collisionData.OtherCollider;
+                                collisionData2.OtherCollider = collisionData.MyCollider;
+
+                                if (collider2.OnCollision.Invoke(collisionData2))
+                                    shouldResolve = true;
+
+                                if (shouldResolve)
+                                    Collider.ResolveCollision(collisionData);
                             }
                         }
                     }

@@ -21,7 +21,7 @@ namespace Blocks
         MouseState mouse, mousei;
         string levelDir;
 
-        GameObjects current;
+        GameObjectsEnum current;
         int objectRow, objectsPerRow;
 
         public float BlockWidth
@@ -76,11 +76,11 @@ namespace Blocks
             }
 
             //draw GameObject selecter
-            Array GameObjectList=Enum.GetValues(typeof(GameObjects));
+            Array GameObjectList=Enum.GetValues(typeof(GameObjectsEnum));
             for(int x=0; x<graphicsDevice.Viewport.Width/(int)blockWidth; x++)
             {
                 if (x < GameObjectList.GetLength(0))
-                    DrawIcon((GameObjects)GameObjectList.GetValue(x), gameTime, spriteBatch, x * (int)blockWidth, 0);
+                    DrawIcon((GameObjectsEnum)GameObjectList.GetValue(x), gameTime, spriteBatch, x * (int)blockWidth, 0);
             }
 
             spriteBatch.End();
@@ -104,11 +104,11 @@ namespace Blocks
                 //pick block
                 int blockX = mouse.X / (int)blockWidth;
                 int selectedBlock = blockX + (objectRow * objectsPerRow);
-                if (mouse.Y < blockWidth && blockX < objectsPerRow && selectedBlock < Enum.GetNames(typeof(GameObjects)).Count())
+                if (mouse.Y < blockWidth && blockX < objectsPerRow && selectedBlock < Enum.GetNames(typeof(GameObjectsEnum)).Count())
                 {
                     if (mousei.LeftButton == ButtonState.Released)
                     {
-                        current = (GameObjects)selectedBlock;
+                        current = (GameObjectsEnum)selectedBlock;
                     }
                 }
                 //draw blocks
@@ -140,28 +140,34 @@ namespace Blocks
                 game1.SetScreen(new Screens.LevelTestScreen(graphicsDevice, game1, this, level));
         }
 
-        public void AddTile(GameObjects gameObject, int x, int y)
+        public void AddTile(GameObjectsEnum gameObject, int x, int y)
         {
             switch(gameObject)
             {
-                case GameObjects.Ground:
+                case GameObjectsEnum.Ground:
                     level.AddGameObject(new Ground(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
-                case GameObjects.Player:
+                case GameObjectsEnum.Player:
                     level.AddGameObject(new Player(level, blockWidth, new Vector2(x, -y)), x, y);
+                    break;
+                case GameObjectsEnum.Block:
+                    level.AddGameObject(new Block(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
             }
         }
 
-        public void DrawIcon(GameObjects gameObject, GameTime gameTime, SpriteBatch spriteBatch, int x, int y)
+        public void DrawIcon(GameObjectsEnum gameObject, GameTime gameTime, SpriteBatch spriteBatch, int x, int y)
         {
             switch(gameObject)
             {
-                case GameObjects.Ground:
+                case GameObjectsEnum.Ground:
                     Ground.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
-                case GameObjects.Player:
+                case GameObjectsEnum.Player:
                     Player.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
+                    break;
+                case GameObjectsEnum.Block:
+                    Block.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
             }
         }
@@ -183,11 +189,5 @@ namespace Blocks
             stream.Close();
             level.Initialize(blockWidth);
         }
-    }
-
-    public enum GameObjects
-    {
-        Ground,
-        Player
     }
 }

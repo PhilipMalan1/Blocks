@@ -5,12 +5,11 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Blocks.GameObjects
+namespace Blocks
 {
-    class Block : GameObject
+    public class Block : GameObject
     {
         private Level level;
-        private float blockWidth;
         Texture2D image;
         Body body;
 
@@ -22,12 +21,12 @@ namespace Blocks.GameObjects
         {
             get
             {
-                
+                return body.Pos;
             }
 
             set
             {
-                
+                body.Pos = value;
             }
         }
 
@@ -36,20 +35,25 @@ namespace Blocks.GameObjects
             
         }
 
+        public static void DrawIcon(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect)
+        {
+            spriteBatch.Draw(LoadedContent.block, rect, new Rectangle(0, 0, 108, 108), Color.White);
+        }
+
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)
         {
-            spritebach.Draw()
+            spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X), (int)(Pos.Y - camera.Y), (int)BlockWidth, (int)BlockWidth), new Rectangle(0, 0, 108, 108), Color.White);
         }
 
         public override void Initialize(Level level, float blockWidth)
         {
             this.level = level;
-            this.blockWidth = blockWidth;
-            image=LoadedContent.
+            BlockWidth = blockWidth;
+            image = LoadedContent.block;
 
             body = new Body(level.PhysicsMangager, false, 1, blockWidth * 50, 1);
-            body.Pos = SpawnPos * blockWidth;
-            body.Colliders.Add(new RectangleCollider(body, CollisionGroup.Player, new Vector2(), new Vector2(BlockWidth, BlockWidth), collisionData => true));
+            body.Pos = SpawnPos * (int)blockWidth;
+            body.Colliders.Add(new RectangleCollider(body, CollisionGroup.Player, new Vector2(), new Vector2(blockWidth, blockWidth), collisionData => true));
         }
 
         public override void NextDataValue()
