@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Blocks
 {
@@ -15,30 +16,34 @@ namespace Blocks
         Rectangle playRec;
         Rectangle exitRec;
         SpriteFont font;
-        LoadedContent l;
         public Start_Menu(GraphicsDevice graphicsDevice, Game1 game1) : base(graphicsDevice, game1)
         {
-            l = new LoadedContent();
             menuBackRec = new Rectangle(0, 0, graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
             menuBackText = LoadedContent.mainMenuBackground;
             buttonTex = LoadedContent.mainMenuButton;
-            playRec = new Rectangle(0,200,200,50);
-            exitRec = new Rectangle(0, 300, 200, 50);
+            playRec = new Rectangle(0,200,400,200);
+            exitRec = new Rectangle(0, 410, 400, 200);
             font = LoadedContent.mainMenuFont;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
             spriteBatch.Draw(menuBackText,menuBackRec,Color.White);
             spriteBatch.Draw(buttonTex, playRec, Color.White);
             spriteBatch.Draw(buttonTex, exitRec, Color.White);
-            spriteBatch.DrawString(font, "Play", new Vector2(playRec.X + 10,playRec.Y + 10), Color.Black);
-            spriteBatch.DrawString(font, "Exit", new Vector2(exitRec.X + 10,exitRec.Y + 10), Color.Black);
+            spriteBatch.DrawString(font, "Play", new Vector2(playRec.X + 8,playRec.Y + 5), Color.Black);
+            spriteBatch.DrawString(font, "Exit", new Vector2(exitRec.X + 8,exitRec.Y + 5), Color.Black);
+            spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            MouseState md = Mouse.GetState();
+            if (md.LeftButton == ButtonState.Pressed && md.X > exitRec.X && md.X < exitRec.X + exitRec.Width && md.Y > exitRec.Y && md.Y < exitRec.Y + exitRec.Height)
+                game1.Exit();
+            if (md.LeftButton == ButtonState.Pressed && md.X > playRec.X && md.X < playRec.X + playRec.Width && md.Y > playRec.Y && md.Y < playRec.Y + playRec.Height)
+                game1.SetScreen(new GameScreen(graphicsDevice,game1,@"Content/Levels/Level 1.dat"));
         }
     }
 }

@@ -176,13 +176,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Button.png">
-      <Name>Button</Name>
+    <Compile Include="start back round.png">
+      <Name>start back round</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="start back round.png">
-      <Name>start back round</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Button.png">
+      <Name>Button</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
