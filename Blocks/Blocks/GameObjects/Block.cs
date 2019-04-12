@@ -105,19 +105,32 @@ namespace Blocks
 
         public override void Initialize(Level level, float blockWidth)
         {
-            throwTimerTime = 15;
+            throwTimerTime = 30;
 
             this.level = level;
             BlockWidth = blockWidth;
             image = LoadedContent.block;
+            throwState = ThrowState.NotThrown;
 
             body = new Body(this, level.PhysicsMangager, false, 1, blockWidth * 25, 1);
             body.Pos = SpawnPos * (int)blockWidth;
             body.Colliders.Add(new RectangleCollider(body, CollisionGroup.Player, new Vector2(), new Vector2(blockWidth, blockWidth), collisionData =>
             {
-                if(Math.Abs(collisionData.CollisionAngle.X)>Math.Abs(collisionData.CollisionAngle.Y))
+                if(!IsHeld && Math.Abs(collisionData.CollisionAngle.X)>Math.Abs(collisionData.CollisionAngle.Y))
                 {
-                    //TODO manually bounce off wall
+                    if(collisionData.CollisionAngle.X>0)
+                    {
+                        Vel = new Vector2(-Math.Abs(Vel.X), Vel.Y);
+                    }
+                    else if (collisionData.CollisionAngle.X < 0)
+                    {
+                        Vel = new Vector2(Math.Abs(Vel.X), Vel.Y);
+                    }
+                    return false;
+                }
+                if((throwState==ThrowState.Thrown || throwState==ThrowState.ThrowTimerExpired) && /*Downward collision*/)
+                {
+                    //move to spawn point
                 }
 
                 return !IsHeld;
@@ -138,6 +151,13 @@ namespace Blocks
         {
             if (IsHeld)
                 body.Vel = new Vector2();
+
+            if(throwState==ThrowState.Thrown)
+            {
+                throwTimer++;
+                if (throwTimer >= throwTimerTime)
+                    throwState = ThrowState.ThrowTimerExpired;
+            }
         }
 
         public enum ThrowState

@@ -74,13 +74,14 @@ namespace Blocks
                 if(other is Block && !((Block)other).IsHeld)
                 {
                     //block jump
-                    if (((Block)other).ThrowState1==Block.ThrowState.ThrowTimerExpired)
+                    if (((Block)other).ThrowState1==Block.ThrowState.Thrown)
                     {
                         if(other.Pos.Y>Pos.Y)
                         {
                             other.Pos = new Vector2((Pos.X+other.Pos.X)/2, Pos.Y+blockWidth);
                             ((Block)other).Vel = new Vector2();
                             onGround = true;
+                            if (Vel.Y < 0) Vel = new Vector2(Vel.X, 0);
                             return false;
                         }
                     }

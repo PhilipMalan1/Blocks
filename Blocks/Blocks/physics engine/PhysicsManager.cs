@@ -58,7 +58,7 @@ namespace Blocks
                                     collisionData2.MyCollider = collisionData.OtherCollider;
                                     collisionData2.OtherCollider = collisionData.MyCollider;
 
-                                    if (!collider2.OnCollision.Invoke(collisionData))
+                                    if (!collider2.OnCollision.Invoke(collisionData2))
                                         shouldResolve = false;
 
                                     if (shouldResolve)
