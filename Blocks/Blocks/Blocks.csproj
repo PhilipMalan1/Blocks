@@ -80,6 +80,7 @@
     <Compile Include="Screen.cs" />
     <Compile Include="Screens\LevelTestScreen.cs" />
     <Compile Include="Sprite.cs" />
+    <Compile Include="Start Menu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
