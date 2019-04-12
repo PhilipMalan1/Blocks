@@ -21,9 +21,13 @@ namespace Blocks
             Initialize(level, blockWidth);
         }
 
-        protected int dataValue;
+        public abstract Vector2 Vel
+        {
+            get;
+            set;
+        }
 
-        protected Level Level
+        internal Level Level
         {
             get
             {
@@ -64,7 +68,7 @@ namespace Blocks
 
         public abstract void NextDataValue();
         public abstract void PreviousDataValue();
-        public abstract void DataValueName();
+        public abstract string DataValueName();
         public abstract void Initialize(Level level, float blockWidth);
 
         abstract public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera);

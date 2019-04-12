@@ -14,7 +14,6 @@ namespace Blocks
         public static Texture2D mainMenuBackground;
         public static Texture2D mainMenuButton;
         public static SpriteFont mainMenuFont;
-        public static Texture2D ground, player;
         public static void LoadContent(ContentManager content)
         {
             ground = content.Load<Texture2D>("Ground");

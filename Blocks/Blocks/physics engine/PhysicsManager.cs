@@ -49,17 +49,17 @@ namespace Blocks
                                 CollisionData collisionData = collider1.CheckCollision(collider2);
                                 if(collisionData.DidCollide)
                                 {
-                                    bool shouldResolve=false;
-                                    if (collider1.OnCollision.Invoke(collisionData))
-                                        shouldResolve = true;
+                                    bool shouldResolve=true;
+                                    if (!collider1.OnCollision.Invoke(collisionData))
+                                        shouldResolve = false;
 
                                     CollisionData collisionData2 = collisionData;
                                     collisionData2.CollisionAngle = -collisionData.CollisionAngle;
                                     collisionData2.MyCollider = collisionData.OtherCollider;
                                     collisionData2.OtherCollider = collisionData.MyCollider;
 
-                                    if (collider2.OnCollision.Invoke(collisionData2))
-                                        shouldResolve = true;
+                                    if (!collider2.OnCollision.Invoke(collisionData))
+                                        shouldResolve = false;
 
                                     if (shouldResolve)
                                     {
@@ -89,20 +89,22 @@ namespace Blocks
                             CollisionData collisionData = collider1.CheckCollision(collider2);
                             if (collisionData.DidCollide)
                             {
-                                bool shouldResolve = false;
-                                if (collider1.OnCollision.Invoke(collisionData))
-                                    shouldResolve = true;
+                                bool shouldResolve = true;
+                                if (!collider1.OnCollision.Invoke(collisionData))
+                                    shouldResolve = false;
 
                                 CollisionData collisionData2 = collisionData;
                                 collisionData2.CollisionAngle = -collisionData.CollisionAngle;
                                 collisionData2.MyCollider = collisionData.OtherCollider;
                                 collisionData2.OtherCollider = collisionData.MyCollider;
 
-                                if (collider2.OnCollision.Invoke(collisionData2))
-                                    shouldResolve = true;
+                                if (!collider2.OnCollision.Invoke(collisionData2))
+                                    shouldResolve = false;
 
                                 if (shouldResolve)
+                                {
                                     Collider.ResolveCollision(collisionData);
+                                }
                             }
                         }
                     }

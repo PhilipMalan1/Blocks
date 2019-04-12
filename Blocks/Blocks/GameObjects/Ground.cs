@@ -33,11 +33,22 @@ namespace Blocks
             }
         }
 
-        
-
-        public override void DataValueName()
+        public override Vector2 Vel
         {
-            
+            get
+            {
+                return body.Vel;
+            }
+
+            set
+            {
+                body.Vel = value;
+            }
+        }
+
+        public override string DataValueName()
+        {
+            return "Object: Ground DataValue: N/A";
         }
 
         public override void Initialize(Level level, float blockWidth)
@@ -45,7 +56,7 @@ namespace Blocks
             Level = level;
             BlockWidth = blockWidth;
             image = LoadedContent.ground;
-            body = new Body(level.PhysicsMangager, true, 1, 0, 0);
+            body = new Body(this, level.PhysicsMangager, true, 1, 0, 0);
             body.Pos = SpawnPos*(int)blockWidth;
             body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(), new Vector2(blockWidth, blockWidth), collisionData => true));
         }

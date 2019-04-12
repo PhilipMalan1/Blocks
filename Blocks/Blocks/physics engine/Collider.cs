@@ -81,7 +81,7 @@ namespace Blocks
 
             float v1xf, v2xf;
             //calculate restitution
-            float restitution = Math.Min(myCollider.Body.Restitution, otherCollider.body.Restitution);
+            float restitution = collisionData.Restitution;
 
             //find the velocity of both objects in the direction of the collision
             float v1xi = Vector2.Dot(myCollider.Body.Vel, collisionData.CollisionAngle);

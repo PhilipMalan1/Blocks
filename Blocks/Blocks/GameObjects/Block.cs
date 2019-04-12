@@ -7,11 +7,21 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Blocks
 {
-    public class Block : GameObject
+    [Serializable]
+    public class Block : GameObject, IHoldable
     {
+        [NonSerialized]
         private Level level;
-        Texture2D image;
-        Body body;
+        [NonSerialized]
+        private Texture2D image;
+        [NonSerialized]
+        private Body body;
+        [NonSerialized]
+        private ThrowState throwState;
+        [NonSerialized]
+        private int throwTimer;
+        [NonSerialized]
+        private int throwTimerTime;
 
         public Block(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
@@ -30,9 +40,57 @@ namespace Blocks
             }
         }
 
-        public override void DataValueName()
+        public bool IsHeld
         {
-            
+            get
+            {
+                return throwState == ThrowState.Held;
+            }
+
+            set
+            {
+                if (value)
+                    throwState = ThrowState.Held;
+                else
+                {
+                    throwState = ThrowState.Thrown;
+                    throwTimer = 0;
+                }
+            }
+        }
+
+        public float Width
+        {
+            get
+            {
+                return BlockWidth;
+            }
+        }
+
+        public ThrowState ThrowState1
+        {
+            get
+            {
+                return throwState;
+            }
+        }
+
+        public override Vector2 Vel
+        {
+            get
+            {
+                return body.Vel;
+            }
+
+            set
+            {
+                body.Vel = value;
+            }
+        }
+
+        public override string DataValueName()
+        {
+            return "Object: Block DataValue: N/A";
         }
 
         public static void DrawIcon(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect)
@@ -47,13 +105,23 @@ namespace Blocks
 
         public override void Initialize(Level level, float blockWidth)
         {
+            throwTimerTime = 15;
+
             this.level = level;
             BlockWidth = blockWidth;
             image = LoadedContent.block;
 
-            body = new Body(level.PhysicsMangager, false, 1, blockWidth * 50, 1);
+            body = new Body(this, level.PhysicsMangager, false, 1, blockWidth * 25, 1);
             body.Pos = SpawnPos * (int)blockWidth;
-            body.Colliders.Add(new RectangleCollider(body, CollisionGroup.Player, new Vector2(), new Vector2(blockWidth, blockWidth), collisionData => true));
+            body.Colliders.Add(new RectangleCollider(body, CollisionGroup.Player, new Vector2(), new Vector2(blockWidth, blockWidth), collisionData =>
+            {
+                if(Math.Abs(collisionData.CollisionAngle.X)>Math.Abs(collisionData.CollisionAngle.Y))
+                {
+                    //TODO manually bounce off wall
+                }
+
+                return !IsHeld;
+            }));
         }
 
         public override void NextDataValue()
@@ -68,7 +136,16 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
-            
+            if (IsHeld)
+                body.Vel = new Vector2();
+        }
+
+        public enum ThrowState
+        {
+            NotThrown,
+            Held,
+            Thrown,
+            ThrowTimerExpired
         }
     }
 }

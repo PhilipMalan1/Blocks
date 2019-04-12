@@ -20,8 +20,11 @@ namespace Blocks
         KeyboardState key, keyi;
         MouseState mouse, mousei;
         string levelDir;
+        SpriteFont font;
 
         GameObjectsEnum current;
+        bool isSelecting;
+        GameObject currentSelection;
         int objectRow, objectsPerRow;
 
         public float BlockWidth
@@ -37,7 +40,7 @@ namespace Blocks
             }
         }
 
-        public LevelEditorScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir) : base(graphicsDevice, game1)
+        public LevelEditorScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir, bool load) : base(graphicsDevice, game1)
         {
             this.levelDir = levelDir;
 
@@ -50,13 +53,15 @@ namespace Blocks
 
             level = new Level(levelGrid, 0, blockWidth);
 
+            font = LoadedContent.mainMenuFont;
+
             camera = new Vector2(0, -graphicsDevice.Viewport.Height);
 
             current = 0;
             objectRow = 0;
             objectsPerRow = graphicsDevice.Viewport.Width / (int)blockWidth;
 
-            //Load();
+            if(load) Load();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -81,6 +86,16 @@ namespace Blocks
             {
                 if (x < GameObjectList.GetLength(0))
                     DrawIcon((GameObjectsEnum)GameObjectList.GetValue(x), gameTime, spriteBatch, x * (int)blockWidth, 0);
+            }
+
+            //draw select tool
+            spriteBatch.DrawString(font, "Select", new Vector2(0, blockWidth), Color.White, 0, new Vector2(), 1f / 100 * blockWidth/4, SpriteEffects.None, 0);
+
+            //draw block description
+            if (isSelecting && currentSelection != null)
+            {
+                string str = currentSelection.DataValueName();
+                spriteBatch.DrawString(font, str, new Vector2(0, graphicsDevice.Viewport.Height - font.MeasureString(str).Y / 100 * blockWidth / 4), Color.White, 0, new Vector2(), 1f / 100 * blockWidth / 4, SpriteEffects.None, 0);
             }
 
             spriteBatch.End();
@@ -109,11 +124,27 @@ namespace Blocks
                     if (mousei.LeftButton == ButtonState.Released)
                     {
                         current = (GameObjectsEnum)selectedBlock;
+                        isSelecting = false;
                     }
                 }
+                //select tool
+                else if (mouse.Y < blockWidth * 3f / 2 && mouse.X < font.MeasureString("Select").X / 100 * blockWidth / 4)
+                {
+                    isSelecting = true;
+                }
                 //draw blocks
-                else if (!level.CheckForObject(x, y))
-                    AddTile(current, x, y);
+                else
+                {
+                    if(isSelecting)
+                    {
+                        if(level.CheckForObject(x, y))
+                        {
+                            currentSelection = level.LevelObjects[x][y][0];
+                        }
+                    }
+                    else if (!level.CheckForObject(x, y))
+                        AddTile(current, x, y);
+                }
             }
 
             //delet blocks
@@ -130,6 +161,15 @@ namespace Blocks
             if (key.IsKeyDown(Keys.S)) camera.Y += cameraSpeed;
             if (camera.X < 0) camera.X = 0;
             if (camera.Y > -graphicsDevice.Viewport.Height) camera.Y = -graphicsDevice.Viewport.Height;
+
+            //change data value
+            if(isSelecting && currentSelection!=null)
+            {
+                if (key.IsKeyDown(Keys.OemComma) && keyi.IsKeyUp(Keys.OemComma))
+                    currentSelection.PreviousDataValue();
+                if (key.IsKeyDown(Keys.OemPeriod) && keyi.IsKeyUp(Keys.OemPeriod))
+                    currentSelection.NextDataValue();
+            }
 
             //save
             if (key.IsKeyDown(Keys.Escape) || (key.IsKeyDown(Keys.Q) && keyi.IsKeyUp(Keys.Q)))

@@ -8,6 +8,7 @@ namespace Blocks
 {
     public class Body
     {
+        GameObject gameObject;
         bool hasInfiniteMass;
         float mass, gravity, restitution;
         List<Collider> colliders;
@@ -119,8 +120,22 @@ namespace Blocks
             }
         }
 
-        public Body(PhysicsManager physicsManager, bool hasInfiniteMass, float mass, float gravity, float restitution)
+        public GameObject GameObject
         {
+            get
+            {
+                return gameObject;
+            }
+
+            set
+            {
+                gameObject = value;
+            }
+        }
+
+        public Body(GameObject gameObject, PhysicsManager physicsManager, bool hasInfiniteMass, float mass, float gravity, float restitution)
+        {
+            this.gameObject = gameObject;
             this.hasInfiniteMass = hasInfiniteMass;
             this.mass = mass;
             this.gravity = gravity;

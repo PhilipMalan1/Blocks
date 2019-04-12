@@ -10,8 +10,6 @@ namespace Blocks.Screens
 {
     public class LevelTestScreen:Screen
     {
-        private GraphicsDevice graphicsDevice;
-        private Game1 game1;
         private LevelEditorScreen levelEditor;
         private Level level;
         private GameScreen gameScreen;
