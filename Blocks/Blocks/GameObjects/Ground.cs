@@ -14,6 +14,8 @@ namespace Blocks
         Body body;
         [NonSerialized]
         Texture2D image;
+        [NonSerialized]
+        bool top, bottom, left, right, topRight, bottomRight, bottomLeft, topLeft;
 
         public Ground(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
@@ -58,7 +60,79 @@ namespace Blocks
             image = LoadedContent.ground;
             body = new Body(this, level.PhysicsMangager, true, 1, 0, 0);
             body.Pos = SpawnPos*(int)blockWidth;
-            body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(), new Vector2(blockWidth, blockWidth), collisionData => true));
+            body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(), new Vector2(blockWidth, blockWidth), collisionData =>
+            {
+                if (collisionData.CollisionAngle.Y == -1)
+                    if(!top)
+                        return false;
+                else if (collisionData.CollisionAngle.Y == 1)
+                    if (!bottom)
+                        return false;
+                else if (collisionData.CollisionAngle.X == -1)
+                    if (!left)
+                        return false;
+                else if (collisionData.CollisionAngle.X == 1)
+                    if (!right)
+                        return false;
+                else if(collisionData.CollisionAngle.X<0)
+                {
+                    if (collisionData.CollisionAngle.Y < 0 && !topLeft)
+                        return false;
+                    else if (collisionData.CollisionAngle.Y > 0 && !bottomLeft)
+                        return false;
+                }
+                else if(collisionData.CollisionAngle.X>0)
+                {
+                    if (collisionData.CollisionAngle.Y < 0 && !topRight)
+                        return false;
+                    else if (collisionData.CollisionAngle.Y > 0 && !bottomRight)
+                        return false;
+                }
+                return true;
+            }));
+
+            top = bottom = left = right = topRight = bottomRight = bottomLeft = topLeft = true;
+
+            if (level.CheckForObject((int)SpawnPos.X, -(int)SpawnPos.Y + 1))
+                foreach(GameObject gameObject in level.LevelObjects[(int)SpawnPos.X][-(int)SpawnPos.Y + 1])
+                {
+                    if(gameObject is Ground)
+                    {
+                        top = false;
+                        topLeft = false;
+                        topRight = false;
+                    }
+                }
+            if (level.CheckForObject((int)SpawnPos.X, -(int)SpawnPos.Y - 1))
+                foreach (GameObject gameObject in level.LevelObjects[(int)SpawnPos.X][-(int)SpawnPos.Y - 1])
+                {
+                    if (gameObject is Ground)
+                    {
+                        bottom = false;
+                        bottomLeft = false;
+                        bottomRight = false;
+                    }
+                }
+            if (level.CheckForObject((int)SpawnPos.X-1, -(int)SpawnPos.Y))
+                foreach (GameObject gameObject in level.LevelObjects[(int)SpawnPos.X-1][-(int)SpawnPos.Y])
+                {
+                    if (gameObject is Ground)
+                    {
+                        left = false;
+                        topLeft = false;
+                        bottomLeft = false;
+                    }
+                }
+            if (level.CheckForObject((int)SpawnPos.X + 1, -(int)SpawnPos.Y))
+                foreach (GameObject gameObject in level.LevelObjects[(int)SpawnPos.X+1][-(int)SpawnPos.Y])
+                {
+                    if (gameObject is Ground)
+                    {
+                        right = false;
+                        topRight = false;
+                        bottomRight = false;
+                    }
+                }
         }
 
         public override void NextDataValue()

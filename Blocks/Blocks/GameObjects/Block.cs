@@ -22,6 +22,8 @@ namespace Blocks
         private int throwTimer;
         [NonSerialized]
         private int throwTimerTime;
+        [NonSerialized]
+        private bool hasTeleported;
 
         public Block(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
@@ -55,6 +57,7 @@ namespace Blocks
                 {
                     throwState = ThrowState.Thrown;
                     throwTimer = 0;
+                    hasTeleported = false;
                 }
             }
         }
@@ -85,6 +88,19 @@ namespace Blocks
             set
             {
                 body.Vel = value;
+            }
+        }
+
+        public bool HasTeleported
+        {
+            get
+            {
+                return hasTeleported;
+            }
+
+            set
+            {
+                hasTeleported = value;
             }
         }
 
@@ -127,10 +143,6 @@ namespace Blocks
                         Vel = new Vector2(Math.Abs(Vel.X), Vel.Y);
                     }
                     return false;
-                }
-                if((throwState==ThrowState.Thrown || throwState==ThrowState.ThrowTimerExpired) && /*Downward collision*/)
-                {
-                    //move to spawn point
                 }
 
                 return !IsHeld;

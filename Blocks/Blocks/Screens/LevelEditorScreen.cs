@@ -47,7 +47,7 @@ namespace Blocks
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
 
-            blockWidth = graphicsDevice.Viewport.Height / 10;
+            blockWidth = graphicsDevice.Viewport.Height / 15;
 
             List<List<List<GameObject>>> levelGrid = new List<List<List<GameObject>>>();
 

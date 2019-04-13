@@ -76,10 +76,13 @@ namespace Blocks
                     //block jump
                     if (((Block)other).ThrowState1==Block.ThrowState.Thrown)
                     {
-                        if(other.Pos.Y>Pos.Y)
+                        if (((Block)other).HasTeleported)
+                            return true;
+                        if (other.Pos.Y>Pos.Y)
                         {
                             other.Pos = new Vector2((Pos.X+other.Pos.X)/2, Pos.Y+blockWidth);
                             ((Block)other).Vel = new Vector2();
+                            ((Block)other).HasTeleported = true;
                             onGround = true;
                             if (Vel.Y < 0) Vel = new Vector2(Vel.X, 0);
                             return false;
@@ -180,6 +183,11 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
+            if (Pos.X < 0)
+                Pos=new Vector2(0, Pos.Y);
+            if (Pos.Y > 0)
+                Die();
+
             if (playerState == PlayerState.Turning)
             {
                 if (animationTimer >= 2*turnAnimationSpeed)
@@ -275,6 +283,11 @@ namespace Blocks
                     }
                 }
             }
+        }
+
+        public void Die()
+        {
+            Level.Initialize(BlockWidth);
         }
     }
 

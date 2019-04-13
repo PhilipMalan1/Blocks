@@ -108,7 +108,9 @@ namespace Blocks
 
         public bool CheckForObject(int x, int y)
         {
-            if(x<levelObjects.Count() && y<levelObjects[x].Count())
+            if (x < 0 || y < 0)
+                return false;
+            if (x<levelObjects.Count() && y<levelObjects[x].Count())
             {
                 return levelObjects[x][y].Count() > 0;
             }

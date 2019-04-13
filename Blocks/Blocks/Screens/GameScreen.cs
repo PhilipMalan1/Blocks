@@ -26,7 +26,7 @@ namespace Blocks
 
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
-            blockWidth = graphicsDevice.Viewport.Height / 10;
+            blockWidth = graphicsDevice.Viewport.Height / 15;
 
             Load();
             camera = level.CameraFocus.Pos + new Vector2(blockWidth / 2, blockWidth / 2) - new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 2);
@@ -38,7 +38,7 @@ namespace Blocks
 
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
-            blockWidth = graphicsDevice.Viewport.Height / 10;
+            blockWidth = graphicsDevice.Viewport.Height / 15;
 
             level.Initialize(blockWidth);
             camera = level.CameraFocus.Pos + new Vector2(blockWidth / 2, blockWidth / 2) - new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 2);
