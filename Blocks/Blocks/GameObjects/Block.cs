@@ -76,6 +76,11 @@ namespace Blocks
             {
                 return throwState;
             }
+
+            set
+            {
+                throwState = value;
+            }
         }
 
         public override Vector2 Vel
@@ -101,6 +106,19 @@ namespace Blocks
             set
             {
                 hasTeleported = value;
+            }
+        }
+
+        public int ThrowTimer
+        {
+            get
+            {
+                return throwTimer;
+            }
+
+            set
+            {
+                throwTimer = value;
             }
         }
 
@@ -170,6 +188,12 @@ namespace Blocks
                 if (throwTimer >= throwTimerTime)
                     throwState = ThrowState.ThrowTimerExpired;
             }
+            else if(throwState==ThrowState.Dropped)
+            {
+                throwTimer++;
+                if (throwTimer >= 60)
+                    throwState = ThrowState.ThrowTimerExpired;
+            }
         }
 
         public enum ThrowState
@@ -177,6 +201,7 @@ namespace Blocks
             NotThrown,
             Held,
             Thrown,
+            Dropped,
             ThrowTimerExpired
         }
     }

@@ -47,6 +47,7 @@ namespace Blocks
             float gravity = blockWidth * 50;
             horizontalFriction = 1 - walkAcc / maxSpeed;
             jumpSpeed = (float)Math.Sqrt(2 * gravity * jumpHeight);
+            heldItem = null;
 
             turnAnimationSpeed = 4;
 
@@ -63,6 +64,10 @@ namespace Blocks
             body.AddCollider(new CircleCollider(body, CollisionGroup.Player, new Vector2(blockWidth / 2, blockWidth / 2), blockWidth/2, collisionData =>
             {
                 GameObject other = collisionData.OtherCollider.Body.GameObject;
+
+                //don't collide with a dropped block
+                if (other is Block && ((Block)other).ThrowState1 == Block.ThrowState.Dropped && ((Block)other).ThrowTimer < 30)
+                    return false;
 
                 //regain jump
                 if (collisionData.CollisionAngle.Y > Math.Abs(collisionData.CollisionAngle.X))
@@ -88,7 +93,7 @@ namespace Blocks
                             return false;
                         }
                     }
-                    else
+                    else if(!((Block)other).IsHeld && (((Block)other).ThrowState1==Block.ThrowState.NotThrown || ((Block)other).ThrowState1==Block.ThrowState.ThrowTimerExpired) && heldItem==null)
                     {
                         heldItem = other;
                         ((Block)other).IsHeld = true;
@@ -263,6 +268,7 @@ namespace Blocks
                     heldItem.Vel = new Vector2();
 
                     ((IHoldable)heldItem).IsHeld = false;
+                    ((Block)heldItem).ThrowState1 = Block.ThrowState.Dropped;
                     heldItem = null;
                 }
                 else if (key.IsKeyDown(Keys.Left) || key.IsKeyDown(Keys.Right))
