@@ -147,6 +147,9 @@ namespace Blocks
                 case GameObjects.Ground:
                     level.AddGameObject(new Ground(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
+                case GameObjects.Arrows:
+                    level.AddGameObject(new Arrows(level, blockWidth, new Vector2(x, -y)), x, y);
+                    break;
                 case GameObjects.Player:
                     level.AddGameObject(new Player(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
@@ -159,6 +162,9 @@ namespace Blocks
             {
                 case GameObjects.Ground:
                     Ground.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
+                    break;
+                case GameObjects.Arrows:
+                    Arrows.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
                 case GameObjects.Player:
                     Player.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
@@ -188,6 +194,7 @@ namespace Blocks
     public enum GameObjects
     {
         Ground,
-        Player
+        Player,
+        Arrows
     }
 }
