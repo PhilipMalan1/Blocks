@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Blocks
 {
-    class Arrows : Sprite
+    class Arrows : GameObject
     {
         // U = Up
         // R = Right
@@ -25,16 +25,9 @@ namespace Blocks
         Texture2D arrowTex;
         Rectangle arrowRec;
 
-
-        public Arrows(bool up,Rectangle r)
+        public Arrows(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
-            if(up)
-            arrowTex = LoadedContent.ArrowUR;
-            else
-                arrowTex = LoadedContent.ArrowR;
-            arrowRec = r;
         }
-
 
         public override Vector2 Pos
         {
@@ -56,6 +49,26 @@ namespace Blocks
             spritebach.Begin();
             spritebach.Draw(arrowTex, arrowRec, Color.White);
             spritebach.End();
+        }
+
+        public override void NextDataValue()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void PreviousDataValue()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DataValueName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Initialize(Level level, float blockWidth)
+        {
+            throw new NotImplementedException();
         }
     }
 }
