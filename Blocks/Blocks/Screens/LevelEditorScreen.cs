@@ -150,6 +150,9 @@ namespace Blocks
                 case GameObjects.Player:
                     level.AddGameObject(new Player(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
+                case GameObjects.Spikes:
+                    level.AddGameObject(new Spikes(level, blockWidth, new Vector2(x, -y)), x, y);
+                    break;
             }
         }
 
@@ -162,6 +165,9 @@ namespace Blocks
                     break;
                 case GameObjects.Player:
                     Player.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
+                    break;
+                case GameObjects.Spikes:
+                    Spikes.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
             }
         }
@@ -188,6 +194,7 @@ namespace Blocks
     public enum GameObjects
     {
         Ground,
-        Player
+        Player,
+        Spikes
     }
 }
