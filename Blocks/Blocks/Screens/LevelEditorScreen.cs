@@ -193,6 +193,9 @@ namespace Blocks
                 case GameObjectsEnum.Block:
                     level.AddGameObject(new Block(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
+                case GameObjectsEnum.Button:
+                    level.AddGameObject(new Button(level, blockWidth, new Vector2(x, -y)), x, y);
+                    break;
             }
         }
 
@@ -208,6 +211,9 @@ namespace Blocks
                     break;
                 case GameObjectsEnum.Block:
                     Block.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
+                    break;
+                case GameObjectsEnum.Button:
+                    Button.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth), blockWidth);
                     break;
             }
         }

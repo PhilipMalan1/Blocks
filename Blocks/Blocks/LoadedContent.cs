@@ -9,7 +9,7 @@ namespace Blocks
 {
     class LoadedContent
     {
-        public static Texture2D ground, player, block;
+        public static Texture2D ground, player, block, button;
 
         public static Texture2D mainMenuBackground;
         public static Texture2D mainMenuButton;
@@ -23,6 +23,7 @@ namespace Blocks
             ground = content.Load<Texture2D>("Ground2");
             player = content.Load<Texture2D>("Player");
             block = content.Load<Texture2D>("Block");
+            button = content.Load<Texture2D>("button/button.0001");
         }
     }
 }

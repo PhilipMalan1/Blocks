@@ -59,7 +59,7 @@ namespace Blocks
             BlockWidth = blockWidth;
             image = LoadedContent.ground;
             body = new Body(this, level.PhysicsMangager, true, 1, 0, 0);
-            body.Pos = SpawnPos*(int)blockWidth;
+            body.Pos = SpawnPos*blockWidth;
             body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(), new Vector2(blockWidth, blockWidth), collisionData =>
             {
                 if (collisionData.CollisionAngle.Y == -1)

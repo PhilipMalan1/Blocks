@@ -9,6 +9,7 @@ namespace Blocks
     {
         Ground,
         Player,
-        Block
+        Block,
+        Button
     }
 }

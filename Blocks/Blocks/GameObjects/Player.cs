@@ -85,7 +85,7 @@ namespace Blocks
                             return true;
                         if (other.Pos.Y>Pos.Y)
                         {
-                            other.Pos = new Vector2((Pos.X+other.Pos.X)/2, Pos.Y+blockWidth);
+                            other.Pos = new Vector2((2*Pos.X+other.Pos.X)/3, Pos.Y+blockWidth);
                             ((Block)other).Vel = new Vector2();
                             ((Block)other).HasTeleported = true;
                             onGround = true;
