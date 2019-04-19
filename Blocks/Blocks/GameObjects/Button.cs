@@ -58,7 +58,7 @@ namespace Blocks
             }
         }
 
-        public State State
+        public State State1
         {
             get
             {
@@ -88,14 +88,14 @@ namespace Blocks
         {
             Texture2D image = images[frame];
             Vector2 origin = new Vector2(image.Width / 2, -image.Width / 2 + image.Height);
-            spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X + BlockWidth / 2), (int)(Pos.Y + BlockWidth - height - camera.Y - height), (int)BlockWidth, (int)height), new Rectangle(0, 0, image.Width, image.Height), Color.White, (float)Math.PI / 2 * rotation, origin, SpriteEffects.None, 0);
+            spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X + BlockWidth / 2), (int)(Pos.Y + BlockWidth - height - camera.Y - height), (int)BlockWidth, (int)height), new Rectangle(0, 0, image.Width, image.Height), Color.White, (float)Math.PI / 2 * rotation, origin, SpriteEffects.None, (float)DrawLayer.Button/1000);
         }
 
         public override void Initialize(Level level, float blockWidth)
         {
             animationSpeed = 3;
             animationTimer = 0;
-            State = State.Unpressed;
+            State1 = State.Unpressed;
             frame = 0;
             images = LoadedContent.button;
             Level = level;
@@ -115,7 +115,7 @@ namespace Blocks
 
                   if (other is Block)
                   {
-                      State = State.Pressed;
+                      State1 = State.Pressed;
                   }
                   return false;
               };
@@ -146,7 +146,7 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
-            if(State==State.Pressed)
+            if(State1==State.Pressed)
             {
                 frame = 1 + animationTimer / animationSpeed;
                 if (frame >= images.Count())
@@ -154,11 +154,11 @@ namespace Blocks
                 animationTimer++;
             }
         }
-    }
 
-    public enum State
-    {
-        Unpressed,
-        Pressed
+        public enum State
+        {
+            Unpressed,
+            Pressed
+        }
     }
 }

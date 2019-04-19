@@ -43,8 +43,8 @@ namespace Blocks
 
         public override void Initialize(Level level, float blockWidth)
         {
-            float maxSpeed = blockWidth*20;
-            walkAcc = maxSpeed/5;
+            float maxSpeed = blockWidth * 20;
+            walkAcc = maxSpeed / 5;
             float jumpHeight = blockWidth * 4;
             gravity = blockWidth * 75;
             fallGravity = blockWidth * 100;
@@ -62,49 +62,24 @@ namespace Blocks
             animationTimer = 0;
             playerState = PlayerState.Standing;
 
-            body = new Body(this, level.PhysicsMangager, false, 1, gravity, 1);
-            body.Pos = SpawnPos*blockWidth;
-            body.AddCollider(new CircleCollider(body, CollisionGroup.Player, new Vector2(blockWidth / 2, blockWidth / 2), blockWidth/2, collisionData =>
-            {
-                GameObject other = collisionData.OtherCollider.Body.GameObject;
+            body = new Body(this, level.PhysicsMangager, false, 1, gravity, 0);
+            body.Pos = SpawnPos * blockWidth;
+            body.AddCollider(new CircleCollider(body, CollisionGroup.Player, new Vector2(blockWidth / 2, blockWidth / 2), blockWidth / 2, collisionData =>
+              {
+                  GameObject other = collisionData.OtherCollider.Body.GameObject;
 
-                //don't collide with a dropped block
-                if (other is Block && ((Block)other).ThrowState1 == Block.ThrowState.Dropped && ((Block)other).ThrowTimer < 30)
-                    return false;
+                  //don't collide with a dropped block
+                  if (other is Block && ((Block)other).ThrowState1 == Block.ThrowState.Dropped && ((Block)other).ThrowTimer < 20)
+                      return false;
 
-                //regain jump
-                if (collisionData.CollisionAngle.Y > Math.Abs(collisionData.CollisionAngle.X))
-                {
-                    onGround = true;
-                }
+                  //regain jump
+                  if (collisionData.CollisionAngle.Y > Math.Abs(collisionData.CollisionAngle.X))
+                  {
+                      onGround = true;
+                  }
 
-                //block stuff
-                if(other is Block && !((Block)other).IsHeld)
-                {
-                    //block jump
-                    if (((Block)other).ThrowState1==Block.ThrowState.Thrown)
-                    {
-                        if (((Block)other).HasTeleported)
-                            return true;
-                        if (other.Pos.Y>Pos.Y)
-                        {
-                            other.Pos = new Vector2((2*Pos.X+other.Pos.X)/3, Pos.Y+blockWidth);
-                            ((Block)other).Vel = new Vector2();
-                            ((Block)other).HasTeleported = true;
-                            onGround = true;
-                            if (Vel.Y < 0) Vel = new Vector2(Vel.X, 0);
-                            return false;
-                        }
-                    }
-                    else if(!((Block)other).IsHeld && (((Block)other).ThrowState1==Block.ThrowState.NotThrown || ((Block)other).ThrowState1==Block.ThrowState.ThrowTimerExpired) && heldItem==null)
-                    {
-                        heldItem = other;
-                        ((Block)other).IsHeld = true;
-                    }
-                }
-
-                return true;
-            }));
+                  return true;
+              }));
         }
 
         public override Vector2 Pos
@@ -133,6 +108,19 @@ namespace Blocks
             }
         }
 
+        public GameObject HeldItem
+        {
+            get
+            {
+                return heldItem;
+            }
+
+            set
+            {
+                heldItem = value;
+            }
+        }
+
         public override string DataValueName()
         {
             return "Object: Player DataValue: N/A";
@@ -148,10 +136,10 @@ namespace Blocks
             if (playerState == PlayerState.Standing)
             {
                 if (facingRight)
-                    spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X), (int)(Pos.Y - camera.Y), (int)BlockWidth, (int)BlockWidth), new Rectangle(0, 0, 108, 108), Color.White);
+                    spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X), (int)(Pos.Y - camera.Y), (int)BlockWidth, (int)BlockWidth), new Rectangle(0, 0, 108, 108), Color.White, 0, new Vector2(), SpriteEffects.None, (float)DrawLayer.Player / 1000);
                 else
                     spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X), (int)(Pos.Y - camera.Y), (int)BlockWidth, (int)BlockWidth), new Rectangle(0, 0, 108, 108), Color.White, 0, new Vector2(),
-                        SpriteEffects.FlipHorizontally, 0);
+                        SpriteEffects.FlipHorizontally, (float)DrawLayer.Player / 1000);
             }
 
             else if (playerState == PlayerState.Turning)
@@ -159,15 +147,15 @@ namespace Blocks
                 int animationSpeed = turnAnimationSpeed;
 
                 bool isFlipped = facingRight;
-                if (animationTimer > 2*animationSpeed-1) isFlipped = !isFlipped;
-                if (animationTimer % (2*animationSpeed) <= animationSpeed)
+                if (animationTimer > 2 * animationSpeed - 1) isFlipped = !isFlipped;
+                if (animationTimer % (2 * animationSpeed) <= animationSpeed)
                 {
-                    if(isFlipped)
+                    if (isFlipped)
                         spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X), (int)(Pos.Y - camera.Y), (int)BlockWidth, (int)BlockWidth), new Rectangle(108, 0, 108, 108), Color.White);
                     else
-                        spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X), (int)(Pos.Y - camera.Y), (int)BlockWidth, (int)BlockWidth), new Rectangle(108, 0, 108, 108), Color.White, 0, new Vector2(), 
+                        spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X), (int)(Pos.Y - camera.Y), (int)BlockWidth, (int)BlockWidth), new Rectangle(108, 0, 108, 108), Color.White, 0, new Vector2(),
                             SpriteEffects.FlipHorizontally, 0);
-                } 
+                }
                 else
                 {
                     if (isFlipped)
@@ -181,19 +169,19 @@ namespace Blocks
 
         public override void NextDataValue()
         {
-            
+
         }
 
         public override void PreviousDataValue()
         {
-            
+
         }
 
         public override void Update(GameTime gameTime)
         {
             //die after falling off screen
             if (Pos.X < 0)
-                Pos=new Vector2(0, Pos.Y);
+                Pos = new Vector2(0, Pos.Y);
             if (Pos.Y > 0)
                 Die();
 
@@ -209,7 +197,7 @@ namespace Blocks
 
             if (playerState == PlayerState.Turning)
             {
-                if (animationTimer >= 2*turnAnimationSpeed)
+                if (animationTimer >= 2 * turnAnimationSpeed)
                 {
                     playerState = PlayerState.Standing;
                     facingRight = !facingRight;
@@ -218,7 +206,7 @@ namespace Blocks
                 animationTimer++;
 
                 //held item turn animation
-                if(heldItem!=null)
+                if (heldItem != null)
                 {
                     Vector2 itemDest;
                     if (facingRight)
@@ -230,19 +218,19 @@ namespace Blocks
                 }
             }
 
-            body.Vel = new Vector2(body.Vel.X*horizontalFriction, body.Vel.Y);
+            body.Vel = new Vector2(body.Vel.X * horizontalFriction, body.Vel.Y);
 
             //held item
-            if (playerState!=PlayerState.Turning && heldItem!=null)
+            if (playerState != PlayerState.Turning && heldItem != null)
             {
                 if (facingRight)
                     heldItem.Pos = new Vector2(Pos.X + BlockWidth, Pos.Y);
-                
+
                 else
                     heldItem.Pos = new Vector2(Pos.X - ((IHoldable)heldItem).Width, Pos.Y);
             }
-            if(heldItem!=null)
-                heldItem.Pos += Vel/60;
+            if (heldItem != null)
+                heldItem.Pos += Vel / 60;
 
             onGround = false;
         }
@@ -250,27 +238,27 @@ namespace Blocks
         public void UpdateInput(GameTime gameTime, KeyboardState key, KeyboardState keyi, MouseState mouse, MouseState mousei)
         {
             //move
-            if (key.IsKeyDown(Keys.D))
+            if (key.IsKeyDown(Keys.D) && key.IsKeyUp(Keys.A))
             {
                 body.Vel += new Vector2(walkAcc, 0);
                 if (!facingRight)
                     playerState = PlayerState.Turning;
             }
-            if (key.IsKeyDown(Keys.A))
+            if (key.IsKeyDown(Keys.A) && key.IsKeyUp(Keys.D))
             {
                 body.Vel += new Vector2(-walkAcc, 0);
                 if (facingRight)
                     playerState = PlayerState.Turning;
             }
-            if (key.IsKeyDown(Keys.W) && keyi.IsKeyUp(Keys.W) && onGround)
+            if (key.IsKeyDown(Keys.W) && onGround)
             {
                 body.Vel = new Vector2(0, -jumpSpeed);
             }
 
             //throw
-            if(heldItem!=null)
+            if (heldItem != null)
             {
-                if(key.IsKeyDown(Keys.Up))
+                if (key.IsKeyDown(Keys.Up))
                 {
                     heldItem.Vel = new Vector2(0, -BlockWidth * 20);
 
@@ -279,7 +267,8 @@ namespace Blocks
                 }
                 else if (key.IsKeyDown(Keys.Down))
                 {
-                    heldItem.Vel = new Vector2();
+                    if (facingRight) heldItem.Vel = new Vector2(3 * BlockWidth, 0);
+                    if (!facingRight) heldItem.Vel = new Vector2(-3 * BlockWidth, 0);
 
                     ((IHoldable)heldItem).IsHeld = false;
                     ((Block)heldItem).ThrowState1 = Block.ThrowState.Dropped;
@@ -289,14 +278,14 @@ namespace Blocks
                 {
                     if (facingRight)
                     {
-                        heldItem.Vel = new Vector2(BlockWidth * 20, -BlockWidth*5);
+                        heldItem.Vel = new Vector2(BlockWidth * 20, -BlockWidth * 5);
 
                         ((IHoldable)heldItem).IsHeld = false;
                         heldItem = null;
                     }
                     if (!facingRight)
                     {
-                        heldItem.Vel = new Vector2(-BlockWidth * 20, -BlockWidth*5);
+                        heldItem.Vel = new Vector2(-BlockWidth * 20, -BlockWidth * 5);
 
                         ((IHoldable)heldItem).IsHeld = false;
                         heldItem = null;

@@ -96,7 +96,7 @@ namespace Blocks
             //Don't resolve the collision if the objects are moving away from each other
             if (timeSinceCollision < 0) return;
             //limit how far objects can be pushed
-            if (timeSinceCollision > 1f / 60) timeSinceCollision = 1f / 60;
+            if (timeSinceCollision > 1f / 30) timeSinceCollision = 1f / 30;
 
             //It's rewind time! (update positions)
             myCollider.Body.Pos -= myCollider.Body.Vel * timeSinceCollision;

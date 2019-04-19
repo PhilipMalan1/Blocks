@@ -57,6 +57,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DrawLayer.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameObjects.cs" />
     <Compile Include="GameObjects\Block.cs" />

@@ -46,7 +46,7 @@ namespace Blocks
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, blendState: BlendState.AlphaBlend);
 
             //draw level
             foreach (List<List<GameObject>> column in level.LevelObjects)

@@ -157,7 +157,7 @@ namespace Blocks
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)
         {
-            spritebach.Draw(image, new Rectangle((int)(Pos.X-camera.X), (int)(Pos.Y-camera.Y), (int)BlockWidth, (int)BlockWidth), new Rectangle(0, 0, 108, 108), Color.White);
+            spritebach.Draw(image, new Rectangle((int)(Pos.X-camera.X), (int)(Pos.Y-camera.Y), (int)BlockWidth, (int)BlockWidth), new Rectangle(0, 0, 108, 108), Color.White, 0, new Vector2(), SpriteEffects.None, (float)DrawLayer.Ground/1000);
         }
     }
 }
