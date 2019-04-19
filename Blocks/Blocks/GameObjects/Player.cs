@@ -32,6 +32,8 @@ namespace Blocks
         [NonSerialized]
         private float jumpSpeed;
         [NonSerialized]
+        private float gravity, fallGravity;
+        [NonSerialized]
         private GameObject heldItem;
 
         public Player(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
@@ -41,10 +43,11 @@ namespace Blocks
 
         public override void Initialize(Level level, float blockWidth)
         {
-            float maxSpeed = blockWidth*15;
+            float maxSpeed = blockWidth*20;
             walkAcc = maxSpeed/5;
             float jumpHeight = blockWidth * 4;
-            float gravity = blockWidth * 50;
+            gravity = blockWidth * 75;
+            fallGravity = blockWidth * 100;
             horizontalFriction = 1 - walkAcc / maxSpeed;
             jumpSpeed = (float)Math.Sqrt(2 * gravity * jumpHeight);
             heldItem = null;
@@ -188,10 +191,21 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
+            //die after falling off screen
             if (Pos.X < 0)
                 Pos=new Vector2(0, Pos.Y);
             if (Pos.Y > 0)
                 Die();
+
+            //update gravity
+            if (Vel.Y > 0)
+                body.Gravity = fallGravity;
+            else
+                body.Gravity = gravity;
+
+            //max fall speed
+            if (Vel.Y > BlockWidth * 80)
+                Vel = new Vector2(Vel.X, BlockWidth * 80);
 
             if (playerState == PlayerState.Turning)
             {

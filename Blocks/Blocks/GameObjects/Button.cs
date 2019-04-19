@@ -10,14 +10,22 @@ namespace Blocks
     [Serializable]
     class Button : GameObject
     {
-        int rotation;
+        private int rotation;
 
         [NonSerialized]
-        Body body;
+        private Body body;
         [NonSerialized]
-        Texture2D image;
+        private Texture2D[] images;
         [NonSerialized]
-        float height;
+        private float height;
+        [NonSerialized]
+        private State state;
+        [NonSerialized]
+        private int animationTimer;
+        [NonSerialized]
+        private int animationSpeed;
+        [NonSerialized]
+        private int frame;
 
         public Button(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
@@ -50,6 +58,20 @@ namespace Blocks
             }
         }
 
+        public State State
+        {
+            get
+            {
+                return state;
+            }
+
+            set
+            {
+                if (state!=value) animationTimer = 1;
+                state = value;
+            }
+        }
+
         public override string DataValueName()
         {
             return "Object: Button DataValue: rotation";
@@ -57,23 +79,28 @@ namespace Blocks
 
         public static void DrawIcon(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect, float blockWidth)
         {
-            Texture2D image = LoadedContent.button;
+            Texture2D image = LoadedContent.button[0];
             float height = image.Height * blockWidth / image.Width;
             spriteBatch.Draw(image, new Rectangle(rect.X, (int)(rect.Y+blockWidth-height), (int)blockWidth, (int)height), new Rectangle(0, 0, image.Width, image.Height), Color.White);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)
         {
+            Texture2D image = images[frame];
             Vector2 origin = new Vector2(image.Width / 2, -image.Width / 2 + image.Height);
             spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X + BlockWidth / 2), (int)(Pos.Y + BlockWidth - height - camera.Y - height), (int)BlockWidth, (int)height), new Rectangle(0, 0, image.Width, image.Height), Color.White, (float)Math.PI / 2 * rotation, origin, SpriteEffects.None, 0);
         }
 
         public override void Initialize(Level level, float blockWidth)
         {
-            image = LoadedContent.button;
+            animationSpeed = 3;
+            animationTimer = 0;
+            State = State.Unpressed;
+            frame = 0;
+            images = LoadedContent.button;
             Level = level;
             BlockWidth = blockWidth;
-            height = image.Height * blockWidth / image.Width;
+            height = images[0].Height * blockWidth / images[0].Width;
 
             body = new Body(this, level.PhysicsMangager, true, 1, 0, 0);
             body.Pos = SpawnPos * BlockWidth;
@@ -82,14 +109,25 @@ namespace Blocks
 
         private void UpdateRotation()
         {
+            Func<CollisionData, bool> onCollision = collisionData =>
+              {
+                  GameObject other = collisionData.OtherCollider.Body.GameObject;
+
+                  if (other is Block)
+                  {
+                      State = State.Pressed;
+                  }
+                  return false;
+              };
+
             if (rotation == 0)
-                body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(0, BlockWidth - height), new Vector2(BlockWidth, height), collisionData => true));
+                body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(0, BlockWidth - height), new Vector2(BlockWidth, height), onCollision));
             else if (rotation == 1)
-                body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(0, 0), new Vector2(height, BlockWidth), collisionData => true));
+                body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(0, 0), new Vector2(height, BlockWidth), onCollision));
             else if (rotation == 2)
-                body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(0, 0), new Vector2(BlockWidth, height), collisionData => true));
+                body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(0, 0), new Vector2(BlockWidth, height), onCollision));
             else if (rotation == 3)
-                body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(BlockWidth-height, 0), new Vector2(height, BlockWidth), collisionData => true));
+                body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(BlockWidth-height, 0), new Vector2(height, BlockWidth), onCollision));
         }
 
         public override void NextDataValue()
@@ -108,7 +146,19 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
-            
+            if(State==State.Pressed)
+            {
+                frame = 1 + animationTimer / animationSpeed;
+                if (frame >= images.Count())
+                    frame = images.Count() - 1;
+                animationTimer++;
+            }
         }
+    }
+
+    public enum State
+    {
+        Unpressed,
+        Pressed
     }
 }
