@@ -67,6 +67,9 @@ namespace Blocks
                                         CheckForMoreCollisions(i);
                                         CheckForMoreCollisions(j);
                                     }
+
+                                    collider1.DidCollide?.Invoke(collisionData, shouldResolve);
+                                    collider2.DidCollide?.Invoke(collisionData2, shouldResolve);
                                 }
                             }
                         }

@@ -19,11 +19,9 @@ namespace Blocks
         [NonSerialized]
         private ThrowState throwState;
         [NonSerialized]
-        private int throwTimer, dropTimer;
+        private int landTimer, dropTimer;
         [NonSerialized]
-        private int throwTimerTime;
-        [NonSerialized]
-        private bool hasTeleported;
+        private int landTimerTime;
 
         public Block(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
@@ -55,9 +53,8 @@ namespace Blocks
                     throwState = ThrowState.Held;
                 else
                 {
-                    throwState = ThrowState.Thrown;
-                    throwTimer = 0;
-                    hasTeleported = false;
+                    ThrowState1 = ThrowState.Thrown;
+                    landTimer = 0;
                 }
             }
         }
@@ -79,6 +76,8 @@ namespace Blocks
 
             set
             {
+                if (value == ThrowState.Dropped)
+                    dropTimer = 0;
                 throwState = value;
             }
         }
@@ -96,29 +95,16 @@ namespace Blocks
             }
         }
 
-        public bool HasTeleported
+        public int LandTimer
         {
             get
             {
-                return hasTeleported;
+                return landTimer;
             }
 
             set
             {
-                hasTeleported = value;
-            }
-        }
-
-        public int ThrowTimer
-        {
-            get
-            {
-                return throwTimer;
-            }
-
-            set
-            {
-                throwTimer = value;
+                landTimer = value;
             }
         }
 
@@ -139,12 +125,12 @@ namespace Blocks
 
         public override void Initialize(Level level, float blockWidth)
         {
-            throwTimerTime = 15;
+            landTimerTime = 35;
 
             this.level = level;
             BlockWidth = blockWidth;
             image = LoadedContent.block;
-            throwState = ThrowState.NotThrown;
+            ThrowState1 = ThrowState.Grabable;
 
             body = new Body(this, level.PhysicsMangager, false, 1, blockWidth * 25, 1);
             body.Pos = SpawnPos * (int)blockWidth;
@@ -159,26 +145,28 @@ namespace Blocks
                     //block jump
                     if (ThrowState1 == ThrowState.Thrown)
                     {
-                        if (HasTeleported)
-                            return true;
                         if (Pos.Y > other.Pos.Y)
                         {
                             Pos = new Vector2((2 * other.Pos.X + Pos.X) / 3, other.Pos.Y + blockWidth);
                             Vel = new Vector2();
-                            HasTeleported = true;
+                            ThrowState1 = ThrowState.Jumpable;
                             if (Vel.Y < 0) Vel = new Vector2(Vel.X, 0);
-                            return false;
                         }
                     }
-                    else if (!IsHeld && (ThrowState1 == ThrowState.NotThrown || ThrowState1 == ThrowState.ThrowTimerExpired) && ((Player)other).HeldItem == null)
+                    //grab
+                    else if (!IsHeld && ThrowState1 == ThrowState.Grabable && ((Player)other).HeldItem == null)
                     {
                         ((Player)other).HeldItem = this;
                         IsHeld = true;
                     }
                 }
 
+                //if dropped, don't collide with player
+                if (ThrowState1 == ThrowState.Dropped && other is Player)
+                    shouldntCollide = true;
+
                 //bounce off walls
-                if (!IsHeld && Math.Abs(collisionData.CollisionAngle.X)>Math.Abs(collisionData.CollisionAngle.Y))
+                if (!IsHeld && other is Ground && Math.Abs(collisionData.CollisionAngle.X)>Math.Abs(collisionData.CollisionAngle.Y))
                 {
                     if(collisionData.CollisionAngle.X>0)
                     {
@@ -191,21 +179,33 @@ namespace Blocks
                     shouldntCollide = true;
                 }
 
-                //increment throw timer
-                if(throwState==ThrowState.Thrown && other is Ground)
+                //if block touches the ground
+                if(throwState != ThrowState.Grabable && throwState != ThrowState.Held && other is Ground && collisionData.CollisionAngle.Y > Math.Abs(collisionData.CollisionAngle.X))
                 {
-                    throwTimer++;
+                    ThrowState1 = ThrowState.Jumpable;
+                    landTimer++;
                 }
 
-                //friction
-                if(other is Ground)
+                //if block hits ceiling
+                if((ThrowState1==ThrowState.Thrown || ThrowState1==ThrowState.Jumpable) && other is Ground && -collisionData.CollisionAngle.Y > Math.Abs(collisionData.CollisionAngle.X))
                 {
-                    Vel *= 0.98f;
+                    ThrowState1 = ThrowState.Grabable;
                 }
 
                 if (shouldntCollide) return false;
-                return !IsHeld;
+                return ThrowState1!=ThrowState.Held;
             }));
+
+            body.Colliders[0].DidCollide=(collisionData, hasCollided) =>
+            {
+                GameObject other = collisionData.OtherCollider.Body.GameObject;
+
+                //friction
+                if (other is Ground && hasCollided)
+                {
+                    Vel *= 0.9f;
+                }
+            };
         }
 
         public override void NextDataValue()
@@ -224,29 +224,37 @@ namespace Blocks
             if (Pos.Y > 0)
                 Initialize(level, BlockWidth);
 
+            //set velocity to 0 while held
             if (IsHeld)
                 body.Vel = new Vector2();
 
-            if(throwState==ThrowState.Thrown)
+            //set to not thrown if land timer is hight enough
+            if (throwState!=ThrowState.Grabable && throwState != ThrowState.Held)
             {
-                if (throwTimer >= throwTimerTime)
-                    throwState = ThrowState.ThrowTimerExpired;
+                if (landTimer >= landTimerTime)
+                {
+                    ThrowState1 = ThrowState.Grabable;
+                    landTimer = 0;
+                }
             }
-            else if(throwState==ThrowState.Dropped)
+            if(throwState==ThrowState.Dropped)
             {
-                throwTimer++;
-                if (throwTimer >= 60)
-                    throwState = ThrowState.ThrowTimerExpired;
+                dropTimer++;
+                if (dropTimer >= 35)
+                {
+                    ThrowState1 = ThrowState.Jumpable;
+                    dropTimer = 0;
+                }
             }
         }
 
         public enum ThrowState
         {
-            NotThrown,
+            Grabable,
             Held,
             Thrown,
-            Dropped,
-            ThrowTimerExpired
+            Jumpable,
+            Dropped
         }
     }
 }

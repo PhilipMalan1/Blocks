@@ -30,6 +30,8 @@ namespace Blocks
 
             Load();
             camera = level.CameraFocus.Pos + new Vector2(blockWidth / 2, blockWidth / 2) - new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 2);
+            if (camera.X < 0)
+                camera.X = 0;
         }
 
         public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, Level level) : base(graphicsDevice, game1)
@@ -42,6 +44,8 @@ namespace Blocks
 
             level.Initialize(blockWidth);
             camera = level.CameraFocus.Pos + new Vector2(blockWidth / 2, blockWidth / 2) - new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 2);
+            if (camera.X < 0)
+                camera.X = 0;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

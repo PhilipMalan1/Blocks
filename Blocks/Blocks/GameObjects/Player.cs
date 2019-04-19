@@ -64,22 +64,17 @@ namespace Blocks
 
             body = new Body(this, level.PhysicsMangager, false, 1, gravity, 0);
             body.Pos = SpawnPos * blockWidth;
-            body.AddCollider(new CircleCollider(body, CollisionGroup.Player, new Vector2(blockWidth / 2, blockWidth / 2), blockWidth / 2, collisionData =>
-              {
-                  GameObject other = collisionData.OtherCollider.Body.GameObject;
+            body.AddCollider(new CircleCollider(body, CollisionGroup.Player, new Vector2(blockWidth / 2, blockWidth / 2), blockWidth / 2, collisionData => true));
+            body.Colliders[0].DidCollide = (collisionData, hasCollided) =>
+            {
+                GameObject other = collisionData.OtherCollider.Body.GameObject;
 
-                  //don't collide with a dropped block
-                  if (other is Block && ((Block)other).ThrowState1 == Block.ThrowState.Dropped && ((Block)other).ThrowTimer < 20)
-                      return false;
-
-                  //regain jump
-                  if (collisionData.CollisionAngle.Y > Math.Abs(collisionData.CollisionAngle.X))
-                  {
-                      onGround = true;
-                  }
-
-                  return true;
-              }));
+                //check if you can jump
+                if (collisionData.CollisionAngle.Y == 1 && hasCollided)
+                {
+                    onGround = true;
+                }
+            };
         }
 
         public override Vector2 Pos
@@ -267,8 +262,8 @@ namespace Blocks
                 }
                 else if (key.IsKeyDown(Keys.Down))
                 {
-                    if (facingRight) heldItem.Vel = new Vector2(3 * BlockWidth, 0);
-                    if (!facingRight) heldItem.Vel = new Vector2(-3 * BlockWidth, 0);
+                    if (facingRight) heldItem.Vel = new Vector2(5 * BlockWidth, 0);
+                    if (!facingRight) heldItem.Vel = new Vector2(-5 * BlockWidth, 0);
 
                     ((IHoldable)heldItem).IsHeld = false;
                     ((Block)heldItem).ThrowState1 = Block.ThrowState.Dropped;

@@ -10,6 +10,7 @@ namespace Blocks
     {
         Body body;
         Func<CollisionData, bool> onCollision;
+        Action<CollisionData, bool> didCollide;
         CollisionGroup collisionGroup;
 
         /// <summary>
@@ -61,6 +62,19 @@ namespace Blocks
             set
             {
                 onCollision = value;
+            }
+        }
+
+        public Action<CollisionData, bool> DidCollide
+        {
+            get
+            {
+                return didCollide;
+            }
+
+            set
+            {
+                didCollide = value;
             }
         }
 
