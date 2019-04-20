@@ -257,7 +257,7 @@ namespace Blocks
             //throw
             if (heldItem != null)
             {
-                if (key.IsKeyDown(Keys.Up))
+                if (key.IsKeyDown(Keys.Up) && keyi.IsKeyUp(Keys.Up))
                 {
                     heldItem.Vel = new Vector2(0, -BlockWidth * 20);
 
@@ -265,7 +265,7 @@ namespace Blocks
                     ((Block)heldItem).ThrowState1 = Block.ThrowState.ThrownUp;
                     heldItem = null;
                 }
-                else if (key.IsKeyDown(Keys.Down))
+                else if (key.IsKeyDown(Keys.Down) && keyi.IsKeyUp(Keys.Down))
                 {
                     if (facingRight) heldItem.Vel = new Vector2(5 * BlockWidth, -3*BlockWidth);
                     if (!facingRight) heldItem.Vel = new Vector2(-5 * BlockWidth, -3*BlockWidth);
@@ -274,7 +274,7 @@ namespace Blocks
                     ((Block)heldItem).ThrowState1 = Block.ThrowState.Dropped;
                     heldItem = null;
                 }
-                else if (key.IsKeyDown(Keys.Left) || key.IsKeyDown(Keys.Right))
+                else if ((key.IsKeyDown(Keys.Left) && keyi.IsKeyUp(Keys.Left)) || (key.IsKeyDown(Keys.Right) && keyi.IsKeyUp(Keys.Right)))
                 {
                     if (facingRight)
                     {

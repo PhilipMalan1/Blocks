@@ -134,6 +134,7 @@ namespace Blocks
 
             body = new Body(this, level.PhysicsMangager, false, 1, blockWidth * 25, 1);
             body.Pos = SpawnPos * (int)blockWidth;
+            body.Vel = new Vector2();
             body.Colliders.Add(new RectangleCollider(body, CollisionGroup.Player, new Vector2(), new Vector2(blockWidth, blockWidth), collisionData =>
             {
                 GameObject other = collisionData.OtherCollider.Body.GameObject;
@@ -220,9 +221,12 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
-            //respawn if falling off screen
+            //respawn after falling off screen
             if (Pos.Y > 0)
-                Initialize(level, BlockWidth);
+            {
+                Pos = SpawnPos * BlockWidth;
+                Vel = new Vector2();
+            }
 
             //set velocity to 0 while held
             if (IsHeld)
@@ -267,6 +271,10 @@ namespace Blocks
         public override void Unload()
         {
             body.Unload();
+
+            //respawn if off screen
+            Pos = SpawnPos * BlockWidth;
+            Vel = new Vector2();
         }
 
         public enum ThrowState
