@@ -38,7 +38,7 @@ namespace Blocks.Screens
             key = Keyboard.GetState();
             if (key.IsKeyDown(Keys.T) && keyi.IsKeyUp(Keys.T))
             {
-                level.Initialize(levelEditor.BlockWidth);
+                level.Initialize(levelEditor.BlockWidth, graphicsDevice);
                 game1.SetScreen(levelEditor);
             }
 

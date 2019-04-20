@@ -51,7 +51,7 @@ namespace Blocks
 
             List<List<List<GameObject>>> levelGrid = new List<List<List<GameObject>>>();
 
-            level = new Level(levelGrid, 0, blockWidth);
+            level = new Level(levelGrid, 0, blockWidth, graphicsDevice);
 
             font = LoadedContent.mainMenuFont;
 
@@ -233,7 +233,7 @@ namespace Blocks
             Stream stream = new FileStream(levelDir, FileMode.Open, FileAccess.Read, FileShare.Read);
             level = (Level)formatter.Deserialize(stream);
             stream.Close();
-            level.Initialize(blockWidth);
+            level.Initialize(blockWidth, graphicsDevice);
         }
     }
 }

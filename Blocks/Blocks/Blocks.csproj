@@ -63,6 +63,7 @@
     <Compile Include="GameObjects\Block.cs" />
     <Compile Include="GameObjects\Button.cs" />
     <Compile Include="IHoldable.cs" />
+    <Compile Include="LoadManager.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="ICameraFocus.cs" />
     <Compile Include="IInput.cs" />

@@ -259,6 +259,16 @@ namespace Blocks
             }
         }
 
+        public override void Load()
+        {
+            body.Load();
+        }
+
+        public override void Unload()
+        {
+            body.Unload();
+        }
+
         public enum ThrowState
         {
             Grabable,

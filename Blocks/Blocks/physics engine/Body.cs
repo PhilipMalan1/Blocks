@@ -140,9 +140,14 @@ namespace Blocks
             this.mass = mass;
             this.gravity = gravity;
             this.restitution = restitution;
-
-            physicsManager.Bodies.Add(this);
+            this.physicsManager = physicsManager;
+            
             colliders = new List<Collider>();
+        }
+
+        public void Load()
+        {
+            physicsManager.Bodies.Add(this);
         }
 
         public void AddCollider(Collider collider)

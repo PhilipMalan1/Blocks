@@ -27,6 +27,14 @@ namespace Blocks
             set;
         }
 
+        virtual public Rectangle LoadRect
+        {
+            get
+            {
+                return new Rectangle((int)(Pos.X), (int)(Pos.Y), (int)(blockWidth * 2), (int)(blockWidth * 2));
+            }
+        }
+
         internal Level Level
         {
             get
@@ -74,5 +82,8 @@ namespace Blocks
         abstract public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera);
 
         abstract public override void Update(GameTime gameTime);
+
+        abstract public void Load();
+        abstract public void Unload();
     }
 }
