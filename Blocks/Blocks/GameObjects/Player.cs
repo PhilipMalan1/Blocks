@@ -18,7 +18,7 @@ namespace Blocks
         [NonSerialized]
         private bool facingRight;
         [NonSerialized]
-        private bool onGround;
+        private bool onGround, hasJumped;
         [NonSerialized]
         private int animationTimer;
         [NonSerialized]
@@ -58,7 +58,7 @@ namespace Blocks
             BlockWidth = blockWidth;
             image = LoadedContent.player;
             facingRight = true;
-            onGround = false;
+            onGround = hasJumped = false;
             animationTimer = 0;
             playerState = PlayerState.Standing;
 
@@ -245,9 +245,13 @@ namespace Blocks
                 if (facingRight)
                     playerState = PlayerState.Turning;
             }
-            if (key.IsKeyDown(Keys.W) && onGround)
+            //jump
+            if (key.IsKeyDown(Keys.W) && keyi.IsKeyUp(Keys.W))
+                hasJumped = false;
+            if (key.IsKeyDown(Keys.W) && onGround && !hasJumped)
             {
                 body.Vel = new Vector2(0, -jumpSpeed);
+                hasJumped = true;
             }
 
             //throw
@@ -258,12 +262,13 @@ namespace Blocks
                     heldItem.Vel = new Vector2(0, -BlockWidth * 20);
 
                     ((IHoldable)heldItem).IsHeld = false;
+                    ((Block)heldItem).ThrowState1 = Block.ThrowState.ThrownUp;
                     heldItem = null;
                 }
                 else if (key.IsKeyDown(Keys.Down))
                 {
-                    if (facingRight) heldItem.Vel = new Vector2(5 * BlockWidth, 0);
-                    if (!facingRight) heldItem.Vel = new Vector2(-5 * BlockWidth, 0);
+                    if (facingRight) heldItem.Vel = new Vector2(5 * BlockWidth, -3*BlockWidth);
+                    if (!facingRight) heldItem.Vel = new Vector2(-5 * BlockWidth, -3*BlockWidth);
 
                     ((IHoldable)heldItem).IsHeld = false;
                     ((Block)heldItem).ThrowState1 = Block.ThrowState.Dropped;
