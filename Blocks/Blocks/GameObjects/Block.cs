@@ -11,8 +11,6 @@ namespace Blocks
     public class Block : GameObject, IHoldable
     {
         [NonSerialized]
-        private Level level;
-        [NonSerialized]
         private Texture2D image;
         [NonSerialized]
         private Body body;
@@ -127,7 +125,7 @@ namespace Blocks
         {
             landTimerTime = 35;
 
-            this.level = level;
+            Level = level;
             BlockWidth = blockWidth;
             image = LoadedContent.block;
             ThrowState1 = ThrowState.Grabable;

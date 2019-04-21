@@ -24,6 +24,11 @@ namespace Blocks
         /// <returns></returns>
         public bool CanCollide(Collider collider1, Collider collider2)
         {
+            CollisionGroup cg1 = collider1.CollisionGroup;
+            CollisionGroup cg2 = collider2.CollisionGroup;
+
+            if ((cg1 & cg2) == CollisionGroup.Ground)
+                return false;
             return true;
         }
 

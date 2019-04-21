@@ -29,6 +29,8 @@ namespace Blocks
         private int frame;
         [NonSerialized]
         Door door;
+        [NonSerialized]
+        bool notInitialized;
 
         public Button(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
@@ -38,6 +40,7 @@ namespace Blocks
             Door door = new Door(level, blockWidth, new Vector2(doorX, doorY));
             level.AddGameObject(door, doorX, -doorY);
             doorLayer = level.LevelObjects[doorX][-doorY].IndexOf(door);
+            notInitialized = true;
         }
 
         public override Vector2 Pos
@@ -107,7 +110,7 @@ namespace Blocks
         public override void Initialize(Level level, float blockWidth)
         {
             SetDoor(doorX, doorY, doorLayer);
-            if(door!=null) door.SetButton((int)SpawnPos.X, -(int)SpawnPos.Y, level.LevelObjects[(int)SpawnPos.X][-(int)SpawnPos.Y].IndexOf(this));
+            if (door != null) door.SetButton((int)SpawnPos.X, -(int)SpawnPos.Y, level.LevelObjects[(int)SpawnPos.X][-(int)SpawnPos.Y].IndexOf(this));
 
             animationSpeed = 3;
             animationTimer = 0;
@@ -162,7 +165,13 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
-            if(State1==State.Pressed)
+            if (notInitialized)
+            {
+                Initialize(Level, BlockWidth);
+                notInitialized = false;
+            }
+
+            if (State1==State.Pressed)
             {
                 frame = 1 + animationTimer / animationSpeed;
                 if (frame >= images.Count())

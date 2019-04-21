@@ -19,6 +19,7 @@ namespace Blocks
     /// Click on "Select" to use the select tool (or toggle it with e).
     /// If you click on a block with the select tool, some information about the block will be in the bottom left of the screen.
     /// You can change the data value of a selected block with "," and ".".
+    /// You can move a selected block by dragging with the mouse or using the arrow keys
     /// Press "Q" to save and "Esc" to save and quit.
     /// </summary>
     public class LevelEditorScreen : Screen
@@ -221,38 +222,40 @@ namespace Blocks
             {
                 if (currentSelection != null)
                 {
+                    if (isSelecting && mouse.LeftButton == ButtonState.Pressed && (x != previousX || y != previousY))
+                    {
+                        if(MoveTile(currentSelection, currentSelectionX, currentSelectionY, x, y))
+                        {
+                            currentSelectionX = x;
+                            currentSelectionY = y;
+                        }
+                    }
                     if (key.IsKeyDown(Keys.Left) && keyi.IsKeyUp(Keys.Left))
                     {
-                        if (currentSelectionX - 1 >= 0)
+                        if (MoveTile(currentSelection, currentSelectionX, currentSelectionY, currentSelectionX-1, currentSelectionY))
                         {
-                            level.LevelObjects[currentSelectionX][currentSelectionY].Remove(currentSelection);
                             currentSelectionX--;
-                            level.AddGameObject(currentSelection, currentSelectionX, currentSelectionY);
-                            currentSelection.Move(currentSelectionX, currentSelectionY);
                         }
                     }
                     if (key.IsKeyDown(Keys.Right) && keyi.IsKeyUp(Keys.Right))
                     {
-                        level.LevelObjects[currentSelectionX][currentSelectionY].Remove(currentSelection);
-                        currentSelectionX++;
-                        level.AddGameObject(currentSelection, currentSelectionX, currentSelectionY);
-                        currentSelection.Move(currentSelectionX, currentSelectionY);
+                        if (MoveTile(currentSelection, currentSelectionX, currentSelectionY, currentSelectionX + 1, currentSelectionY))
+                        {
+                            currentSelectionX++;
+                        }
                     }
                     if (key.IsKeyDown(Keys.Up) && keyi.IsKeyUp(Keys.Up))
                     {
-                        level.LevelObjects[currentSelectionX][currentSelectionY].Remove(currentSelection);
-                        currentSelectionY++;
-                        level.AddGameObject(currentSelection, currentSelectionX, currentSelectionY);
-                        currentSelection.Move(currentSelectionX, currentSelectionY);
+                        if (MoveTile(currentSelection, currentSelectionX, currentSelectionY, currentSelectionX, currentSelectionY + 1))
+                        {
+                            currentSelectionY++;
+                        }
                     }
                     if (key.IsKeyDown(Keys.Down) && keyi.IsKeyUp(Keys.Down))
                     {
-                        if (currentSelectionY - 1 >= 0)
+                        if (MoveTile(currentSelection, currentSelectionX, currentSelectionY, currentSelectionX, currentSelectionY - 1))
                         {
-                            level.LevelObjects[currentSelectionX][currentSelectionY].Remove(currentSelection);
                             currentSelectionY--;
-                            level.AddGameObject(currentSelection, currentSelectionX, currentSelectionY);
-                            currentSelection.Move(currentSelectionX, currentSelectionY);
                         }
                     }
                 }
@@ -270,6 +273,19 @@ namespace Blocks
             //set previous x and y
             previousX = x;
             previousY = y;
+        }
+
+        public bool MoveTile(GameObject gameObject, int x, int y, int toX, int toY)
+        {
+            if (toX >= 0 && toY >= 0)
+            {
+                level.LevelObjects[x][y].Remove(gameObject);
+                level.AddGameObject(gameObject, toX, toY);
+                currentSelection.Move(toX, toY);
+                return true;
+            }
+            else
+                return false;
         }
 
         public void AddTile(GameObjectsEnum gameObject, int x, int y)

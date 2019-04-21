@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Blocks
 {
+    [Serializable]
     class Door : GameObject
     {
         int buttonX, buttonY, buttonLayer;
