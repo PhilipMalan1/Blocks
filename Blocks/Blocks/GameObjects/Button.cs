@@ -81,7 +81,7 @@ namespace Blocks
         {
             Texture2D image = LoadedContent.button[0];
             float height = image.Height * blockWidth / image.Width;
-            spriteBatch.Draw(image, new Rectangle(rect.X, (int)(rect.Y+blockWidth-height), (int)blockWidth, (int)height), new Rectangle(0, 0, image.Width, image.Height), Color.White);
+            spriteBatch.Draw(image, new Rectangle(rect.X, (int)(rect.Y+blockWidth-height), (int)blockWidth, (int)height), new Rectangle(0, 0, image.Width, image.Height), Color.White, 0, new Vector2(), SpriteEffects.None, (float)DrawLayer.UI / 1000);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)

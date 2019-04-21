@@ -12,6 +12,14 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Blocks
 {
+    /// <summary>
+    /// Click a block from the toolbar at the top of the screen to draw with it.
+    /// Left click to draw and right click to delete.
+    /// Click on "Select" to use the select tool.
+    /// If you click on a block with the select tool, some information about the block will be in the bottom left of the screen.
+    /// You can change the data value of a selected block with "," and ".".
+    /// Press "Q" to save and "Esc" to save and quit.
+    /// </summary>
     public class LevelEditorScreen : Screen
     {
         private Level level;

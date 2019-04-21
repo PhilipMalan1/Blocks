@@ -152,7 +152,7 @@ namespace Blocks
 
         public static void DrawIcon(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect)
         {
-            spriteBatch.Draw(LoadedContent.ground, rect, new Rectangle(0, 0, 108, 108), Color.White);
+            spriteBatch.Draw(LoadedContent.ground, rect, new Rectangle(0, 0, 108, 108), Color.White, 0, new Vector2(), SpriteEffects.None, (float)DrawLayer.UI / 1000);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)

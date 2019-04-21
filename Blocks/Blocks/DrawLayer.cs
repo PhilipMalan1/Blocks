@@ -5,12 +5,15 @@ using System.Text;
 
 namespace Blocks
 {
+    //The first layer is drawn first
     public enum DrawLayer
     {
         Ground,
+        Door,
         Arrow,
         Player,
         Block,
-        Button
+        Button,
+        UI
     }
 }
