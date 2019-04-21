@@ -10,7 +10,7 @@ namespace Blocks
     [Serializable]
     class Door : GameObject
     {
-        int buttonX, buttonY, buttonLayer;
+        int buttonX, buttonY;
 
         [NonSerialized]
         Texture2D image;
@@ -22,8 +22,6 @@ namespace Blocks
         float percentClosed;
         [NonSerialized]
         State state;
-        [NonSerialized]
-        Button button;
 
         public Door(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
@@ -77,6 +75,25 @@ namespace Blocks
                     percentClosed = 0;
                 }
                 state = value;
+            }
+        }
+
+        private Button button
+        {
+            get
+            {
+                try
+                {
+                    Button button = null;
+                    foreach (GameObject gameObject in Level.LevelObjects[buttonX][buttonY])
+                    {
+                        if (gameObject is Button)
+                            button = (Button)gameObject;
+                    }
+                    return button;
+                }
+                catch (Exception) { }
+                return null;
             }
         }
 
@@ -151,12 +168,16 @@ namespace Blocks
             state = State.Closed;
         }
 
-        public void SetButton(int x, int y, int layer)
+        public void SetButton(int x, int y)
         {
             buttonX = x;
             buttonY = y;
-            buttonLayer = layer;
-            try { button = (Button)Level.LevelObjects[buttonX][buttonY][buttonLayer]; } catch (Exception) { }
+        }
+
+        public override void Move(int x, int y)
+        {
+            base.Move(x, y);
+            button.SetDoor(x, y);
         }
 
         private enum State

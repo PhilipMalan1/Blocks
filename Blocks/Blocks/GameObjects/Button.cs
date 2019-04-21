@@ -11,7 +11,7 @@ namespace Blocks
     class Button : GameObject
     {
         private int rotation;
-        int doorX, doorY, doorLayer;
+        int doorX, doorY;
 
         [NonSerialized]
         private Body body;
@@ -27,20 +27,10 @@ namespace Blocks
         private int animationSpeed;
         [NonSerialized]
         private int frame;
-        [NonSerialized]
-        Door door;
-        [NonSerialized]
-        bool notInitialized;
 
         public Button(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
             rotation = 0;
-            doorX = (int)spawnPos.X + 2;
-            doorY = (int)spawnPos.Y;
-            Door door = new Door(level, blockWidth, new Vector2(doorX, doorY));
-            level.AddGameObject(door, doorX, -doorY);
-            doorLayer = level.LevelObjects[doorX][-doorY].IndexOf(door);
-            notInitialized = true;
         }
 
         public override Vector2 Pos
@@ -88,9 +78,27 @@ namespace Blocks
             }
         }
 
+        private Door door
+        {
+            get
+            {
+                try
+                {
+                    Door door=null;
+                    foreach (GameObject gameObject in Level.LevelObjects[doorX][doorY])
+                    {
+                        if (gameObject is Door)
+                            door = (Door)gameObject;
+                    }
+                    return door;
+                } catch (Exception) { }
+                return null;
+            }
+        }
+
         public override string DataValueName()
         {
-            return "Object: Button DataValue: rotation";
+            return "Object: Button DataValue: rotation Door: ("+doorX+", "+doorY+")";
         }
 
         public static void DrawIcon(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect, float blockWidth)
@@ -109,16 +117,23 @@ namespace Blocks
 
         public override void Initialize(Level level, float blockWidth)
         {
-            SetDoor(doorX, doorY, doorLayer);
-            if (door != null) door.SetButton((int)SpawnPos.X, -(int)SpawnPos.Y, level.LevelObjects[(int)SpawnPos.X][-(int)SpawnPos.Y].IndexOf(this));
+            Level = level;
+            BlockWidth = blockWidth;
+
+            if (door == null)
+            {
+                doorX = (int)SpawnPos.X + 2;
+                doorY = -(int)SpawnPos.Y;
+                Door door = new Door(level, blockWidth, new Vector2(doorX, -doorY));
+                level.AddGameObject(door, doorX, doorY);
+            }
+            door.SetButton((int)SpawnPos.X, -(int)SpawnPos.Y);
 
             animationSpeed = 3;
             animationTimer = 0;
             State1 = State.Unpressed;
             frame = 0;
             images = LoadedContent.button;
-            Level = level;
-            BlockWidth = blockWidth;
             height = images[0].Height * blockWidth / images[0].Width;
 
             body = new Body(this, level.PhysicsMangager, true, 1, 0, 0);
@@ -165,12 +180,6 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
-            if (notInitialized)
-            {
-                Initialize(Level, BlockWidth);
-                notInitialized = false;
-            }
-
             if (State1==State.Pressed)
             {
                 frame = 1 + animationTimer / animationSpeed;
@@ -196,18 +205,16 @@ namespace Blocks
             Pressed
         }
 
-        public void SetDoor(int x, int y, int layer)
+        public void SetDoor(int x, int y)
         {
             doorX = x;
             doorY = y;
-            doorLayer = layer;
-            try { door = (Door)Level.LevelObjects[doorX][-doorY][doorLayer]; } catch (Exception) { }
         }
 
         public override void Move(int x, int y)
         {
             base.Move(x, y);
-            door.SetButton(x, y, Level.LevelObjects[x][y].IndexOf(this));
+            door.SetButton(x, y);
         }
     }
 }
