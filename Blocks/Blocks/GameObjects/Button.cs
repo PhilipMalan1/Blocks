@@ -11,6 +11,7 @@ namespace Blocks
     class Button : GameObject
     {
         private int rotation;
+        int doorX, doorY, doorLayer;
 
         [NonSerialized]
         private Body body;
@@ -26,10 +27,17 @@ namespace Blocks
         private int animationSpeed;
         [NonSerialized]
         private int frame;
+        [NonSerialized]
+        Door door;
 
         public Button(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
             rotation = 0;
+            doorX = (int)spawnPos.X + 2;
+            doorY = (int)spawnPos.Y;
+            Door door = new Door(level, blockWidth, new Vector2(doorX, doorY));
+            level.AddGameObject(door, doorX, -doorY);
+            doorLayer = level.LevelObjects[doorX][-doorY].IndexOf(door);
         }
 
         public override Vector2 Pos
@@ -67,7 +75,12 @@ namespace Blocks
 
             set
             {
-                if (state!=value) animationTimer = 1;
+                if (state != value)
+                {
+                    animationTimer = 1;
+                    if (value == State.Pressed && door!=null)
+                        door.Open();
+                }
                 state = value;
             }
         }
@@ -93,6 +106,9 @@ namespace Blocks
 
         public override void Initialize(Level level, float blockWidth)
         {
+            SetDoor(doorX, doorY, doorLayer);
+            if(door!=null) door.SetButton((int)SpawnPos.X, -(int)SpawnPos.Y, level.LevelObjects[(int)SpawnPos.X][-(int)SpawnPos.Y].IndexOf(this));
+
             animationSpeed = 3;
             animationTimer = 0;
             State1 = State.Unpressed;
@@ -169,6 +185,20 @@ namespace Blocks
         {
             Unpressed,
             Pressed
+        }
+
+        public void SetDoor(int x, int y, int layer)
+        {
+            doorX = x;
+            doorY = y;
+            doorLayer = layer;
+            try { door = (Door)Level.LevelObjects[doorX][-doorY][doorLayer]; } catch (Exception) { }
+        }
+
+        public override void Move(int x, int y)
+        {
+            base.Move(x, y);
+            door.SetButton(x, y, Level.LevelObjects[x][y].IndexOf(this));
         }
     }
 }

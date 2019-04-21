@@ -257,7 +257,7 @@ namespace Blocks
                     }
                 }
             }
-            catch(Exception e) { }
+            catch(Exception) { }
 
             //save
             if (key.IsKeyDown(Keys.Escape) || (key.IsKeyDown(Keys.Q) && keyi.IsKeyUp(Keys.Q)))
