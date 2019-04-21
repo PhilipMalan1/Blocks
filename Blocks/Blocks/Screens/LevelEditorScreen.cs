@@ -15,7 +15,8 @@ namespace Blocks
     /// <summary>
     /// Click a block from the toolbar at the top of the screen to draw with it.
     /// Left click to draw and right click to delete.
-    /// Click on "Select" to use the select tool.
+    /// Hold left ctrl to draw objects on top of each other
+    /// Click on "Select" to use the select tool (or toggle it with e).
     /// If you click on a block with the select tool, some information about the block will be in the bottom left of the screen.
     /// You can change the data value of a selected block with "," and ".".
     /// Press "Q" to save and "Esc" to save and quit.
@@ -33,7 +34,10 @@ namespace Blocks
         GameObjectsEnum current;
         bool isSelecting;
         GameObject currentSelection;
+        int currentSelectionX, currentSelectionY, currentSelectionLayer;
         int objectRow, objectsPerRow;
+
+        int previousX, previousY;
 
         public float BlockWidth
         {
@@ -79,9 +83,9 @@ namespace Blocks
             //draw level
             foreach (List<List<GameObject>> column in level.LevelObjects)
             {
-                foreach(List<GameObject> tile in column)
+                foreach (List<GameObject> tile in column)
                 {
-                    foreach(GameObject gameObject in tile)
+                    foreach (GameObject gameObject in tile)
                     {
                         gameObject.Draw(gameTime, spriteBatch, camera);
                     }
@@ -89,22 +93,28 @@ namespace Blocks
             }
 
             //draw GameObject selecter
-            Array GameObjectList=Enum.GetValues(typeof(GameObjectsEnum));
-            for(int x=0; x<graphicsDevice.Viewport.Width/(int)blockWidth; x++)
+            Array GameObjectList = Enum.GetValues(typeof(GameObjectsEnum));
+            for (int x = 0; x < graphicsDevice.Viewport.Width / (int)blockWidth; x++)
             {
                 if (x < GameObjectList.GetLength(0))
                     DrawIcon((GameObjectsEnum)GameObjectList.GetValue(x), gameTime, spriteBatch, x * (int)blockWidth, 0);
             }
 
             //draw select tool
-            spriteBatch.DrawString(font, "Select", new Vector2(0, blockWidth), Color.White, 0, new Vector2(), 1f / 100 * blockWidth/4, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, "Select", new Vector2(0, blockWidth), Color.White, 0, new Vector2(), 1f / 100 * blockWidth / 4, SpriteEffects.None, (float)DrawLayer.UI / 1000);
 
             //draw block description
-            if (isSelecting && currentSelection != null)
+            string str = "";
+            if (isSelecting)
             {
-                string str = currentSelection.DataValueName();
-                spriteBatch.DrawString(font, str, new Vector2(0, graphicsDevice.Viewport.Height - font.MeasureString(str).Y / 100 * blockWidth / 4), Color.White, 0, new Vector2(), 1f / 100 * blockWidth / 4, SpriteEffects.None, 0);
+                if (currentSelection != null)
+                    str = currentSelection.DataValueName() + " Pos: (" + currentSelectionX + ", " + currentSelectionY + ") Layer: " + currentSelectionLayer;
+                else
+                    str = "No object selected.";
             }
+            else
+                str = "Current Object: "+Enum.GetName(typeof(GameObjectsEnum), current);
+            spriteBatch.DrawString(font, str, new Vector2(0, graphicsDevice.Viewport.Height - font.MeasureString(str).Y / 100 * blockWidth / 4), Color.White, 0, new Vector2(), 1f / 100 * blockWidth / 4, SpriteEffects.None, (float)DrawLayer.UI / 1000);
 
             spriteBatch.End();
         }
@@ -140,23 +150,50 @@ namespace Blocks
                 {
                     isSelecting = true;
                 }
-                //draw blocks
                 else
                 {
-                    if(isSelecting)
+                    //select block
+                    if (isSelecting && mousei.LeftButton==ButtonState.Released)
                     {
-                        if(level.CheckForObject(x, y))
+                        if (level.CheckForObject(x, y))
                         {
-                            currentSelection = level.LevelObjects[x][y][0];
+                            int layer = level.LevelObjects[x][y].Count() - 1;
+                            //if you are selecting a block that is already selected, cycle through the blocks at that location
+                            int index = level.LevelObjects[x][y].IndexOf(currentSelection);
+                            if (index != -1)
+                            {
+                                if (index > 0)
+                                    layer = index - 1;
+                            }
+                            currentSelection = level.LevelObjects[x][y][layer];
+                            currentSelectionX = x;
+                            currentSelectionY = y;
+                            currentSelectionLayer = layer;
                         }
+                        else
+                            currentSelection = null;
                     }
-                    else if (!level.CheckForObject(x, y))
-                        AddTile(current, x, y);
+                    //draw unless the select tool is active
+                    else if(!isSelecting)
+                    {
+                        //draw block if there isn't a block there
+                        if (!level.CheckForObject(x, y))
+                            AddTile(current, x, y);
+                        //draw a block if you are holding left ctrl and (left click wasn't down last frame or the mouse moved to a different block)
+                        if (key.IsKeyDown(Keys.LeftControl) && (mousei.LeftButton == ButtonState.Released || x != previousX || y != previousY))
+                            AddTile(current, x, y);
+                    }
                 }
             }
 
-            //delet blocks
-            if (mouse.RightButton == ButtonState.Pressed)
+            //toggle select tool
+            if(key.IsKeyDown(Keys.E) && keyi.IsKeyUp(Keys.E))
+            {
+                isSelecting = !isSelecting;
+            }
+
+            //delet blocks if right click wasn't held for the previous frame and the mouse didn't move to a different block
+            if (mouse.RightButton == ButtonState.Pressed && (mousei.RightButton == ButtonState.Released || x != previousX || y != previousY))
             {
                 level.RemoveGameObject(x, y);
             }
@@ -179,6 +216,49 @@ namespace Blocks
                     currentSelection.NextDataValue();
             }
 
+            //move selected item
+            try
+            {
+                if (currentSelection != null)
+                {
+                    if (key.IsKeyDown(Keys.Left) && keyi.IsKeyUp(Keys.Left))
+                    {
+                        if (currentSelectionX - 1 >= 0)
+                        {
+                            level.LevelObjects[currentSelectionX][currentSelectionY].Remove(currentSelection);
+                            currentSelectionX--;
+                            level.AddGameObject(currentSelection, currentSelectionX, currentSelectionY);
+                            currentSelection.Move(currentSelectionX, currentSelectionY);
+                        }
+                    }
+                    if (key.IsKeyDown(Keys.Right) && keyi.IsKeyUp(Keys.Right))
+                    {
+                        level.LevelObjects[currentSelectionX][currentSelectionY].Remove(currentSelection);
+                        currentSelectionX++;
+                        level.AddGameObject(currentSelection, currentSelectionX, currentSelectionY);
+                        currentSelection.Move(currentSelectionX, currentSelectionY);
+                    }
+                    if (key.IsKeyDown(Keys.Up) && keyi.IsKeyUp(Keys.Up))
+                    {
+                        level.LevelObjects[currentSelectionX][currentSelectionY].Remove(currentSelection);
+                        currentSelectionY++;
+                        level.AddGameObject(currentSelection, currentSelectionX, currentSelectionY);
+                        currentSelection.Move(currentSelectionX, currentSelectionY);
+                    }
+                    if (key.IsKeyDown(Keys.Down) && keyi.IsKeyUp(Keys.Down))
+                    {
+                        if (currentSelectionY - 1 >= 0)
+                        {
+                            level.LevelObjects[currentSelectionX][currentSelectionY].Remove(currentSelection);
+                            currentSelectionY--;
+                            level.AddGameObject(currentSelection, currentSelectionX, currentSelectionY);
+                            currentSelection.Move(currentSelectionX, currentSelectionY);
+                        }
+                    }
+                }
+            }
+            catch(Exception e) { }
+
             //save
             if (key.IsKeyDown(Keys.Escape) || (key.IsKeyDown(Keys.Q) && keyi.IsKeyUp(Keys.Q)))
                 Save();
@@ -186,6 +266,10 @@ namespace Blocks
             //test level
             if (key.IsKeyDown(Keys.T) && keyi.IsKeyUp(Keys.T))
                 game1.SetScreen(new Screens.LevelTestScreen(graphicsDevice, game1, this, level));
+
+            //set previous x and y
+            previousX = x;
+            previousY = y;
         }
 
         public void AddTile(GameObjectsEnum gameObject, int x, int y)

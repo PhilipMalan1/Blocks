@@ -85,5 +85,11 @@ namespace Blocks
 
         abstract public void Load();
         abstract public void Unload();
+
+        virtual public void Move(int x, int y)
+        {
+            SpawnPos = new Vector2(x, -y);
+            Initialize(level, blockWidth);
+        }
     }
 }

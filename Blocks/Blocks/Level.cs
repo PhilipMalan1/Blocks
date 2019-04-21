@@ -199,6 +199,9 @@ namespace Blocks
 
         public void AddGameObject(GameObject gameObject, int x, int y)
         {
+            if (x < 0) return;
+            if (y < 0) return;
+
             //add columns
             while (x >= levelObjects.Count())
                 levelObjects.Add(new List<List<GameObject>>());
