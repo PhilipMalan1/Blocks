@@ -16,6 +16,8 @@ namespace Blocks
         Texture2D image;
         [NonSerialized]
         bool top, bottom, left, right, topRight, bottomRight, bottomLeft, topLeft;
+        [NonSerialized]
+        bool shouldLoad;
 
         public Ground(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
@@ -59,44 +61,44 @@ namespace Blocks
             BlockWidth = blockWidth;
             image = LoadedContent.ground;
             body = new Body(this, level.PhysicsMangager, true, 1, 0, 0);
-            body.Pos = SpawnPos*blockWidth;
+            body.Pos = SpawnPos * blockWidth;
             body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(), new Vector2(blockWidth, blockWidth), collisionData =>
             {
                 if (collisionData.CollisionAngle.Y == -1)
-                    if(!top)
+                    if (!top)
                         return false;
-                else if (collisionData.CollisionAngle.Y == 1)
-                    if (!bottom)
-                        return false;
-                else if (collisionData.CollisionAngle.X == -1)
-                    if (!left)
-                        return false;
-                else if (collisionData.CollisionAngle.X == 1)
-                    if (!right)
-                        return false;
-                else if(collisionData.CollisionAngle.X<0)
-                {
-                    if (collisionData.CollisionAngle.Y < 0 && !topLeft)
-                        return false;
-                    else if (collisionData.CollisionAngle.Y > 0 && !bottomLeft)
-                        return false;
-                }
-                else if(collisionData.CollisionAngle.X>0)
-                {
-                    if (collisionData.CollisionAngle.Y < 0 && !topRight)
-                        return false;
-                    else if (collisionData.CollisionAngle.Y > 0 && !bottomRight)
-                        return false;
-                }
+                    else if (collisionData.CollisionAngle.Y == 1)
+                        if (!bottom)
+                            return false;
+                        else if (collisionData.CollisionAngle.X == -1)
+                            if (!left)
+                                return false;
+                            else if (collisionData.CollisionAngle.X == 1)
+                                if (!right)
+                                    return false;
+                                else if (collisionData.CollisionAngle.X < 0)
+                                {
+                                    if (collisionData.CollisionAngle.Y < 0 && !topLeft)
+                                        return false;
+                                    else if (collisionData.CollisionAngle.Y > 0 && !bottomLeft)
+                                        return false;
+                                }
+                                else if (collisionData.CollisionAngle.X > 0)
+                                {
+                                    if (collisionData.CollisionAngle.Y < 0 && !topRight)
+                                        return false;
+                                    else if (collisionData.CollisionAngle.Y > 0 && !bottomRight)
+                                        return false;
+                                }
                 return true;
             }));
 
             top = bottom = left = right = topRight = bottomRight = bottomLeft = topLeft = true;
 
             if (level.CheckForObject((int)SpawnPos.X, -(int)SpawnPos.Y + 1))
-                foreach(GameObject gameObject in level.LevelObjects[(int)SpawnPos.X][-(int)SpawnPos.Y + 1])
+                foreach (GameObject gameObject in level.LevelObjects[(int)SpawnPos.X][-(int)SpawnPos.Y + 1])
                 {
-                    if(gameObject is Ground)
+                    if (gameObject is Ground)
                     {
                         top = false;
                         topLeft = false;
@@ -113,8 +115,8 @@ namespace Blocks
                         bottomRight = false;
                     }
                 }
-            if (level.CheckForObject((int)SpawnPos.X-1, -(int)SpawnPos.Y))
-                foreach (GameObject gameObject in level.LevelObjects[(int)SpawnPos.X-1][-(int)SpawnPos.Y])
+            if (level.CheckForObject((int)SpawnPos.X - 1, -(int)SpawnPos.Y))
+                foreach (GameObject gameObject in level.LevelObjects[(int)SpawnPos.X - 1][-(int)SpawnPos.Y])
                 {
                     if (gameObject is Ground)
                     {
@@ -124,7 +126,7 @@ namespace Blocks
                     }
                 }
             if (level.CheckForObject((int)SpawnPos.X + 1, -(int)SpawnPos.Y))
-                foreach (GameObject gameObject in level.LevelObjects[(int)SpawnPos.X+1][-(int)SpawnPos.Y])
+                foreach (GameObject gameObject in level.LevelObjects[(int)SpawnPos.X + 1][-(int)SpawnPos.Y])
                 {
                     if (gameObject is Ground)
                     {
@@ -133,6 +135,13 @@ namespace Blocks
                         bottomRight = false;
                     }
                 }
+
+            shouldLoad = true;
+            if (!top && !bottom && !left && !right && !topRight && !bottomRight && !bottomLeft && !topLeft)
+            {
+                shouldLoad = false;
+                body.Unload();
+            }
         }
 
         public override void NextDataValue()
@@ -162,7 +171,7 @@ namespace Blocks
 
         public override void Load()
         {
-            body.Load();
+            if(shouldLoad) body.Load();
         }
 
         public override void Unload()

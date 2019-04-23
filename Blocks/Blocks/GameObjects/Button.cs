@@ -57,7 +57,7 @@ namespace Blocks
             {
                 body.Vel = value;
             }
-        }
+        }   
 
         public State State1
         {
