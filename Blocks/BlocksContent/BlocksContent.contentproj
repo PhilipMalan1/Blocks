@@ -52,6 +52,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Levels\Block Test.dat">
+      <Name>Block Test</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Levels\Button Test.dat">
+      <Name>Button Test</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Levels\Level 1.dat">
       <Name>Level 1</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -61,6 +69,10 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
+    <None Include="Levels\test.dat">
+      <Name>test</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="bg\bg.0001.png">

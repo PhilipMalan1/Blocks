@@ -388,13 +388,10 @@ namespace Blocks
                 case GameObjectsEnum.Ground:
                     level.AddGameObject(new Ground(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
-                case GameObjects.Arrows:
+                case GameObjectsEnum.Arrows:
                     level.AddGameObject(new Arrows(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
-                case GameObjects.Player:
-=======
                 case GameObjectsEnum.Player:
->>>>>>> master
                     level.AddGameObject(new Player(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
                 case GameObjectsEnum.Block:
@@ -416,12 +413,10 @@ namespace Blocks
                 case GameObjectsEnum.Ground:
                     Ground.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
-                case GameObjects.Arrows:
+                case GameObjectsEnum.Arrows:
                     Arrows.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
-                case GameObjects.Player:
                 case GameObjectsEnum.Player:
->>>>>>> master
                     Player.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
                 case GameObjectsEnum.Block:
@@ -453,12 +448,6 @@ namespace Blocks
             stream.Close();
             level.Initialize(blockWidth, graphicsDevice);
         }
-
-    public enum GameObjects
-    {
-        Ground,
-        Player,
-        Arrows
         private enum State
         {
             Draw,
