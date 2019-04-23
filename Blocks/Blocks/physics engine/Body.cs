@@ -8,12 +8,13 @@ namespace Blocks
 {
     public class Body
     {
+        GameObject gameObject;
         bool hasInfiniteMass;
         float mass, gravity, restitution;
         List<Collider> colliders;
         PhysicsManager physicsManager;
 
-        Vector2 pos, vel;//TODO get and set the position from the game object once you start using game objects.
+        Vector2 pos, vel;
 
         public bool HasInfiniteMass
         {
@@ -119,15 +120,34 @@ namespace Blocks
             }
         }
 
-        public Body(PhysicsManager physicsManager, bool hasInfiniteMass, float mass, float gravity, float restitution)
+        public GameObject GameObject
         {
+            get
+            {
+                return gameObject;
+            }
+
+            set
+            {
+                gameObject = value;
+            }
+        }
+
+        public Body(GameObject gameObject, PhysicsManager physicsManager, bool hasInfiniteMass, float mass, float gravity, float restitution)
+        {
+            this.gameObject = gameObject;
             this.hasInfiniteMass = hasInfiniteMass;
             this.mass = mass;
             this.gravity = gravity;
             this.restitution = restitution;
-
-            physicsManager.Bodies.Add(this);
+            this.physicsManager = physicsManager;
+            
             colliders = new List<Collider>();
+        }
+
+        public void Load()
+        {
+            physicsManager.Bodies.Add(this);
         }
 
         public void AddCollider(Collider collider)

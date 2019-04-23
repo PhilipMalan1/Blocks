@@ -36,12 +36,14 @@ namespace Blocks
         {
             IsMouseVisible = true;
             Window.Title = "Blocks";
-            graphics.PreferredBackBufferWidth = 1728;
-            graphics.PreferredBackBufferHeight = 972;
+            graphics.PreferredBackBufferWidth = 1900;
+            graphics.PreferredBackBufferHeight = 900;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             LoadedContent.LoadContent(Content);
             screen = new LevelEditorScreen(GraphicsDevice, this,@"Content/Levels/Level 1.dat");
+            screen = new LevelEditorScreen(GraphicsDevice,this, @"Content/Levels/Button Test.dat", true);
+>>>>>>> master
 
             base.Initialize();
         }
