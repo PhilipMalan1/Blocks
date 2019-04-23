@@ -21,9 +21,21 @@ namespace Blocks
             Initialize(level, blockWidth);
         }
 
-        protected int dataValue;
+        public abstract Vector2 Vel
+        {
+            get;
+            set;
+        }
 
-        protected Level Level
+        virtual public Rectangle LoadRect
+        {
+            get
+            {
+                return new Rectangle((int)(Pos.X), (int)(Pos.Y), (int)(blockWidth * 2), (int)(blockWidth * 2));
+            }
+        }
+
+        internal Level Level
         {
             get
             {
@@ -64,11 +76,20 @@ namespace Blocks
 
         public abstract void NextDataValue();
         public abstract void PreviousDataValue();
-        public abstract void DataValueName();
+        public abstract string DataValueName();
         public abstract void Initialize(Level level, float blockWidth);
 
         abstract public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera);
 
         abstract public override void Update(GameTime gameTime);
+
+        abstract public void Load();
+        abstract public void Unload();
+
+        virtual public void Move(int x, int y)
+        {
+            SpawnPos = new Vector2(x, -y);
+            Initialize(level, blockWidth);
+        }
     }
 }

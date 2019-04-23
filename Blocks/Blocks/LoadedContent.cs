@@ -9,6 +9,9 @@ namespace Blocks
 {
     class LoadedContent
     {
+        public static Texture2D ground, player, block, door;
+        public static Texture2D[] button;
+
         public static Texture2D mainMenuBackground;
         public static Texture2D mainMenuButton;
         public static SpriteFont mainMenuFont;
@@ -22,6 +25,13 @@ namespace Blocks
             ground = content.Load<Texture2D>("Ground2");
             player = content.Load<Texture2D>("Player");
             spikes = content.Load<Texture2D>("Spikes");
+            block = content.Load<Texture2D>("Block");
+            button = new Texture2D[4];
+            for (int i = 0; i < button.Length; i++)
+            {
+                button[i]=content.Load<Texture2D>("button/button.000"+(i+1));
+            }
+            door = content.Load<Texture2D>("Door");
         }
     }
 }

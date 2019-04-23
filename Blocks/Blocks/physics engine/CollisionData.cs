@@ -10,7 +10,7 @@ namespace Blocks
     {
         Collider myCollider, otherCollider;
         bool didCollide;
-        float collisionDepth;
+        float collisionDepth, restitution;
         Vector2 collisionAngle;
 
         public CollisionData(bool didCollide, float collisionDepth, Vector2 collisionAngle, Collider myCollider, Collider otherCollider)
@@ -20,6 +20,7 @@ namespace Blocks
             this.collisionAngle = collisionAngle;
             this.myCollider = myCollider;
             this.otherCollider = otherCollider;
+            restitution = Math.Min(myCollider.Body.Restitution, otherCollider.Body.Restitution);
         }
 
         public Vector2 CollisionAngle
@@ -84,6 +85,19 @@ namespace Blocks
             set
             {
                 otherCollider = value;
+            }
+        }
+
+        public float Restitution
+        {
+            get
+            {
+                return restitution;
+            }
+
+            set
+            {
+                restitution = value;
             }
         }
     }

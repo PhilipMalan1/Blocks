@@ -36,8 +36,8 @@ namespace Blocks
         {
             IsMouseVisible = true;
             Window.Title = "Blocks";
-            graphics.PreferredBackBufferWidth = 1728;
-            graphics.PreferredBackBufferHeight = 972;
+            graphics.PreferredBackBufferWidth = 1900;
+            graphics.PreferredBackBufferHeight = 900;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             LoadedContent.LoadContent(Content);

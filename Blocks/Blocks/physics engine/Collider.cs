@@ -10,6 +10,7 @@ namespace Blocks
     {
         Body body;
         Func<CollisionData, bool> onCollision;
+        Action<CollisionData, bool> didCollide;
         CollisionGroup collisionGroup;
 
         /// <summary>
@@ -64,6 +65,19 @@ namespace Blocks
             }
         }
 
+        public Action<CollisionData, bool> DidCollide
+        {
+            get
+            {
+                return didCollide;
+            }
+
+            set
+            {
+                didCollide = value;
+            }
+        }
+
         abstract public CollisionData CheckCollision(Collider collider);
 
         /// <summary>
@@ -81,7 +95,7 @@ namespace Blocks
 
             float v1xf, v2xf;
             //calculate restitution
-            float restitution = Math.Min(myCollider.Body.Restitution, otherCollider.body.Restitution);
+            float restitution = collisionData.Restitution;
 
             //find the velocity of both objects in the direction of the collision
             float v1xi = Vector2.Dot(myCollider.Body.Vel, collisionData.CollisionAngle);
@@ -96,7 +110,7 @@ namespace Blocks
             //Don't resolve the collision if the objects are moving away from each other
             if (timeSinceCollision < 0) return;
             //limit how far objects can be pushed
-            if (timeSinceCollision > 1f / 60) timeSinceCollision = 1f / 60;
+            if (timeSinceCollision > 1f / 30) timeSinceCollision = 1f / 30;
 
             //It's rewind time! (update positions)
             myCollider.Body.Pos -= myCollider.Body.Vel * timeSinceCollision;

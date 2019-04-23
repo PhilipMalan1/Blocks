@@ -57,8 +57,16 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DrawLayer.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameObjects\Spikes.cs" />
+    <Compile Include="GameObjects.cs" />
+    <Compile Include="GameObjects\Block.cs" />
+    <Compile Include="GameObjects\Button.cs" />
+    <Compile Include="GameObjects\Door.cs" />
+    <Compile Include="GameObjects\FloatingText.cs" />
+    <Compile Include="IHoldable.cs" />
+    <Compile Include="LoadManager.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="ICameraFocus.cs" />
     <Compile Include="IInput.cs" />

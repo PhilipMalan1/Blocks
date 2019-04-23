@@ -24,6 +24,11 @@ namespace Blocks
         /// <returns></returns>
         public bool CanCollide(Collider collider1, Collider collider2)
         {
+            CollisionGroup cg1 = collider1.CollisionGroup;
+            CollisionGroup cg2 = collider2.CollisionGroup;
+
+            if ((cg1 & cg2) == CollisionGroup.Ground)
+                return false;
             return true;
         }
 
@@ -49,20 +54,64 @@ namespace Blocks
                                 CollisionData collisionData = collider1.CheckCollision(collider2);
                                 if(collisionData.DidCollide)
                                 {
-                                    bool shouldResolve=false;
-                                    if (collider1.OnCollision.Invoke(collisionData))
-                                        shouldResolve = true;
+                                    bool shouldResolve=true;
+                                    if (!collider1.OnCollision.Invoke(collisionData))
+                                        shouldResolve = false;
 
                                     CollisionData collisionData2 = collisionData;
                                     collisionData2.CollisionAngle = -collisionData.CollisionAngle;
                                     collisionData2.MyCollider = collisionData.OtherCollider;
                                     collisionData2.OtherCollider = collisionData.MyCollider;
 
-                                    if (collider2.OnCollision.Invoke(collisionData2))
-                                        shouldResolve = true;
+                                    if (!collider2.OnCollision.Invoke(collisionData2))
+                                        shouldResolve = false;
 
                                     if (shouldResolve)
+                                    {
                                         Collider.ResolveCollision(collisionData);
+                                        CheckForMoreCollisions(i);
+                                        CheckForMoreCollisions(j);
+                                    }
+
+                                    collider1.DidCollide?.Invoke(collisionData, shouldResolve);
+                                    collider2.DidCollide?.Invoke(collisionData2, shouldResolve);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void CheckForMoreCollisions(int i)
+        {
+            for (int j = bodies.Count()-1; j >= 0; j--)
+            {
+                if (j == i) continue;
+                foreach (Collider collider1 in bodies[i].Colliders)
+                {
+                    foreach (Collider collider2 in bodies[j].Colliders)
+                    {
+                        if (CanCollide(collider1, collider2))
+                        {
+                            CollisionData collisionData = collider1.CheckCollision(collider2);
+                            if (collisionData.DidCollide)
+                            {
+                                bool shouldResolve = true;
+                                if (!collider1.OnCollision.Invoke(collisionData))
+                                    shouldResolve = false;
+
+                                CollisionData collisionData2 = collisionData;
+                                collisionData2.CollisionAngle = -collisionData.CollisionAngle;
+                                collisionData2.MyCollider = collisionData.OtherCollider;
+                                collisionData2.OtherCollider = collisionData.MyCollider;
+
+                                if (!collider2.OnCollision.Invoke(collisionData2))
+                                    shouldResolve = false;
+
+                                if (shouldResolve)
+                                {
+                                    Collider.ResolveCollision(collisionData);
                                 }
                             }
                         }

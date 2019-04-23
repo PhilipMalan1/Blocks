@@ -10,8 +10,6 @@ namespace Blocks.Screens
 {
     public class LevelTestScreen:Screen
     {
-        private GraphicsDevice graphicsDevice;
-        private Game1 game1;
         private LevelEditorScreen levelEditor;
         private Level level;
         private GameScreen gameScreen;
@@ -40,7 +38,7 @@ namespace Blocks.Screens
             key = Keyboard.GetState();
             if (key.IsKeyDown(Keys.T) && keyi.IsKeyUp(Keys.T))
             {
-                level.Initialize(levelEditor.BlockWidth);
+                level.Initialize(levelEditor.BlockWidth, graphicsDevice);
                 game1.SetScreen(levelEditor);
             }
 

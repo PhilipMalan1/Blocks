@@ -62,33 +62,36 @@ namespace Blocks
 
                     //check if it's a vertical collision
                     Vector2 r = otherPos - myPos;
-                    if(Math.Abs(r.Y)>=Math.Abs(r.X))
+                    float collisionAngleConstant = (Dimensions.Y + rectangleCollider.Dimensions.Y) / (Dimensions.X + rectangleCollider.Dimensions.X);
+                    if(Math.Abs(r.Y)>= collisionAngleConstant * Math.Abs(r.X))
                     {
-                        //collision depth
-                        collisionDepth = Dimensions.Y / 2 + rectangleCollider.Dimensions.Y / 2 - Math.Abs(myPos.Y - otherPos.Y);
-                        //collision angle
                         if (myPos.Y < otherPos.Y)
                         {
                             collisionAngle = new Vector2(0, 1);
+                            //collision depth
+                            collisionDepth = myPos.Y + Dimensions.Y - otherPos.Y;
                         }
                         else
                         {
                             collisionAngle = new Vector2(0, -1);
+                            //collision depth
+                            collisionDepth = otherPos.Y + rectangleCollider.Dimensions.Y - myPos.Y;
                         }
                     }
                     //if it's a horizontal collision
                     else
                     {
-                        //collision depth
-                        collisionDepth = Dimensions.X / 2 + rectangleCollider.Dimensions.X / 2 - Math.Abs(myPos.X - otherPos.X);
-                        //collision angle
                         if (myPos.X < otherPos.X)
                         {
                             collisionAngle = new Vector2(1, 0);
+                            //collision depth
+                            collisionDepth = myPos.X + Dimensions.X - otherPos.X;
                         }
                         else
                         {
                             collisionAngle = new Vector2(-1, 0);
+                            //collision depth
+                            collisionDepth = otherPos.X + rectangleCollider.Dimensions.X - myPos.X;
                         }
                     }
                 }
