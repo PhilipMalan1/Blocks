@@ -10,6 +10,7 @@ namespace Blocks
         Ground,
         Player,
         Block,
-        Button
+        Button,
+        FloatingText
     }
 }

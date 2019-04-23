@@ -11,6 +11,7 @@ namespace Blocks
         Ground,
         Door,
         Arrow,
+        FloatingText,
         Player,
         Block,
         Button,

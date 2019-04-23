@@ -32,13 +32,14 @@ namespace Blocks
         string levelDir;
         SpriteFont font;
 
+        State state;
         GameObjectsEnum current;
-        bool isSelecting;
         GameObject currentSelection;
         int currentSelectionX, currentSelectionY, currentSelectionLayer;
         int objectRow, objectsPerRow;
 
         int previousX, previousY;
+        Keys previousKey;
 
         public float BlockWidth
         {
@@ -74,6 +75,8 @@ namespace Blocks
             objectRow = 0;
             objectsPerRow = graphicsDevice.Viewport.Width / (int)blockWidth;
 
+            state = State.Draw;
+
             if(load) Load();
         }
 
@@ -106,15 +109,17 @@ namespace Blocks
 
             //draw block description
             string str = "";
-            if (isSelecting)
+            if (state == State.Select)
             {
                 if (currentSelection != null)
                     str = currentSelection.DataValueName() + " Pos: (" + currentSelectionX + ", " + currentSelectionY + ") Layer: " + currentSelectionLayer;
                 else
                     str = "No object selected.";
             }
-            else
-                str = "Current Object: "+Enum.GetName(typeof(GameObjectsEnum), current);
+            else if (state == State.Draw)
+                str = "Current Object: " + Enum.GetName(typeof(GameObjectsEnum), current);
+            else if (state == State.Typeing)
+                str = "Typing";
             spriteBatch.DrawString(font, str, new Vector2(0, graphicsDevice.Viewport.Height - font.MeasureString(str).Y / 100 * blockWidth / 4), Color.White, 0, new Vector2(), 1f / 100 * blockWidth / 4, SpriteEffects.None, (float)DrawLayer.UI / 1000);
 
             spriteBatch.End();
@@ -143,18 +148,18 @@ namespace Blocks
                     if (mousei.LeftButton == ButtonState.Released)
                     {
                         current = (GameObjectsEnum)selectedBlock;
-                        isSelecting = false;
+                        state = State.Draw;
                     }
                 }
                 //select tool
                 else if (mouse.Y < blockWidth * 3f / 2 && mouse.X < font.MeasureString("Select").X / 100 * blockWidth / 4)
                 {
-                    isSelecting = true;
+                    state = State.Select;
                 }
                 else
                 {
                     //select block
-                    if (isSelecting && mousei.LeftButton==ButtonState.Released)
+                    if (state==State.Select && mousei.LeftButton==ButtonState.Released)
                     {
                         if (level.CheckForObject(x, y))
                         {
@@ -174,8 +179,8 @@ namespace Blocks
                         else
                             currentSelection = null;
                     }
-                    //draw unless the select tool is active
-                    else if(!isSelecting)
+                    //draw
+                    else if(state==State.Draw)
                     {
                         //draw block if there isn't a block there
                         if (!level.CheckForObject(x, y))
@@ -188,9 +193,12 @@ namespace Blocks
             }
 
             //toggle select tool
-            if(key.IsKeyDown(Keys.E) && keyi.IsKeyUp(Keys.E))
+            if(state!=State.Typeing && key.IsKeyDown(Keys.E) && keyi.IsKeyUp(Keys.E))
             {
-                isSelecting = !isSelecting;
+                if (state == State.Select)
+                    state = State.Draw;
+                else
+                    state = State.Select;
             }
 
             //delet blocks if right click wasn't held for the previous frame and the mouse didn't move to a different block
@@ -200,16 +208,19 @@ namespace Blocks
             }
 
             //move camera
-            float cameraSpeed = blockWidth;
-            if (key.IsKeyDown(Keys.D)) camera.X += cameraSpeed;
-            if (key.IsKeyDown(Keys.A)) camera.X -= cameraSpeed;
-            if (key.IsKeyDown(Keys.W)) camera.Y -= cameraSpeed;
-            if (key.IsKeyDown(Keys.S)) camera.Y += cameraSpeed;
-            if (camera.X < 0) camera.X = 0;
-            if (camera.Y > -graphicsDevice.Viewport.Height) camera.Y = -graphicsDevice.Viewport.Height;
+            if(state!=State.Typeing)
+            {
+                float cameraSpeed = blockWidth;
+                if (key.IsKeyDown(Keys.D)) camera.X += cameraSpeed;
+                if (key.IsKeyDown(Keys.A)) camera.X -= cameraSpeed;
+                if (key.IsKeyDown(Keys.W)) camera.Y -= cameraSpeed;
+                if (key.IsKeyDown(Keys.S)) camera.Y += cameraSpeed;
+                if (camera.X < 0) camera.X = 0;
+                if (camera.Y > -graphicsDevice.Viewport.Height) camera.Y = -graphicsDevice.Viewport.Height;
+            }
 
             //change data value
-            if(isSelecting && currentSelection!=null)
+            if(state==State.Select && currentSelection!=null)
             {
                 if (key.IsKeyDown(Keys.OemComma) && keyi.IsKeyUp(Keys.OemComma))
                     currentSelection.PreviousDataValue();
@@ -222,7 +233,7 @@ namespace Blocks
             {
                 if (currentSelection != null)
                 {
-                    if (isSelecting && mouse.LeftButton == ButtonState.Pressed && (x != previousX || y != previousY))
+                    if (state==State.Select && mouse.LeftButton == ButtonState.Pressed && (x != previousX || y != previousY))
                     {
                         if(MoveTile(currentSelection, currentSelectionX, currentSelectionY, x, y))
                         {
@@ -262,12 +273,94 @@ namespace Blocks
             }
             catch(Exception) { }
 
+            //If selecting floating text, edit text
+            if (currentSelection is FloatingText)
+            {
+                FloatingText floatingText = (FloatingText)currentSelection;
+                if (state == State.Typeing)
+                {
+                    Keys currentKey;
+                    int i = 0;
+                    do
+                    {
+                        if(i>=key.GetPressedKeys().Count())
+                        {
+                            currentKey = Keys.None;
+                            break;
+                        }
+                        currentKey = key.GetPressedKeys()[i];
+                        i++;
+                    } while (currentKey == Keys.LeftShift || currentKey == Keys.RightShift || currentKey==Keys.Enter);
+
+                    if (keyi.IsKeyDown(currentKey))
+                        currentKey = Keys.None;
+
+                    if (currentKey != Keys.None)
+                    {
+                        switch (currentKey)
+                        {
+                            case Keys.Back:
+                                if(floatingText.Text.Count()>0)
+                                    floatingText.Text = floatingText.Text.Substring(0, floatingText.Text.Count() - 1);
+                                break;
+                            case Keys.Space:
+                                floatingText.Text += ' ';
+                                break;
+                            case Keys.D1:
+                                if (key.IsKeyUp(Keys.LeftShift) && key.IsKeyUp(Keys.RightShift))
+                                    floatingText.Text += '1';
+                                else
+                                    floatingText.Text += '!';
+                                break;
+                            case Keys.OemComma:
+                                if (key.IsKeyUp(Keys.LeftShift) && key.IsKeyUp(Keys.RightShift))
+                                    floatingText.Text += ',';
+                                else
+                                    floatingText.Text += '<';
+                                break;
+                            case Keys.OemPeriod:
+                                if (key.IsKeyUp(Keys.LeftShift) && key.IsKeyUp(Keys.RightShift))
+                                    floatingText.Text += '.';
+                                else
+                                    floatingText.Text += '>';
+                                break;
+                            case Keys.OemQuestion:
+                                if (key.IsKeyUp(Keys.LeftShift) && key.IsKeyUp(Keys.RightShift))
+                                    floatingText.Text += '/';
+                                else
+                                    floatingText.Text += '?';
+                                break;
+                            case Keys.OemSemicolon:
+                                if (key.IsKeyUp(Keys.LeftShift) && key.IsKeyUp(Keys.RightShift))
+                                    floatingText.Text += ';';
+                                else
+                                    floatingText.Text += ':';
+                                break;
+                            default:
+                                if (key.IsKeyUp(Keys.LeftShift) && key.IsKeyUp(Keys.RightShift))
+                                    floatingText.Text += currentKey.ToString().ToLower();
+                                else
+                                    floatingText.Text += currentKey.ToString().ToUpper();
+                                break;
+                        }
+                    }
+                }
+
+                if (key.IsKeyDown(Keys.Enter) && keyi.IsKeyUp(Keys.Enter))
+                {
+                    if (state == State.Select)
+                        state = State.Typeing;
+                    else if (state == State.Typeing)
+                        state = State.Select;
+                }
+            }
+
             //save
-            if (key.IsKeyDown(Keys.Escape) || (key.IsKeyDown(Keys.Q) && keyi.IsKeyUp(Keys.Q)))
+            if (state!=State.Typeing && (key.IsKeyDown(Keys.Escape) || (key.IsKeyDown(Keys.Q) && keyi.IsKeyUp(Keys.Q))))
                 Save();
 
             //test level
-            if (key.IsKeyDown(Keys.T) && keyi.IsKeyUp(Keys.T))
+            if (state != State.Typeing && key.IsKeyDown(Keys.T) && keyi.IsKeyUp(Keys.T))
                 game1.SetScreen(new Screens.LevelTestScreen(graphicsDevice, game1, this, level));
 
             //set previous x and y
@@ -304,6 +397,9 @@ namespace Blocks
                 case GameObjectsEnum.Button:
                     level.AddGameObject(new Button(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
+                case GameObjectsEnum.FloatingText:
+                    level.AddGameObject(new FloatingText(level, blockWidth, new Vector2(x, -y)), x, y);
+                    break;
             }
         }
 
@@ -322,6 +418,9 @@ namespace Blocks
                     break;
                 case GameObjectsEnum.Button:
                     Button.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth), blockWidth);
+                    break;
+                case GameObjectsEnum.FloatingText:
+                    FloatingText.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
             }
         }
@@ -342,6 +441,13 @@ namespace Blocks
             level = (Level)formatter.Deserialize(stream);
             stream.Close();
             level.Initialize(blockWidth, graphicsDevice);
+        }
+
+        private enum State
+        {
+            Draw,
+            Select,
+            Typeing
         }
     }
 }

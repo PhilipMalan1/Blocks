@@ -302,6 +302,7 @@ namespace Blocks
         public override void Unload()
         {
             body.Unload();
+            Die();
         }
 
         public void Die()
