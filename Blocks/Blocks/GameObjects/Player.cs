@@ -189,8 +189,8 @@ namespace Blocks
                 body.Gravity = gravity;
 
             //max fall speed
-            if (Vel.Y > BlockWidth * 80)
-                Vel = new Vector2(Vel.X, BlockWidth * 80);
+            if (Vel.Y > BlockWidth * 30)
+                Vel = new Vector2(Vel.X, BlockWidth * 30);
 
             if (playerState == PlayerState.Turning)
             {

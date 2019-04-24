@@ -104,7 +104,7 @@ namespace Blocks
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)
         {
-            spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X), (int)(Pos.Y - camera.Y), (int)BlockWidth, (int)(height*percentClosed)), new Rectangle(0, (int)(image.Height*(1-percentClosed)), image.Width, (int)(image.Height*percentClosed)), Color.White, 0, new Vector2(), SpriteEffects.None, (float)DrawLayer.Door / 1000);
+            spritebach.Draw(image, new Rectangle((int)(Pos.X - camera.X), (int)(Pos.Y - camera.Y), (int)BlockWidth, (int)(height*(.2f+percentClosed*.8))), new Rectangle(0, (int)(image.Height*(1-percentClosed)), image.Width, (int)(image.Height*percentClosed)), Color.White, 0, new Vector2(), SpriteEffects.None, (float)DrawLayer.Door / 1000);
         }
 
         public override void Initialize(Level level, float blockWidth)
@@ -124,7 +124,10 @@ namespace Blocks
         private void UpdateCollider()
         {
             body.Colliders.RemoveAt(0);
-            body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(0, 0), new Vector2(BlockWidth, height*percentClosed), collisionData => true));
+            if(percentClosed==1)
+                body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(0, 0), new Vector2(BlockWidth, height), collisionData => true));
+            else
+                body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(0, 0), new Vector2(BlockWidth, 0), collisionData => true));
         }
 
         public override void Load()
