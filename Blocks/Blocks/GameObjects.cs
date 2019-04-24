@@ -11,6 +11,7 @@ namespace Blocks
         Player,
         Block,
         Button,
-        FloatingText
+        FloatingText,
+        Goal
     }
 }

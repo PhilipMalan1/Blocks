@@ -18,7 +18,9 @@ namespace Blocks
         [NonSerialized]
         private bool facingRight;
         [NonSerialized]
-        private bool onGround, hasJumped;
+        private bool hasJumped;
+        [NonSerialized]
+        private int jumpTimer;
         [NonSerialized]
         private int animationTimer;
         [NonSerialized]
@@ -58,7 +60,7 @@ namespace Blocks
             BlockWidth = blockWidth;
             image = LoadedContent.player;
             facingRight = true;
-            onGround = hasJumped = false;
+            jumpTimer = 0;
             animationTimer = 0;
             playerState = PlayerState.Standing;
 
@@ -72,7 +74,7 @@ namespace Blocks
                 //check if you can jump
                 if (collisionData.CollisionAngle.Y == 1 && hasCollided)
                 {
-                    onGround = true;
+                    jumpTimer = 5;
                 }
             };
         }
@@ -227,7 +229,8 @@ namespace Blocks
             if (heldItem != null)
                 heldItem.Pos += Vel / 60;
 
-            onGround = false;
+            if (jumpTimer > 0)
+                jumpTimer--;
         }
 
         public void UpdateInput(GameTime gameTime, KeyboardState key, KeyboardState keyi, MouseState mouse, MouseState mousei)
@@ -248,7 +251,7 @@ namespace Blocks
             //jump
             if (key.IsKeyDown(Keys.W) && keyi.IsKeyUp(Keys.W))
                 hasJumped = false;
-            if (key.IsKeyDown(Keys.W) && onGround && !hasJumped)
+            if (key.IsKeyDown(Keys.W) && jumpTimer>0 && !hasJumped)
             {
                 body.Vel = new Vector2(0, -jumpSpeed);
                 hasJumped = true;

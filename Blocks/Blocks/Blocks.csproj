@@ -64,6 +64,7 @@
     <Compile Include="GameObjects\Button.cs" />
     <Compile Include="GameObjects\Door.cs" />
     <Compile Include="GameObjects\FloatingText.cs" />
+    <Compile Include="GameObjects\Goal.cs" />
     <Compile Include="IHoldable.cs" />
     <Compile Include="LoadManager.cs" />
     <Compile Include="Screens\GameScreen.cs" />

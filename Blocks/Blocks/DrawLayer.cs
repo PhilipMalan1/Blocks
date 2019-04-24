@@ -12,6 +12,7 @@ namespace Blocks
         Door,
         Arrow,
         FloatingText,
+        Goal,
         Player,
         Block,
         Button,
