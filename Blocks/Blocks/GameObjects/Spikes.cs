@@ -65,7 +65,7 @@ namespace Blocks
             image = LoadedContent.spikes;
             body = new Body(this, level.PhysicsMangager, true, 1, 0, 0);
             body.Pos = SpawnPos * blockWidth;
-            height = (LoadedContent.spikes.Height/LoadedContent.spikes.Height)*BlockWidth;
+            height = ((LoadedContent.spikes.Width/LoadedContent.spikes.Width)*BlockWidth)/2;
             UpdateRotation();
             
         }
@@ -74,6 +74,8 @@ namespace Blocks
         {
             rotation++;
             rotation %= 4;
+            if (rotation < 0)
+                rotation += 4;
             UpdateRotation();
         }
 
