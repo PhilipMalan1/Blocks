@@ -74,7 +74,7 @@ namespace Blocks
                 //check if you can jump
                 if (collisionData.CollisionAngle.Y == 1 && hasCollided)
                 {
-                    jumpTimer = 5;
+                    jumpTimer = 7;
                 }
             };
         }
