@@ -142,6 +142,7 @@ namespace Blocks
     {
         None = 0,
         Ground = 1,
-        Player = 2
+        Player = 2,
+        Spikes = 3
     }
 }

@@ -16,6 +16,7 @@ namespace Blocks
         Player,
         Block,
         Button,
-        UI
+        UI,
+        Spikes
     }
 }
