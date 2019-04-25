@@ -388,6 +388,9 @@ namespace Blocks
                 case GameObjectsEnum.Ground:
                     level.AddGameObject(new Ground(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
+                case GameObjectsEnum.Arrows:
+                    level.AddGameObject(new Arrows(level, blockWidth, new Vector2(x, -y)), x, y);
+                    break;
                 case GameObjectsEnum.Player:
                     level.AddGameObject(new Player(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
@@ -412,6 +415,9 @@ namespace Blocks
             {
                 case GameObjectsEnum.Ground:
                     Ground.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
+                    break;
+                case GameObjectsEnum.Arrows:
+                    Arrows.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
                 case GameObjectsEnum.Player:
                     Player.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));

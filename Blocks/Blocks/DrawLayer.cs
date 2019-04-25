@@ -10,7 +10,7 @@ namespace Blocks
     {
         Ground,
         Door,
-        Arrow,
+        Arrows,
         FloatingText,
         Player,
         Block,
