@@ -16,6 +16,10 @@ namespace Blocks
         public static Texture2D mainMenuBackground;
         public static Texture2D mainMenuButton;
         public static SpriteFont mainMenuFont;
+        // R = Right
+        // UR = Up Right
+        public static Texture2D ArrowR;
+        public static Texture2D ArrowUR;
         public static void LoadContent(ContentManager content)
         {
             ground = content.Load<Texture2D>("Ground");
@@ -25,6 +29,8 @@ namespace Blocks
             ground = content.Load<Texture2D>("Ground2");
             player = content.Load<Texture2D>("Player");
             spikes = content.Load<Texture2D>("Spikes");
+            ArrowR = content.Load<Texture2D>("Arrow");
+            ArrowUR = content.Load<Texture2D>("Arrow2");
             block = content.Load<Texture2D>("Block");
             button = new Texture2D[4];
             for (int i = 0; i < button.Length; i++)
