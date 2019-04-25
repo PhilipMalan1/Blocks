@@ -35,7 +35,6 @@ namespace Blocks
         Vector2 pos;
         [NonSerialized]
         Texture2D image;
-        KeyboardState kb;
         int rotation;
         public Arrows(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
