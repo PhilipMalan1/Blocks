@@ -12,7 +12,8 @@ namespace Blocks
         Block,
         Button,
         FloatingText,
-        Goal
+        Goal,
+        Arrows,
         Spikes
     }
 }

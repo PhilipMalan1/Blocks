@@ -9,8 +9,7 @@ namespace Blocks
 {
     class LoadedContent
     {
-        public static Texture2D ground, player, block, door, goal;
-        public static Texture2D ground, player, block, door, spikes;
+        public static Texture2D ground, player, block, door, spikes, goal;
         public static Texture2D[] button;
 
         public static Texture2D mainMenuBackground;

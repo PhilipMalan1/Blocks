@@ -8,6 +8,14 @@ using System.Text;
 
 namespace Blocks
 {
+    /// <summary>
+    ///      /\     /\
+    ///     /  \___/  \
+    ///    |           |
+    ///    |   O  O    |
+    ///    |    w      |
+    ///    |           |
+    /// </summary>
     class Arrows : GameObject
     {
         // U = Up
@@ -111,6 +119,5 @@ namespace Blocks
             return "Object: Arrows DataValue: rotation";
 
         }
-
     }
 }
