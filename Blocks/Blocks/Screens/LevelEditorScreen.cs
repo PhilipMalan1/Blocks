@@ -391,6 +391,9 @@ namespace Blocks
                 case GameObjectsEnum.Player:
                     level.AddGameObject(new Player(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
+                case GameObjectsEnum.Spikes:
+                    level.AddGameObject(new Spikes(level, blockWidth, new Vector2(x, -y)), x, y);
+                    break;
                 case GameObjectsEnum.Block:
                     level.AddGameObject(new Block(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
@@ -412,6 +415,9 @@ namespace Blocks
                     break;
                 case GameObjectsEnum.Player:
                     Player.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
+                    break;
+                case GameObjectsEnum.Spikes:
+                    Spikes.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
                 case GameObjectsEnum.Block:
                     Block.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
@@ -443,6 +449,12 @@ namespace Blocks
             level.Initialize(blockWidth, graphicsDevice);
         }
 
+        public enum GameObjects
+        {
+            Ground,
+            Player,
+            Spikes
+        }
         private enum State
         {
             Draw,
