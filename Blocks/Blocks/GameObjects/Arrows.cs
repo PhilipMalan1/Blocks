@@ -29,9 +29,9 @@ namespace Blocks
         Texture2D image;
         KeyboardState kb;
         int rotation;
-        int roting;
         public Arrows(Level level, float blockWidth, Vector2 spawnPos) : base(level, blockWidth, spawnPos)
         {
+            rotation = 0;
         }
 
         public override Vector2 Pos
@@ -68,42 +68,22 @@ namespace Blocks
             image = LoadedContent.ArrowR;
             pos = SpawnPos * (int)blockWidth;
             rotation = 0;
-            roting = 0;
         }
 
         public override void NextDataValue()
         {
             rotation++;
+            rotation %= 8;
         }
 
         public override void PreviousDataValue()
         {
+            rotation--;
+            rotation %= 8;
         }
         public override void Update(GameTime gameTime)
         {
-            switch(rotation)
-            {
-                case (0):
-                    {
-                        roting = 0;
-                        break;
-                    }
-                case (1):
-                    {
-                        roting = 90;
-                        break;
-                    }
-                case (2):
-                    {
-                        roting = 180;
-                        break;
-                    }
-                case (3):
-                    {
-                        roting = 270;
-                        break;
-                    }
-            }
+
         }
 
         public static void DrawIcon(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect)
@@ -113,7 +93,8 @@ namespace Blocks
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)
         {
-            spritebach.Draw(image, new Rectangle((int)Pos.X - (int)camera.X, (int)Pos.Y - (int)camera.Y, (int)BlockWidth, (int)BlockWidth), new Rectangle(0, 0, 108, 108), Color.White,MathHelper.ToRadians( rotation), new Vector2(), SpriteEffects.None, (float)DrawLayer.Arrows / 1000);
+            Vector2 origin = new Vector2(image.Width / 2, -image.Width / 2 + image.Height);
+            spritebach.Draw(image, new Rectangle((int)Pos.X - (int)camera.X, (int)Pos.Y - (int)camera.Y, (int)BlockWidth, (int)BlockWidth), new Rectangle(0, 0, 108, 108), Color.White, (float)Math.PI / 4 * rotation, origin, SpriteEffects.None, (float)DrawLayer.Arrows / 1000);
         }
 
         public override void Load()
@@ -127,7 +108,9 @@ namespace Blocks
 
         public override string DataValueName()
         {
-            throw new NotImplementedException();
+            return "Object: Arrows DataValue: rotation";
+
         }
+
     }
 }
