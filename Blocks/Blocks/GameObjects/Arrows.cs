@@ -16,6 +16,7 @@ namespace Blocks
     ///    |    w      |
     ///    |           |
     /// </summary>
+    [Serializable]
     class Arrows : GameObject
     {
         // U = Up
@@ -74,7 +75,6 @@ namespace Blocks
             BlockWidth = blockWidth;
             image = LoadedContent.ArrowR;
             pos = SpawnPos * (int)blockWidth;
-            rotation = 0;
         }
 
         public override void NextDataValue()
