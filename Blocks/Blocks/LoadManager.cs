@@ -51,11 +51,15 @@ namespace Blocks
 
         public void Update(Rectangle screen, List<GameObject> loaded)
         {
-            int startX = (int)(Math.Min(screen.X, screeni.X) / blockWidth)-5;
+            /*int startX = (int)(Math.Min(screen.X, screeni.X) / blockWidth)-5; //hopefully this code isn't necissary
             int endX = (int)(Math.Max(screen.X + screen.Width, screeni.X + screeni.Width) / blockWidth + 1)+5;
             int endY= (int)(-Math.Max(screen.Y, screeni.Y) / blockWidth)+5;
-            int startY = (int)(-Math.Min(screen.Y + screen.Height, screeni.Y + screeni.Height) / blockWidth - 1)-5;
-         
+            int startY = (int)(-Math.Min(screen.Y + screen.Height, screeni.Y + screeni.Height) / blockWidth - 1)-5;*/
+            int startX = (int)(screen.X / blockWidth) - 5;
+            int endX = (int)((screen.X + screen.Width) / blockWidth + 1) + 5;
+            int endY = (int)(-screen.Y / blockWidth) + 5;
+            int startY = (int)((-screen.Y - screen.Height) / blockWidth - 1) - 5;
+
             for (int x = startX; x <= endX; x++)
             {
                 for (int y = startY; y <= endY; y++)
@@ -64,7 +68,8 @@ namespace Blocks
                     {
                         for (int i = 0; i < level.LevelObjects[x][y].Count(); i++)
                         {
-                            if (level.LevelObjects[x][y][i].LoadRect.Intersects(screen))
+                            GameObject gameObject = level.LevelObjects[x][y][i];
+                            if (gameObject.LoadRect.Intersects(screen) && (gameObject.LoadIfAlreadyOnScreen || !gameObject.LoadRect.Intersects(screeni)))
                             {
                                 if(!loaded.Contains(level.LevelObjects[x][y][i]))
                                 {

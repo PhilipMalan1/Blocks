@@ -74,6 +74,14 @@ namespace Blocks
             }
         }
 
+        public virtual bool LoadIfAlreadyOnScreen
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public abstract void NextDataValue();
         public abstract void PreviousDataValue();
         public abstract string DataValueName();

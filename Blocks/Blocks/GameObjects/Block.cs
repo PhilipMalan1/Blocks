@@ -38,6 +38,14 @@ namespace Blocks
             }
         }
 
+        public override bool LoadIfAlreadyOnScreen
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public bool IsHeld
         {
             get
