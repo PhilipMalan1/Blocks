@@ -89,6 +89,7 @@ namespace Blocks
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             screen.Draw(gameTime, spriteBatch);
+
             base.Draw(gameTime);
         }
 

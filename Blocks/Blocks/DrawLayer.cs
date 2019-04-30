@@ -8,6 +8,7 @@ namespace Blocks
     //The first layer is drawn first
     public enum DrawLayer
     {
+        Background,
         Ground,
         Door,
         Arrows,

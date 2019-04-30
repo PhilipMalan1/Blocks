@@ -18,9 +18,18 @@ namespace Blocks
         // R = Right
         // UR = Up Right
         public static Texture2D ArrowR;
+        public static Texture2D bg1;
+        public static Texture2D bg2;
+        public static Texture2D bg3;
+        public static Texture2D bg4;
+        public static Texture2D bg5;
+        public static Texture2D bg6;
+        public static Texture2D bg7;
+        public static Texture2D bg8;
         public static Texture2D ArrowUR;
         public static void LoadContent(ContentManager content)
         {
+
             ground = content.Load<Texture2D>("Ground");
             mainMenuBackground = content.Load<Texture2D>("start back round");
             mainMenuButton = content.Load<Texture2D>("Button");
@@ -32,6 +41,13 @@ namespace Blocks
             ArrowUR = content.Load<Texture2D>("Arrow2");
             block = content.Load<Texture2D>("Block");
             button = new Texture2D[4];
+            bg1 = content.Load<Texture2D>("bg/bg.0001");
+            bg2 = content.Load<Texture2D>("bg/bg.0002");
+            bg3 = content.Load<Texture2D>("bg/bg.0003");
+            bg4 = content.Load<Texture2D>("bg/bg.0004");
+            bg6 = content.Load<Texture2D>("bg/bg.0006");
+            bg7 = content.Load<Texture2D>("bg/bg.0007");
+            bg8 = content.Load<Texture2D>("bg/bg.0008");
             for (int i = 0; i < button.Length; i++)
             {
                 button[i]=content.Load<Texture2D>("button/button.000"+(i+1));

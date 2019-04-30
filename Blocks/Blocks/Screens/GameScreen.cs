@@ -18,7 +18,9 @@ namespace Blocks
         KeyboardState key, keyi;
         MouseState mouse, mousei;
         float blockWidth;
-
+        Texture2D background;
+        int timer;
+        int currentBack;
         public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir) : base(graphicsDevice, game1)
         {
             this.levelDir = levelDir;
@@ -26,6 +28,7 @@ namespace Blocks
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
             blockWidth = graphicsDevice.Viewport.Height / 15;
+            background = LoadedContent.bg1;
 
             Load();
         }
@@ -37,6 +40,7 @@ namespace Blocks
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
             blockWidth = graphicsDevice.Viewport.Height / 15;
+            background = LoadedContent.bg1;
 
             level.Initialize(blockWidth, graphicsDevice);
         }
@@ -44,19 +48,71 @@ namespace Blocks
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, blendState: BlendState.AlphaBlend);
+            //draw background 
+            spriteBatch.Draw(background, new Rectangle(0,0,graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height),new Rectangle(0,0, 1920, 1080), Color.White,0,new Vector2(0,0), SpriteEffects.None,(float)DrawLayer.Background/1000);
+            
 
             //draw level
             foreach (GameObject gameObject in level.Loaded)
             {
                 gameObject.Draw(gameTime, spriteBatch, level.Camera);
             }
-
+            
             spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
         {
             level.Update(gameTime);
+            //update the background
+
+            timer++;
+            if (timer % 60 == 0)
+                currentBack++;
+            switch(currentBack)
+            {
+                case (0):
+                    {
+                        background = LoadedContent.bg1;
+                        break;
+                    }
+                case (1):
+                    {
+                        background = LoadedContent.bg2;
+                        break;
+                    }
+                case (2):
+                    {
+                        background = LoadedContent.bg3;
+                        break;
+                    }
+                case (3):
+                    {
+                        background = LoadedContent.bg4;
+                        break;
+                    }
+                case (4):
+                    {
+                        background = LoadedContent.bg6;//remove when 5 is inputed
+                        //background = LoadedContent.bg5;
+                        break;
+                    }
+                case (5):
+                    {
+                        background = LoadedContent.bg6;
+                        break;
+                    }
+                case (6):
+                    {
+                        background = LoadedContent.bg7;
+                        break;
+                    }
+                case (7):
+                    {
+                        background = LoadedContent.bg8;
+                        break;
+                    }
+            }
 
             //input updates
             keyi = key;
