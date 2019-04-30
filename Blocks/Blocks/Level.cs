@@ -61,7 +61,7 @@ namespace Blocks
                 }
             }
 
-            if(CameraFocus!=null) camera = CameraFocus.Pos + new Vector2(blockWidth / 2, blockWidth / 2) - new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 2);
+            if (CameraFocus != null) camera = CameraFocus.Pos + new Vector2(blockWidth / 2, blockWidth / 2) - new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height * 3 / 5);
             if (camera.X < 0)
                 camera.X = 0;
 
@@ -76,7 +76,7 @@ namespace Blocks
         public void Update(GameTime gameTime)
         {
             //move camera
-            Vector2 destination = CameraFocus.Pos + new Vector2(blockWidth / 2, blockWidth / 2) - new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 2);
+            Vector2 destination = CameraFocus.Pos + new Vector2(blockWidth / 2, blockWidth / 2) - new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height * 3 / 5);
             if (destination.X < 0)
                 destination.X = 0;
             if (destination.Y > -graphicsDevice.Viewport.Height)

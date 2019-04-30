@@ -31,7 +31,7 @@ namespace Blocks
         {
             get
             {
-                return new Rectangle((int)(Pos.X), (int)(Pos.Y), (int)(blockWidth * 2), (int)(blockWidth * 2));
+                return new Rectangle((int)(Pos.X-BlockWidth), (int)(Pos.Y-BlockWidth), (int)(blockWidth * 3), (int)(blockWidth * 3));
             }
         }
 

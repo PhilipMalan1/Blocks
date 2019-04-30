@@ -9,7 +9,7 @@ namespace Blocks
 {
     class LoadedContent
     {
-        public static Texture2D ground, player, block, door, spikes;
+        public static Texture2D ground, player, block, door, spikes, goal;
         public static Texture2D[] button;
 
         public static Texture2D mainMenuBackground;
@@ -37,6 +37,7 @@ namespace Blocks
                 button[i]=content.Load<Texture2D>("button/button.000"+(i+1));
             }
             door = content.Load<Texture2D>("Door");
+            goal = content.Load<Texture2D>("EndPole");
         }
     }
 }

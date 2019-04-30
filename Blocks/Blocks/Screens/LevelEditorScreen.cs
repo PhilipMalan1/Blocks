@@ -406,6 +406,9 @@ namespace Blocks
                 case GameObjectsEnum.FloatingText:
                     level.AddGameObject(new FloatingText(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
+                case GameObjectsEnum.Goal:
+                    level.AddGameObject(new Goal(level, blockWidth, new Vector2(x, -y)), x, y);
+                    break;
             }
         }
 
@@ -433,6 +436,9 @@ namespace Blocks
                     break;
                 case GameObjectsEnum.FloatingText:
                     FloatingText.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
+                    break;
+                case GameObjectsEnum.Goal:
+                    Goal.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
             }
         }
