@@ -63,8 +63,8 @@ namespace Blocks
                 GameScreen gameScreen = new GameScreen(graphicsDevice, game1, @"Content/Levels/" + LevelManager.firstLevel()+".dat", () =>
                 {
                     string levelDir = GameScreen.LevelDir;
-                     gameScreen = new GameScreen(graphicsDevice, game1, @"Content/Levels/" + LevelManager.firstLevel()+".dat", GameScreen.OnCompletion1);
-                     game1.SetScreen(gameScreen);
+                    gameScreen = new GameScreen(graphicsDevice, game1, @"Content/Levels/" + LevelManager.firstLevel()+".dat", GameScreen.OnCompletion1);
+                    game1.SetScreen(gameScreen);
                 });
                 game1.SetScreen(gameScreen);
             }
