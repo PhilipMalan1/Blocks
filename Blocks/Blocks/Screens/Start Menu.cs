@@ -43,7 +43,7 @@ namespace Blocks
             if (md.LeftButton == ButtonState.Pressed && md.X > exitRec.X && md.X < exitRec.X + exitRec.Width && md.Y > exitRec.Y && md.Y < exitRec.Y + exitRec.Height)
                 game1.Exit();
             if (md.LeftButton == ButtonState.Pressed && md.X > playRec.X && md.X < playRec.X + playRec.Width && md.Y > playRec.Y && md.Y < playRec.Y + playRec.Height)
-                game1.SetScreen(new GameScreen(graphicsDevice,game1,@"Content/Levels/Level 1.dat"));
+                game1.SetScreen(new GameScreen(graphicsDevice,game1, @"Content/Levels/"+LevelManager.firstLevel()));
         }
     }
 }
