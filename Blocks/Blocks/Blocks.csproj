@@ -68,6 +68,7 @@
     <Compile Include="GameObjects\FloatingText.cs" />
     <Compile Include="GameObjects\Goal.cs" />
     <Compile Include="IHoldable.cs" />
+    <Compile Include="LevelManager.cs" />
     <Compile Include="LoadManager.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="ICameraFocus.cs" />
