@@ -122,6 +122,7 @@ namespace Blocks
                     }
                 case (8):
                     {
+
                         flaggy = false;
                         currentBack -= 2;
                         break;

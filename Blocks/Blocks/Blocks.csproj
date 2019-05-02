@@ -60,6 +60,7 @@
     <Compile Include="GameObjects\Arrows.cs" />
     <Compile Include="DrawLayer.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="GameObjects\FallingPlatform.cs" />
     <Compile Include="GameObjects\Spikes.cs" />
     <Compile Include="GameObjects.cs" />
     <Compile Include="GameObjects\Block.cs" />

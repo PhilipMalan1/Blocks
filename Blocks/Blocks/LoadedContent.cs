@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Blocks
         // R = Right
         // UR = Up Right
         public static Texture2D ArrowR;
+        public static Texture2D fP;
         public static Texture2D bg1;
         public static Texture2D bg2;
         public static Texture2D bg3;
@@ -40,6 +42,7 @@ namespace Blocks
             ArrowR = content.Load<Texture2D>("Arrow");
             ArrowUR = content.Load<Texture2D>("Arrow2");
             block = content.Load<Texture2D>("Block");
+            fP = content.Load<Texture2D>("FallingPlatform");
             button = new Texture2D[4];
             bg1 = content.Load<Texture2D>("bg/bg.0001");
             bg2 = content.Load<Texture2D>("bg/bg.0002");
