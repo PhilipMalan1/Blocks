@@ -21,6 +21,7 @@ namespace Blocks
         Texture2D background;
         int timer;
         int currentBack;
+        bool flaggy;
         public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir) : base(graphicsDevice, game1)
         {
             this.levelDir = levelDir;
@@ -29,7 +30,7 @@ namespace Blocks
             mouse = Mouse.GetState();
             blockWidth = graphicsDevice.Viewport.Height / 15;
             background = LoadedContent.bg1;
-
+            flaggy = true;
             Load();
         }
 
@@ -41,7 +42,7 @@ namespace Blocks
             mouse = Mouse.GetState();
             blockWidth = graphicsDevice.Viewport.Height / 15;
             background = LoadedContent.bg1;
-
+            flaggy = true;
             level.Initialize(blockWidth, graphicsDevice);
         }
 
@@ -67,10 +68,18 @@ namespace Blocks
             //update the background
 
             timer++;
-            if (timer % 60 == 0)
+            if (timer % 10 == 0 && flaggy)
                 currentBack++;
-            switch(currentBack)
+            if (timer % 10 == 0 && !flaggy)
+                currentBack--;
+            switch (currentBack)
             {
+                case (-1):
+                    {
+                        flaggy = true;
+                        currentBack +=2;
+                        break;
+                    }
                 case (0):
                     {
                         background = LoadedContent.bg1;
@@ -93,8 +102,7 @@ namespace Blocks
                     }
                 case (4):
                     {
-                        background = LoadedContent.bg6;//remove when 5 is inputed
-                        //background = LoadedContent.bg5;
+                        background = LoadedContent.bg5;
                         break;
                     }
                 case (5):
@@ -110,6 +118,12 @@ namespace Blocks
                 case (7):
                     {
                         background = LoadedContent.bg8;
+                        break;
+                    }
+                case (8):
+                    {
+                        flaggy = false;
+                        currentBack -= 2;
                         break;
                     }
             }

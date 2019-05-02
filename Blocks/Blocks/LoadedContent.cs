@@ -45,6 +45,7 @@ namespace Blocks
             bg2 = content.Load<Texture2D>("bg/bg.0002");
             bg3 = content.Load<Texture2D>("bg/bg.0003");
             bg4 = content.Load<Texture2D>("bg/bg.0004");
+            bg5 = content.Load<Texture2D>("bg/bg.0005");
             bg6 = content.Load<Texture2D>("bg/bg.0006");
             bg7 = content.Load<Texture2D>("bg/bg.0007");
             bg8 = content.Load<Texture2D>("bg/bg.0008");
