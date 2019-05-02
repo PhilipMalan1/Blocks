@@ -74,7 +74,7 @@ namespace Blocks
             body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(0, blockWidth - height), new Vector2(BlockWidth, height), collisionData =>
             {
                 if (collisionData.OtherCollider.Body.GameObject is Player)
-                    level.Reset();
+                    level.CompleteLevel();
                 return false;
             }));
         }

@@ -13,15 +13,43 @@ namespace Blocks
 {
     class GameScreen : Screen
     {
-        string levelDir;
+        private string levelDir;
         private Level level;
         KeyboardState key, keyi;
         MouseState mouse, mousei;
         float blockWidth;
+        Action OnCompletion;
 
-        public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir) : base(graphicsDevice, game1)
+        public string LevelDir
+        {
+            get
+            {
+                return levelDir;
+            }
+
+            set
+            {
+                levelDir = value;
+            }
+        }
+
+        public Action OnCompletion1
+        {
+            get
+            {
+                return OnCompletion;
+            }
+
+            set
+            {
+                OnCompletion = value;
+            }
+        }
+
+        public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir, Action OnCompletion) : base(graphicsDevice, game1)
         {
             this.levelDir = levelDir;
+            this.OnCompletion = OnCompletion;
 
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
@@ -30,15 +58,19 @@ namespace Blocks
             Load();
         }
 
-        public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, Level level) : base(graphicsDevice, game1)
+        public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, Level level, Action OnCompletion) : base(graphicsDevice, game1)
         {
             this.level = level;
+            this.OnCompletion = OnCompletion;
 
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
             blockWidth = graphicsDevice.Viewport.Height / 15;
 
-            level.Initialize(blockWidth, graphicsDevice);
+            level.Initialize(blockWidth, graphicsDevice, ()=>
+            {
+                game1.SetScreen(this);
+            });
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -90,7 +122,10 @@ namespace Blocks
             Stream stream = new FileStream(levelDir, FileMode.Open, FileAccess.Read, FileShare.Read);
             level = (Level)formatter.Deserialize(stream);
             stream.Close();
-            level.Initialize(blockWidth, graphicsDevice);
+            level.Initialize(blockWidth, graphicsDevice, ()=>
+            {
+                OnCompletion.Invoke();
+            });
         }
     }
 }

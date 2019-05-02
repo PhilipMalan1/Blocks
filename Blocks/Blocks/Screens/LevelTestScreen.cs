@@ -22,7 +22,10 @@ namespace Blocks.Screens
             this.levelEditor = levelEditor;
             this.level = level;
 
-            gameScreen = new GameScreen(graphicsDevice, game1, level);
+            gameScreen = new GameScreen(graphicsDevice, game1, level, ()=>
+            {
+                game1.SetScreen(levelEditor);
+            });
             key = Keyboard.GetState();
         }
 
@@ -38,7 +41,7 @@ namespace Blocks.Screens
             key = Keyboard.GetState();
             if (key.IsKeyDown(Keys.T) && keyi.IsKeyUp(Keys.T))
             {
-                level.Initialize(levelEditor.BlockWidth, graphicsDevice);
+                level.Initialize(levelEditor.BlockWidth, graphicsDevice, null);
                 game1.SetScreen(levelEditor);
             }
 

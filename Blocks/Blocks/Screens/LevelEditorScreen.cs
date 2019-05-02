@@ -39,7 +39,6 @@ namespace Blocks
         int objectRow, objectsPerRow;
 
         int previousX, previousY;
-        Keys previousKey;
 
         public float BlockWidth
         {
@@ -65,7 +64,10 @@ namespace Blocks
 
             List<List<List<GameObject>>> levelGrid = new List<List<List<GameObject>>>();
 
-            level = new Level(levelGrid, 0, blockWidth, graphicsDevice);
+            level = new Level(levelGrid, 0, blockWidth, graphicsDevice, ()=>
+            {
+                game1.SetScreen(null);
+            });
 
             font = LoadedContent.mainMenuFont;
 
@@ -458,7 +460,7 @@ namespace Blocks
             Stream stream = new FileStream(levelDir, FileMode.Open, FileAccess.Read, FileShare.Read);
             level = (Level)formatter.Deserialize(stream);
             stream.Close();
-            level.Initialize(blockWidth, graphicsDevice);
+            level.Initialize(blockWidth, graphicsDevice, null);
         }
 
         public enum GameObjects
