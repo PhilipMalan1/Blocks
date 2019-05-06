@@ -22,10 +22,7 @@ namespace Blocks.Screens
             this.levelEditor = levelEditor;
             this.level = level;
 
-            gameScreen = new GameScreen(graphicsDevice, game1, level, ()=>
-            {
-                game1.SetScreen(levelEditor);
-            });
+            gameScreen = new GameScreen(graphicsDevice, game1, level);
             key = Keyboard.GetState();
         }
 

@@ -60,12 +60,7 @@ namespace Blocks
                 game1.Exit();
             if (md.LeftButton == ButtonState.Pressed && md.X > playRec.X && md.X < playRec.X + playRec.Width && md.Y > playRec.Y && md.Y < playRec.Y + playRec.Height)
             {
-                GameScreen gameScreen = new GameScreen(graphicsDevice, game1, @"Content/Levels/" + LevelManager.firstLevel()+".dat", () =>
-                {
-                    string levelDir = GameScreen.LevelDir;
-                    gameScreen = new GameScreen(graphicsDevice, game1, @"Content/Levels/" + LevelManager.firstLevel()+".dat", GameScreen.OnCompletion1);
-                    game1.SetScreen(gameScreen);
-                });
+                GameScreen gameScreen = new GameScreen(graphicsDevice, game1, LevelManager.firstLevel());
                 game1.SetScreen(gameScreen);
             }
         }

@@ -18,7 +18,6 @@ namespace Blocks
         KeyboardState key, keyi;
         MouseState mouse, mousei;
         float blockWidth;
-        Action OnCompletion;
 
         public string LevelDir
         {
@@ -33,23 +32,10 @@ namespace Blocks
             }
         }
 
-        public Action OnCompletion1
-        {
-            get
-            {
-                return OnCompletion;
-            }
-
-            set
-            {
-                OnCompletion = value;
-            }
-        }
-
-        public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir, Action OnCompletion) : base(graphicsDevice, game1)
+        public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir) : base(graphicsDevice, game1)
         {
             this.levelDir = levelDir;
-            this.OnCompletion = OnCompletion;
+            Console.WriteLine(levelDir);
 
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
@@ -58,10 +44,9 @@ namespace Blocks
             Load();
         }
 
-        public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, Level level, Action OnCompletion) : base(graphicsDevice, game1)
+        public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, Level level) : base(graphicsDevice, game1)
         {
             this.level = level;
-            this.OnCompletion = OnCompletion;
 
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
@@ -118,13 +103,19 @@ namespace Blocks
 
         public void Load()
         {
+            if (levelDir == null)
+            {
+                game1.SetScreen(new Start_Menu(graphicsDevice, game1));
+                return;
+            }
+
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(levelDir, FileMode.Open, FileAccess.Read, FileShare.Read);
             level = (Level)formatter.Deserialize(stream);
             stream.Close();
             level.Initialize(blockWidth, graphicsDevice, ()=>
             {
-                OnCompletion.Invoke();
+                game1.SetScreen(new GameScreen(graphicsDevice, game1, LevelManager.nextLevel(levelDir)));
             });
         }
     }
