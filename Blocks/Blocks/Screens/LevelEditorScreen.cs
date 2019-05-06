@@ -423,7 +423,7 @@ namespace Blocks
                     Ground.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
                 case GameObjectsEnum.fallingPlatform:
-                    Ground.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
+                    FallingPlatform.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
                 case GameObjectsEnum.Arrows:
                     Arrows.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
