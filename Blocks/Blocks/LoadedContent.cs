@@ -20,6 +20,7 @@ namespace Blocks
         // UR = Up Right
         public static Texture2D ArrowR;
         public static Texture2D fP;
+        public static Texture2D rP;
         public static Texture2D bg1;
         public static Texture2D bg2;
         public static Texture2D bg3;
@@ -52,6 +53,7 @@ namespace Blocks
             bg6 = content.Load<Texture2D>("bg/bg.0006");
             bg7 = content.Load<Texture2D>("bg/bg.0007");
             bg8 = content.Load<Texture2D>("bg/bg.0008");
+            rP = content.Load<Texture2D>("RisingPlatform");
             for (int i = 0; i < button.Length; i++)
             {
                 button[i]=content.Load<Texture2D>("button/button.000"+(i+1));
