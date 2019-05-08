@@ -134,8 +134,8 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
-            if (body.Vel.Y < -BlockWidth * 10)
-                body.Vel.Y = -BlockWidth * 10;
+            if (body.Vel.Y < -BlockWidth * 2)
+                body.Vel = new Vector2(body.Vel.X, -BlockWidth * 2);
         }
 
         public static void DrawIcon(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect)
