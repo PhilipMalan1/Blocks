@@ -40,7 +40,7 @@ namespace Blocks
             menuBackRec = new Rectangle(0, 0, graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
             menuBackText = LoadedContent.mainMenuBackground;
             buttonTex = LoadedContent.mainMenuButton;
-            playRec = new Rectangle(0,200,400,200);
+            playRec = new Rectangle(0, 200, 400, 200);
             exitRec = new Rectangle(0, 410, 400, 200);
             hits = 0;
             play = false;
@@ -50,11 +50,11 @@ namespace Blocks
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(menuBackText,menuBackRec,Color.White);
+            spriteBatch.Draw(menuBackText, menuBackRec, Color.White);
             spriteBatch.Draw(buttonTex, playRec, Color.White);
             spriteBatch.Draw(buttonTex, exitRec, Color.White);
-            spriteBatch.DrawString(font, "Play", new Vector2(playRec.X + 8,playRec.Y + 5), Color.Black);
-            spriteBatch.DrawString(font, "Exit", new Vector2(exitRec.X + 8,exitRec.Y + 5), Color.Black);
+            spriteBatch.DrawString(font, "Play", new Vector2(playRec.X + 8, playRec.Y + 5), Color.Black);
+            spriteBatch.DrawString(font, "Exit", new Vector2(exitRec.X + 8, exitRec.Y + 5), Color.Black);
             spriteBatch.End();
         }
 
@@ -69,9 +69,9 @@ namespace Blocks
                 GameScreen gameScreen = new GameScreen(graphicsDevice, game1, LevelManager.firstLevel());
                 game1.SetScreen(gameScreen);
             }
-                play = true;
-            }
-            if (hits < 1 && keyboard.IsKeyDown(Keys.Space)&&!spacePressed)
+            play = true;
+        
+       if (hits< 1 && keyboard.IsKeyDown(Keys.Space)&&!spacePressed)
             {
                 spacePressed = true;
                 hits++;
