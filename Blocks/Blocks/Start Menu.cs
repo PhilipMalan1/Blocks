@@ -13,7 +13,10 @@ namespace Blocks
         Texture2D menuBackText;
         Rectangle menuBackRec;
         Texture2D buttonTex;
+        int hits;
         Rectangle playRec;
+        bool play;
+        bool spacePressed = false;
         Rectangle exitRec;
         SpriteFont font;
         public Start_Menu(GraphicsDevice graphicsDevice, Game1 game1) : base(graphicsDevice, game1)
@@ -23,6 +26,8 @@ namespace Blocks
             buttonTex = LoadedContent.mainMenuButton;
             playRec = new Rectangle(0,200,400,200);
             exitRec = new Rectangle(0, 410, 400, 200);
+            hits = 0;
+            play = false;
             font = LoadedContent.mainMenuFont;
         }
 
@@ -39,11 +44,39 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
+            KeyboardState keyboard = Keyboard.GetState();
             MouseState md = Mouse.GetState();
             if (md.LeftButton == ButtonState.Pressed && md.X > exitRec.X && md.X < exitRec.X + exitRec.Width && md.Y > exitRec.Y && md.Y < exitRec.Y + exitRec.Height)
                 game1.Exit();
             if (md.LeftButton == ButtonState.Pressed && md.X > playRec.X && md.X < playRec.X + playRec.Width && md.Y > playRec.Y && md.Y < playRec.Y + playRec.Height)
-                game1.SetScreen(new GameScreen(graphicsDevice,game1,@"Content/Levels/Level 1.dat"));
+            {
+                play = true;
+            }
+            if (hits < 1 && keyboard.IsKeyDown(Keys.Space)&&!spacePressed)
+            {
+                spacePressed = true;
+                hits++;
+            }
+            if (hits < 2 && keyboard.IsKeyDown(Keys.Space) && !spacePressed)
+            {
+                spacePressed = true;
+                hits++;
+            }
+            if (hits < 3 && keyboard.IsKeyDown(Keys.Space) && !spacePressed)
+            {
+                spacePressed = true;
+                hits++;
+            }
+            if (play&& hits < 3)
+                game1.Intro();
+            else if(play)
+                game1.SetScreen(new GameScreen(graphicsDevice, game1, @"Content/Levels/Level 1.dat"));
+            if (hits < 3 && keyboard.IsKeyUp(Keys.Space)&& spacePressed)
+            {
+                spacePressed = false;
+            }
+            
+
         }
     }
 }
