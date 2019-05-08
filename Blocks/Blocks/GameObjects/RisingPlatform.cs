@@ -65,8 +65,18 @@ namespace Blocks
             body.Pos = SpawnPos * blockWidth;
             body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(), new Vector2((int)BlockWidth, 27 / 2 + 27 / 4), collisionData =>
             {
+                GameObject other = collisionData.OtherCollider.Body.GameObject;
+
                 if (collisionData.OtherCollider.Body.GameObject is Player)
-                    body.Gravity = (BlockWidth * 2) * -1;
+                {
+                    if (other.Vel.Y > 0 || body.Gravity!=0)
+                    {
+                        body.Gravity = -BlockWidth * 2;
+                        return true;
+                    }
+                    else
+                        return false;
+                }
 
                 return true;
             }));

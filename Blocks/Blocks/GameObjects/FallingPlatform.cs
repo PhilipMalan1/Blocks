@@ -24,6 +24,14 @@ namespace Blocks
 
         }
 
+        public override bool LoadIfAlreadyOnScreen
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public override Vector2 Pos
         {
             get
@@ -65,8 +73,18 @@ namespace Blocks
             body.Pos = SpawnPos * blockWidth;
            body.AddCollider(new RectangleCollider(body, CollisionGroup.Ground, new Vector2(), new Vector2((int)BlockWidth, 27 / 2 + 27 / 4), collisionData =>
             {
+                GameObject other = collisionData.OtherCollider.Body.GameObject;
+
                 if (collisionData.OtherCollider.Body.GameObject is Player)
-                    body.Gravity = BlockWidth*2;
+                {
+                    if (other.Vel.Y > 0 || body.Gravity != 0)
+                    {
+                        body.Gravity = BlockWidth * 2;
+                        return true;
+                    }
+                    else
+                        return false;
+                }
 
                 return true;
             }));
@@ -158,6 +176,9 @@ namespace Blocks
         public override void Unload()
         {
             body.Unload();
+
+            //respawn if off screen
+            Initialize(Level, BlockWidth);
         }
     }
 }
