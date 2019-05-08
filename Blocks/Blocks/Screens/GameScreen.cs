@@ -35,7 +35,6 @@ namespace Blocks
         public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir) : base(graphicsDevice, game1)
         {
             this.levelDir = levelDir;
-            Console.WriteLine(levelDir);
 
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
@@ -103,19 +102,17 @@ namespace Blocks
 
         public void Load()
         {
-            if (levelDir == null)
-            {
-                game1.SetScreen(new Start_Menu(graphicsDevice, game1));
-                return;
-            }
-
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(levelDir, FileMode.Open, FileAccess.Read, FileShare.Read);
             level = (Level)formatter.Deserialize(stream);
             stream.Close();
             level.Initialize(blockWidth, graphicsDevice, ()=>
             {
-                game1.SetScreen(new GameScreen(graphicsDevice, game1, LevelManager.nextLevel(levelDir)));
+                string newDir = LevelManager.nextLevel(levelDir);
+                if (newDir != null)
+                    game1.SetScreen(new GameScreen(graphicsDevice, game1, LevelManager.nextLevel(levelDir)));
+                else
+                    game1.SetScreen(new Start_Menu(graphicsDevice, game1));
             });
         }
     }
