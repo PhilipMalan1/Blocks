@@ -13,7 +13,7 @@ namespace Blocks
 {
     class GameScreen : Screen
     {
-        string levelDir;
+        private string levelDir;
         private Level level;
         KeyboardState key, keyi;
         MouseState mouse, mousei;
@@ -22,6 +22,20 @@ namespace Blocks
         int timer;
         int currentBack;
         bool flaggy;
+
+        public string LevelDir
+        {
+            get
+            {
+                return levelDir;
+            }
+
+            set
+            {
+                levelDir = value;
+            }
+        }
+
         public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir) : base(graphicsDevice, game1)
         {
             this.levelDir = levelDir;
@@ -43,7 +57,10 @@ namespace Blocks
             blockWidth = graphicsDevice.Viewport.Height / 15;
             background = LoadedContent.bg1;
             flaggy = true;
-            level.Initialize(blockWidth, graphicsDevice);
+            level.Initialize(blockWidth, graphicsDevice, ()=>
+            {
+                game1.SetScreen(this);
+            });
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -161,7 +178,14 @@ namespace Blocks
             Stream stream = new FileStream(levelDir, FileMode.Open, FileAccess.Read, FileShare.Read);
             level = (Level)formatter.Deserialize(stream);
             stream.Close();
-            level.Initialize(blockWidth, graphicsDevice);
+            level.Initialize(blockWidth, graphicsDevice, ()=>
+            {
+                string newDir = LevelManager.nextLevel(levelDir);
+                if (newDir != null)
+                    game1.SetScreen(new GameScreen(graphicsDevice, game1, LevelManager.nextLevel(levelDir)));
+                else
+                    game1.SetScreen(new Start_Menu(graphicsDevice, game1));
+            });
         }
     }
 }

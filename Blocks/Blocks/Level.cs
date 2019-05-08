@@ -28,19 +28,22 @@ namespace Blocks
         private Vector2 camera;
         [NonSerialized]
         private GraphicsDevice graphicsDevice;
+        [NonSerialized]
+        private Action OnCompletion;
 
-        public Level(List<List<List<GameObject>>> levelObjects, int rowNum, float blockWidth, GraphicsDevice graphicsDevice)
+        public Level(List<List<List<GameObject>>> levelObjects, int rowNum, float blockWidth, GraphicsDevice graphicsDevice, Action OnCompletion)
         {
             this.levelObjects = levelObjects;
             this.rowNum = rowNum;
 
-            Initialize(blockWidth, graphicsDevice);
+            Initialize(blockWidth, graphicsDevice, OnCompletion);
         }
 
-        public void Initialize(float blockWidth, GraphicsDevice graphicsDevice)
+        public void Initialize(float blockWidth, GraphicsDevice graphicsDevice, Action OnCompletion)
         {
             this.blockWidth = blockWidth;
             this.graphicsDevice = graphicsDevice;
+            this.OnCompletion = OnCompletion;
 
             physicsMangager = new PhysicsManager();
             loadManager = new LoadManager(this, blockWidth);
@@ -70,7 +73,12 @@ namespace Blocks
 
         public void Reset()
         {
-            Initialize(blockWidth, graphicsDevice);
+            Initialize(blockWidth, graphicsDevice, OnCompletion);
+        }
+
+        public void CompleteLevel()
+        {
+            OnCompletion.Invoke();
         }
 
         public void Update(GameTime gameTime)

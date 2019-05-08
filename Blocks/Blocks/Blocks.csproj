@@ -69,6 +69,7 @@
     <Compile Include="GameObjects\FloatingText.cs" />
     <Compile Include="GameObjects\Goal.cs" />
     <Compile Include="IHoldable.cs" />
+    <Compile Include="LevelManager.cs" />
     <Compile Include="LoadManager.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="ICameraFocus.cs" />
@@ -90,7 +91,7 @@
     <Compile Include="Screen.cs" />
     <Compile Include="Screens\LevelTestScreen.cs" />
     <Compile Include="Sprite.cs" />
-    <Compile Include="Start Menu.cs" />
+    <Compile Include="Screens\Start Menu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

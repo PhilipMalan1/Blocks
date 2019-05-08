@@ -16,6 +16,7 @@ namespace Blocks
     ///    |    w      |
     ///    |           |
     /// </summary>
+    [Serializable]
     class Arrows : GameObject
     {
         // U = Up
@@ -74,7 +75,6 @@ namespace Blocks
             BlockWidth = blockWidth;
             image = LoadedContent.ArrowR;
             pos = SpawnPos * (int)blockWidth;
-            rotation = 0;
         }
 
         public override void NextDataValue()
@@ -100,8 +100,8 @@ namespace Blocks
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)
         {
-            Vector2 origin = new Vector2(image.Width / 2, -image.Width / 2 + image.Height);
-            spritebach.Draw(image, new Rectangle((int)Pos.X - (int)camera.X, (int)Pos.Y - (int)camera.Y, (int)BlockWidth, (int)BlockWidth), new Rectangle(0, 0, 108, 108), Color.White, (float)Math.PI / 4 * rotation, origin, SpriteEffects.None, (float)DrawLayer.Arrows / 1000);
+            Vector2 origin = new Vector2(image.Width / 2, image.Height/2);
+            spritebach.Draw(image, new Rectangle((int)Pos.X - (int)camera.X + (int)BlockWidth/2, (int)Pos.Y - (int)camera.Y + (int)BlockWidth/2, (int)BlockWidth, (int)BlockWidth), new Rectangle(0, 0, 108, 108), Color.White, (float)Math.PI / 4 * rotation, origin, SpriteEffects.None, (float)DrawLayer.Arrows / 1000);
         }
 
         public override void Load()

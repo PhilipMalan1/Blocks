@@ -38,6 +38,14 @@ namespace Blocks
             }
         }
 
+        public override bool LoadIfAlreadyOnScreen
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public bool IsHeld
         {
             get
@@ -271,8 +279,7 @@ namespace Blocks
             body.Unload();
 
             //respawn if off screen
-            Pos = SpawnPos * BlockWidth;
-            Vel = new Vector2();
+            Initialize(Level, BlockWidth);
         }
 
         public enum ThrowState
