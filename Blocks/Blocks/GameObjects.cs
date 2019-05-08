@@ -8,6 +8,7 @@ namespace Blocks
     public enum GameObjectsEnum
     {
         Ground,
+        risingPlatform,
         fallingPlatform,
         Player,
         Block,

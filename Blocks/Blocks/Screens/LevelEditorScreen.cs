@@ -393,6 +393,9 @@ namespace Blocks
                 case GameObjectsEnum.fallingPlatform:
                     level.AddGameObject(new FallingPlatform(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
+                case GameObjectsEnum.risingPlatform:
+                    level.AddGameObject(new RisingPlatform(level, blockWidth, new Vector2(x, -y)), x, y);
+                    break;
                 case GameObjectsEnum.Arrows:
                     level.AddGameObject(new Arrows(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
@@ -426,6 +429,9 @@ namespace Blocks
                     break;
                 case GameObjectsEnum.fallingPlatform:
                     FallingPlatform.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
+                    break;
+                case GameObjectsEnum.risingPlatform:
+                    RisingPlatform.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
                 case GameObjectsEnum.Arrows:
                     Arrows.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
