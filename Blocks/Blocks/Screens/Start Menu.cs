@@ -68,8 +68,8 @@ namespace Blocks
             {
                 GameScreen gameScreen = new GameScreen(graphicsDevice, game1, LevelManager.firstLevel());
                 game1.SetScreen(gameScreen);
+                play = true;
             }
-            play = true;
         
        if (hits< 1 && keyboard.IsKeyDown(Keys.Space)&&!spacePressed)
             {
