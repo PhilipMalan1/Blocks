@@ -227,13 +227,6 @@ namespace Blocks
 
         public override void Update(GameTime gameTime)
         {
-            //respawn after falling off screen
-            if (Pos.Y > 0)
-            {
-                Pos = SpawnPos * BlockWidth;
-                Vel = new Vector2();
-            }
-
             //set velocity to 0 while held
             if (IsHeld)
                 body.Vel = new Vector2();

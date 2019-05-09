@@ -11,6 +11,8 @@ namespace Blocks
         Background,
         Ground,
         Door,
+        FallingPlatform,
+        RisingPlatform,
         Arrows,
         FloatingText,
         Goal,
