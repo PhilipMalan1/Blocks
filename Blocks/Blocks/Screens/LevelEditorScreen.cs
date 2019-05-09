@@ -417,6 +417,9 @@ namespace Blocks
                 case GameObjectsEnum.Goal:
                     level.AddGameObject(new Goal(level, blockWidth, new Vector2(x, -y)), x, y);
                     break;
+                case GameObjectsEnum.Arrow2:
+                    level.AddGameObject(new Arrow2(level, blockWidth, new Vector2(x, -y)), x, y);
+                    break;
             }
         }
 
@@ -453,6 +456,9 @@ namespace Blocks
                     break;
                 case GameObjectsEnum.Goal:
                     Goal.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
+                    break;
+                case GameObjectsEnum.Arrow2:
+                    Arrow2.DrawIcon(gameTime, spriteBatch, new Rectangle(x, y, (int)blockWidth, (int)blockWidth));
                     break;
             }
         }

@@ -13,13 +13,14 @@ namespace Blocks
         Door,
         FallingPlatform,
         RisingPlatform,
+        Spikes,
         Arrows,
+        Arrow2,
         FloatingText,
         Goal,
         Player,
         Block,
         Button,
         UI,
-        Spikes
     }
 }

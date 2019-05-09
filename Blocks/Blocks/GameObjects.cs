@@ -8,14 +8,15 @@ namespace Blocks
     public enum GameObjectsEnum
     {
         Ground,
-        risingPlatform,
-        fallingPlatform,
+        Spikes,
+        Goal,
         Player,
         Block,
         Button,
-        FloatingText,
-        Goal,
+        risingPlatform,
+        fallingPlatform,
         Arrows,
-        Spikes
+        Arrow2,
+        FloatingText
     }
 }

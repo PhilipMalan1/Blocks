@@ -30,6 +30,7 @@ namespace Blocks
         public static Texture2D bg7;
         public static Texture2D bg8;
         public static Texture2D ArrowUR;
+        public static Texture2D arrow2;
         public static void LoadContent(ContentManager content)
         {
 
@@ -60,6 +61,7 @@ namespace Blocks
             }
             door = content.Load<Texture2D>("Door");
             goal = content.Load<Texture2D>("EndPole");
+            arrow2 = content.Load<Texture2D>("Arrow2");
         }
     }
 }
