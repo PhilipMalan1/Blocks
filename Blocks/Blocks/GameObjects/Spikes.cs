@@ -74,8 +74,7 @@ namespace Blocks
         {
             rotation++;
             rotation %= 4;
-            if (rotation < 0)
-                rotation += 4;
+           
             UpdateRotation();
         }
 
@@ -83,6 +82,8 @@ namespace Blocks
         {
             rotation--;
             rotation %= 4;
+            if (rotation < 0)
+                rotation += 4;
             UpdateRotation();
         }
 
