@@ -66,7 +66,7 @@ namespace Blocks
                 game1.Exit();
             if (md.LeftButton == ButtonState.Pressed && md.X > playRec.X && md.X < playRec.X + playRec.Width && md.Y > playRec.Y && md.Y < playRec.Y + playRec.Height)
             {
-                GameScreen gameScreen = new GameScreen(graphicsDevice, game1, LevelManager.firstLevel());
+                GameScreen gameScreen = new GameScreen(graphicsDevice, game1, LevelManager.firstLevel(), true);
                 game1.SetScreen(gameScreen);
                 play = true;
             }
@@ -89,7 +89,7 @@ namespace Blocks
             if (play&& hits < 3)
                 game1.Intro();
             else if(play)
-                game1.SetScreen(new GameScreen(graphicsDevice, game1, @"Content/Levels/Level 1.dat"));
+                game1.SetScreen(new GameScreen(graphicsDevice, game1, @"Content/Levels/Level 1.dat", false));
             if (hits < 3 && keyboard.IsKeyUp(Keys.Space)&& spacePressed)
             {
                 spacePressed = false;

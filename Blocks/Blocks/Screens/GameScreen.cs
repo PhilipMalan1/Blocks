@@ -22,6 +22,7 @@ namespace Blocks
         int timer;
         int currentBack;
         bool flaggy;
+        private bool goToNextLevel;
 
         public string LevelDir
         {
@@ -36,9 +37,10 @@ namespace Blocks
             }
         }
 
-        public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir) : base(graphicsDevice, game1)
+        public GameScreen(GraphicsDevice graphicsDevice, Game1 game1, string levelDir, bool goToNextLevel) : base(graphicsDevice, game1)
         {
             this.levelDir = levelDir;
+            this.goToNextLevel = goToNextLevel;
 
             key = Keyboard.GetState();
             mouse = Mouse.GetState();
@@ -57,9 +59,9 @@ namespace Blocks
             blockWidth = graphicsDevice.Viewport.Height / 15;
             background = LoadedContent.bg1;
             flaggy = true;
-            level.Initialize(blockWidth, graphicsDevice, ()=>
+            level.Initialize(blockWidth, graphicsDevice, () =>
             {
-                game1.SetScreen(this);
+                level.Reset();
             });
         }
 
@@ -181,10 +183,15 @@ namespace Blocks
             level.Initialize(blockWidth, graphicsDevice, ()=>
             {
                 string newDir = LevelManager.nextLevel(levelDir);
-                if (newDir != null)
-                    game1.SetScreen(new GameScreen(graphicsDevice, game1, LevelManager.nextLevel(levelDir)));
+                if (goToNextLevel)
+                {
+                    if (newDir != null)
+                        game1.SetScreen(new GameScreen(graphicsDevice, game1, LevelManager.nextLevel(levelDir), true));
+                    else
+                        game1.SetScreen(new Start_Menu(graphicsDevice, game1));
+                }
                 else
-                    game1.SetScreen(new Start_Menu(graphicsDevice, game1));
+                    level.Reset();
             });
         }
     }
