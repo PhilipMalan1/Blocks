@@ -194,13 +194,10 @@ namespace Blocks
                 }
             }
 
-            //toggle select tool
+            //pick select tool
             if(state!=State.Typeing && key.IsKeyDown(Keys.E) && keyi.IsKeyUp(Keys.E))
             {
-                if (state == State.Select)
-                    state = State.Draw;
-                else
-                    state = State.Select;
+                state = State.Select;
             }
 
             //delet blocks if right click wasn't held for the previous frame and the mouse didn't move to a different block
