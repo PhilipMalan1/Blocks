@@ -70,7 +70,7 @@ namespace Blocks
             {
                 GameObject other = collisionData.OtherCollider.Body.GameObject;
 
-                if (collisionData.OtherCollider.Body.GameObject is Player)
+                if (other is Player && collisionData.CollisionAngle == new Vector2(0, 1))
                 {
                     if (other.Vel.Y > 0 || body.Gravity != 0)
                     {
