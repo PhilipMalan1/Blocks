@@ -7,7 +7,7 @@ namespace Blocks
 {
     class LevelManager
     {
-        private static string[] levels = { @"Content/Levels/Level 0.dat", @"Content/Levels/Level 1.dat", @"Content/Levels/philipLevel 2.dat" };
+        private static string[] levels = { @"Content/Levels/Level 3.dat", @"Content/Levels/Level 69.dat" };
 
         public static string firstLevel()
         {

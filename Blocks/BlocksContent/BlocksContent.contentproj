@@ -78,6 +78,14 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
+    <None Include="Levels\Level 3.dat">
+      <Name>Level 3</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Levels\Level 69.dat">
+      <Name>Level 69</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Levels\philipLevel 2.dat">
       <Name>philipLevel 2</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
