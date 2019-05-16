@@ -107,7 +107,7 @@ namespace Blocks
             }
 
             //draw select tool
-            spriteBatch.DrawString(font, "Select", new Vector2(0, blockWidth), Color.White, 0, new Vector2(), 1f / 100 * blockWidth / 4, SpriteEffects.None, (float)DrawLayer.UI / 1000);
+            spriteBatch.DrawString(font, "Select", new Vector2(0, blockWidth), Color.White, 0, new Vector2(), 1f / 40 * blockWidth / 4, SpriteEffects.None, (float)DrawLayer.UI / 1000);
 
             //draw block description
             string str = "";
@@ -122,7 +122,7 @@ namespace Blocks
                 str = "Current Object: " + Enum.GetName(typeof(GameObjectsEnum), current);
             else if (state == State.Typeing)
                 str = "Typing";
-            spriteBatch.DrawString(font, str, new Vector2(0, graphicsDevice.Viewport.Height - font.MeasureString(str).Y / 100 * blockWidth / 4), Color.White, 0, new Vector2(), 1f / 100 * blockWidth / 4, SpriteEffects.None, (float)DrawLayer.UI / 1000);
+            spriteBatch.DrawString(font, str, new Vector2(0, graphicsDevice.Viewport.Height - font.MeasureString(str).Y / 40 * blockWidth / 4), Color.White, 0, new Vector2(), 1f / 40 * blockWidth / 4, SpriteEffects.None, (float)DrawLayer.UI / 1000);
 
             spriteBatch.End();
         }
