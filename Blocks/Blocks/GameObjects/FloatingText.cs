@@ -75,7 +75,7 @@ namespace Blocks
         {
             float scale = BlockWidth / 100 / 2;
             Vector2 strSize = font.MeasureString(text)*scale;
-            spritebach.DrawString(font, text, new Vector2(pos.X + BlockWidth / 2 - strSize.X / 2 - camera.X, pos.Y + BlockWidth / 2 - strSize.Y / 2 - camera.Y), Color.White, 0, new Vector2(), scale, SpriteEffects.None, (float)DrawLayer.FloatingText / 1000);
+            spritebach.DrawString(font, text, new Vector2(pos.X + BlockWidth / 2 - strSize.X / 2 - camera.X, pos.Y + BlockWidth / 2 - strSize.Y / 2 - camera.Y), Color.Black, 0, new Vector2(), scale, SpriteEffects.None, (float)DrawLayer.FloatingText / 1000);
         }
 
         public override void Initialize(Level level, float blockWidth)
