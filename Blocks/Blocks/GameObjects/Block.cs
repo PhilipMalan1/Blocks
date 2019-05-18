@@ -193,12 +193,6 @@ namespace Blocks
                     landTimer++;
                 }
 
-                //if block hits ceiling
-                if((ThrowState1==ThrowState.Thrown || ThrowState1==ThrowState.Jumpable || ThrowState1==ThrowState.ThrownUp) && other is Ground && -collisionData.CollisionAngle.Y > Math.Abs(collisionData.CollisionAngle.X))
-                {
-                    ThrowState1 = ThrowState.Grabable;
-                }
-
                 if (shouldntCollide) return false;
                 return ThrowState1!=ThrowState.Held;
             }));
