@@ -254,7 +254,7 @@ namespace Blocks
             if (throwState == ThrowState.ThrownUp)
             {
                 upThrowTimer++;
-                if (upThrowTimer >= 60)
+                if (upThrowTimer >= 10)
                 {
                     ThrowState1 = ThrowState.Grabable;
                     upThrowTimer = 0;
