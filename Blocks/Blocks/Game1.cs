@@ -46,8 +46,8 @@ namespace Blocks
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             LoadedContent.LoadContent(Content);
-            //screen = new Start_Menu(GraphicsDevice, this);
             screen = new Start_Menu(GraphicsDevice, this);
+            //screen = new LevelEditorScreen(GraphicsDevice, this, @"Content/Levels/Level 4 2.dat", true);
             hits = 0;
             base.Initialize();
         }
