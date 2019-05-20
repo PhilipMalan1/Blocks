@@ -39,15 +39,13 @@ namespace Blocks
         {
             IsMouseVisible = true;
             Window.Title = "Blocks";
-            graphics.PreferredBackBufferWidth = 1900;
-            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferWidth = 1730;
+            graphics.PreferredBackBufferHeight = 970;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             LoadedContent.LoadContent(Content);
-            //screen = new LevelEditorScreen(GraphicsDevice, this, @"Content/Levels/philipLevel 2.dat", true);
+            //screen = new LevelEditorScreen(GraphicsDevice, this, @"Content/Levels/philipLevel 7.dat", true);
             screen = new Start_Menu(GraphicsDevice, this);
-            screen = new Start_Menu(GraphicsDevice,this);
-            //screen = new Start_Menu(GraphicsDevice, this);
             hits = 0;
             base.Initialize();
         }
