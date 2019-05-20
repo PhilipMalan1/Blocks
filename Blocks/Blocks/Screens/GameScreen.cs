@@ -61,7 +61,6 @@ namespace Blocks
             flaggy = true;
             level.Initialize(blockWidth, graphicsDevice, () =>
             {
-                level.Reset();
             });
         }
 
@@ -190,8 +189,6 @@ namespace Blocks
                     else
                         game1.SetScreen(new Start_Menu(graphicsDevice, game1));
                 }
-                else
-                    level.Reset();
             });
         }
     }

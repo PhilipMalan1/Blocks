@@ -67,15 +67,15 @@ namespace Blocks
 
         public static void DrawIcon(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect)
         {
-            float scale = (float)rect.Width / 100 / 2;
+            float scale = (float)rect.Width / 40 / 2;
             spriteBatch.DrawString(LoadedContent.mainMenuFont, "T", new Vector2(rect.X, rect.Y), Color.White, 0, new Vector2(), scale, SpriteEffects.None, (float)DrawLayer.UI / 1000);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)
         {
-            float scale = BlockWidth / 100 / 2;
+            float scale = BlockWidth / 40 / 2;
             Vector2 strSize = font.MeasureString(text)*scale;
-            spritebach.DrawString(font, text, new Vector2(pos.X + BlockWidth / 2 - strSize.X / 2 - camera.X, pos.Y + BlockWidth / 2 - strSize.Y / 2 - camera.Y), Color.White, 0, new Vector2(), scale, SpriteEffects.None, (float)DrawLayer.FloatingText / 1000);
+            spritebach.DrawString(font, text, new Vector2(pos.X + BlockWidth / 2 - strSize.X / 2 - camera.X, pos.Y + BlockWidth / 2 - strSize.Y / 2 - camera.Y), Color.Black, 0, new Vector2(), scale, SpriteEffects.None, (float)DrawLayer.FloatingText / 1000);
         }
 
         public override void Initialize(Level level, float blockWidth)

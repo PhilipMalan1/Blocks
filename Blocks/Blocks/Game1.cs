@@ -39,13 +39,15 @@ namespace Blocks
         {
             IsMouseVisible = true;
             Window.Title = "Blocks";
-            graphics.PreferredBackBufferWidth = 1900;
-            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferWidth = 1730;
+            graphics.PreferredBackBufferHeight = 970;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             LoadedContent.LoadContent(Content);
             screen = new LevelEditorScreen(GraphicsDevice, this, @"Content/Levels/level 4 2.dat", true);
             //screen = new Start_Menu(GraphicsDevice, this);
+            //screen = new LevelEditorScreen(GraphicsDevice, this, @"Content/Levels/philipLevel 7.dat", true);
+            screen = new Start_Menu(GraphicsDevice, this);
             hits = 0;
             base.Initialize();
         }
@@ -132,11 +134,11 @@ namespace Blocks
                 }
                 else if (hits < 2)
                 {
-                    spriteBatch.DrawString(font1, "Block-Land was officially at war with Circle-Land which resulted in blocks becoming illegal in Circle land. \nOne day, a circle, ironically named Circle was selling blocks to support his family", new Vector2(20, 50), Color.White);
+                    spriteBatch.DrawString(font1, "Block-Land was officially at war with Circle-Land which resulted in blocks becoming illegal in \nCircle land. One day, a circle, ironically named Circle was selling blocks to support his family", new Vector2(20, 50), Color.White);
                 }
                 else if (hits < 3)
                 {
-                    spriteBatch.DrawString(font1, "He was then put in a prison inside a mountain with multiple empty cells between him and the outer world. \nThis is the beginning of his journey to get back to his family.", new Vector2(20, 50), Color.White);
+                    spriteBatch.DrawString(font1, "He was then put in a prison inside a mountain with multiple empty cells between\nhim and the outer world. This is the beginning of his journey to get back to his family.", new Vector2(20, 50), Color.White);
                 }
                 else
                 introDone = true;

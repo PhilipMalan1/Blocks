@@ -78,7 +78,7 @@ namespace Blocks
 
         public void CompleteLevel()
         {
-            OnCompletion.Invoke();
+            if(OnCompletion!=null) OnCompletion.Invoke();
         }
 
         public void Update(GameTime gameTime)
