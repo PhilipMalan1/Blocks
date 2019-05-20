@@ -41,7 +41,7 @@ namespace Blocks
             Window.Title = "Blocks";
             graphics.PreferredBackBufferWidth = 1730;
             graphics.PreferredBackBufferHeight = 970;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
             LoadedContent.LoadContent(Content);
             //screen = new LevelEditorScreen(GraphicsDevice, this, @"Content/Levels/philipLevel 7.dat", true);
