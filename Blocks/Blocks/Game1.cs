@@ -39,11 +39,11 @@ namespace Blocks
         {
             IsMouseVisible = true;
             Window.Title = "Blocks";
-            //graphics.PreferredBackBufferWidth = 1730;
-            //graphics.PreferredBackBufferHeight = 970;
-            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            graphics.IsFullScreen = true;
+            graphics.PreferredBackBufferWidth = 1730;
+            graphics.PreferredBackBufferHeight = 970;
+            //graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            //graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             LoadedContent.LoadContent(Content);
             //screen = new Start_Menu(GraphicsDevice, this);
