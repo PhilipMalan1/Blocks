@@ -47,7 +47,7 @@ namespace Blocks
             screen = new LevelEditorScreen(GraphicsDevice, this, @"Content/Levels/level 4 2.dat", true);
             //screen = new Start_Menu(GraphicsDevice, this);
             //screen = new LevelEditorScreen(GraphicsDevice, this, @"Content/Levels/philipLevel 7.dat", true);
-            screen = new Start_Menu(GraphicsDevice, this);
+            //screen = new Start_Menu(GraphicsDevice, this);
             hits = 0;
             base.Initialize();
         }
