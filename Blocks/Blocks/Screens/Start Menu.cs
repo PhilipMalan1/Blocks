@@ -42,10 +42,8 @@ namespace Blocks
             menuBackRec = new Rectangle(0, 0, graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
             menuBackText = LoadedContent.mainMenuBackground;
             buttonTex = LoadedContent.mainMenuButton;
-            playRec = new Rectangle(0, 200, 200, 100);
-            exitRec = new Rectangle(0, 530, 200, 100);
-            levelRec = new Rectangle(0, 310, 200, 100);
-            keybindRec = new Rectangle(0, 420, 360, 100);
+            playRec = new Rectangle(0, 200, 400, 200);
+            exitRec = new Rectangle(0, 410, 400, 200);
             hits = 0;
             play = false;
             font = LoadedContent.mainMenuFont;
@@ -59,11 +57,7 @@ namespace Blocks
             spriteBatch.Draw(buttonTex, exitRec, Color.White);
             spriteBatch.DrawString(font, "Play", new Vector2(playRec.X + 8, playRec.Y + 5), Color.Black);
             spriteBatch.DrawString(font, "Exit", new Vector2(exitRec.X + 8, exitRec.Y + 5), Color.Black);
-
-            spriteBatch.Draw(buttonTex, levelRec, Color.White);
-            spriteBatch.Draw(buttonTex, keybindRec, Color.White);
-            spriteBatch.DrawString(font, "Levels", new Vector2(levelRec.X + 8, levelRec.Y + 5), Color.Black);
-            spriteBatch.DrawString(font, "Key binding", new Vector2(keybindRec.X + 8, keybindRec.Y + 5), Color.Black);
+            
             spriteBatch.End();
         }
 
