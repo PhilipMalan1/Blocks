@@ -73,7 +73,7 @@ namespace Blocks
 
         public override void Draw(GameTime gameTime, SpriteBatch spritebach, Vector2 camera)
         {
-            float scale = BlockWidth / 40 / 2;
+            float scale = BlockWidth / 90 / 2;
             Vector2 strSize = font.MeasureString(text)*scale;
             spritebach.DrawString(font, text, new Vector2(pos.X + BlockWidth / 2 - strSize.X / 2 - camera.X, pos.Y + BlockWidth / 2 - strSize.Y / 2 - camera.Y), Color.Black, 0, new Vector2(), scale, SpriteEffects.None, (float)DrawLayer.FloatingText / 1000);
         }

@@ -107,7 +107,7 @@ namespace Blocks
             }
 
             //draw select tool
-            spriteBatch.DrawString(font, "Select", new Vector2(0, blockWidth), Color.White, 0, new Vector2(), 1f / 40 * blockWidth / 4, SpriteEffects.None, (float)DrawLayer.UI / 1000);
+            spriteBatch.DrawString(font, "Select", new Vector2(0, blockWidth), Color.White, 0, new Vector2(), 1f / 90 * blockWidth / 4, SpriteEffects.None, (float)DrawLayer.UI / 1000);
 
             //draw block description
             string str = "";
