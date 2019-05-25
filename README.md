@@ -3,3 +3,6 @@ This is project made in XNA 4 for a highschool video game design class made by a
 
 # How it was made
 The levels were built in a specially designed grid based level editor along with a custom (albiet buggy) physics engine which supports glancing collisions between circles and axis aligned rectangles.
+
+
+Gameplay video: https://youtu.be/qNs-YrIGUcY
